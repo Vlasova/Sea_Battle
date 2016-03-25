@@ -1,0 +1,13 @@
+*.user
+*.autosave
+*.sty
+*.bat
+Makefile
+md_README.tex
+*.aux
+*.idx
+*.log
+*.out
+*.toc
+html/*
+
