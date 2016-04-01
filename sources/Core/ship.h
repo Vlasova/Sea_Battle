@@ -6,19 +6,20 @@
 
 class Ship{
 public:
+    Ship();
     Ship(int x, int y, int lenght, shipLine line);
-    Cell getShipCells() const;
+    shipStatus getShipStatus();
+    void setShipStatus(shipStatus status);
+
 
 
 private:
     int lenght;
     shipStatus status;
-    Cell firstShipCell;
-    Cell shipCells[];
+    Cell* shipCells;
 
 
 
 };
 
 #endif // SHIP_H
-

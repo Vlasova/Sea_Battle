@@ -2,7 +2,11 @@
 
 Cell::Cell():x(0),y(0),status(blank){}
 
-Cell::Cell(int x, int y, cellStatus status):x(x),y(y),status(status){}
+Cell::Cell(int x, int y){
+    this->x=x;
+    this->y=y;
+    status=blank;
+}
 
 void Cell::setX(int x){
     this->x=x;

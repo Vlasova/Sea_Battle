@@ -7,7 +7,7 @@ class Cell{
 
 public:
     Cell();
-    Cell(int x, int y, cellStatus status);
+    Cell(int x, int y);
     void setX(int x);
     void setY(int y);
     void setStatus(cellStatus status);
@@ -18,6 +18,7 @@ public:
 private:
     int x, y;
     cellStatus status;
+
 };
 
 #endif // CELL_H
