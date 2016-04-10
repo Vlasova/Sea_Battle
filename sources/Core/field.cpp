@@ -1,6 +1,4 @@
 #include "field.h"
-#include "cell.h"
-#include "ship.h"
 
 Field::Field(){
     fieldCells=new Cell*[FIELD_SIZE];
@@ -10,20 +8,24 @@ Field::Field(){
         for(int j=0;j<FIELD_SIZE;j++){
             fieldCells[i][j].setX(i);
             fieldCells[i][j].setY(j);
-            fieldCells[i][j].setStatus(blank);
-        }
+            }
     fieldShips=new Ship[NUMBER_OF_SHIPS];
-    for (int i=0;i<NUMBER_OF_SHIPS;i++)
-        Ship();
+    numberSetShips=0;
 
 
 }
 
 void Field::placeShip(int x, int y, int lenght, shipLine line){
 
-    int number=0;
-    fieldShips[number].Ship;
-    number++;
+    if (line==horizontal)
+        for(int i=0;i<lenght;i++)
+            fieldCells[x+i][y].setStatus(whole);
+    else for(int i=0;i<lenght;i++)
+        fieldCells[x][y+i].setStatus(whole);
+    fieldShips[numberSetShips].setCoordinates(x,y);
+    numberSetShips++;
+
+
 
 }
 
@@ -37,6 +39,13 @@ bool Field::allShipsDestroyed(){
         return true;
     else return false;
 
+}
+
+bool Field::isDeck(int x, int y){
+
+    if (fieldCells[x][y].getStatus()==whole || fieldCells[x][y].getStatus()==stricken)
+        return true;
+    else return false;
 }
 
 

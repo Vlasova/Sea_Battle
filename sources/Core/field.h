@@ -6,13 +6,14 @@
 
 
 
+
 class Field{
 
 public:
     Field();
     void placeShip(int x, int y, int lenght, shipLine line);
     bool allShipsDestroyed();
-    char printField();
+    bool isDeck(int x, int y);
 
 
 
@@ -25,6 +26,8 @@ private:
     static const int NUMBER_OF_FOURDECK_SHIPS = 1;
     Cell** fieldCells;
     Ship* fieldShips;
+    int numberSetShips;
+
 
 
 };
