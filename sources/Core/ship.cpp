@@ -1,10 +1,8 @@
 #include "ship.h"
-#include "cell.h"
-#include "enums.h"
-
-Ship::Ship():lenght(0),status(safe){}
 
 
+
+Ship::Ship():lenght(0),status(safe),firstX(0),firstY(0){}
 
 Ship::Ship(int x, int y, int lenght, shipLine line){
 
@@ -29,7 +27,13 @@ Ship::Ship(int x, int y, int lenght, shipLine line){
 }
 
 
-shipStatus Ship::getShipStatus(){
+shipStatus Ship::getShipStatus() const{
+
+    return status;
+
+}
+
+void Ship::setShipStatus(){
 
     int count=0;
     for (int i=0; i<lenght; i++)
@@ -39,13 +43,24 @@ shipStatus Ship::getShipStatus(){
         status=destroyed;
     else if (count!=0)
         status=smitten;
-    return status;
 
 }
 
-void Ship::setShipStatus(shipStatus status){
+void Ship::setShipCells(int x, int y, int lenght, shipLine line){
 
-    this->status=status;
+    shipCells=new Cell[lenght];
+    if (line==horizontal)
+    for (int i=0;i<lenght;i++){
+         shipCells[i].setX(x+i);
+         shipCells[i].setY(y);
+    }
+    else for (int i=0;i<lenght;i++){
+        shipCells[i].setY(y+i);
+        shipCells[i].setX(x);
+    }
+    firstX=x;
+    firstY=y;
 
 }
+
 

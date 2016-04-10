@@ -8,14 +8,17 @@ class Ship{
 public:
     Ship();
     Ship(int x, int y, int lenght, shipLine line);
-    shipStatus getShipStatus();
-    void setShipStatus(shipStatus status);
+    void setShipStatus();
+    shipStatus getShipStatus() const;
+    void setShipCells(int x, int y, int lenght, shipLine line);
 
 
 
 private:
     int lenght;
     shipStatus status;
+    int firstX;
+    int firstY;
     Cell* shipCells;
 
 

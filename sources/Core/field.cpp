@@ -22,7 +22,7 @@ void Field::placeShip(int x, int y, int lenght, shipLine line){
             fieldCells[x+i][y].setStatus(whole);
     else for(int i=0;i<lenght;i++)
         fieldCells[x][y+i].setStatus(whole);
-    fieldShips[numberSetShips].setCoordinates(x,y);
+    fieldShips[numberSetShips].setShipCells(x,y,lenght,line);
     numberSetShips++;
 
 
@@ -48,5 +48,15 @@ bool Field::isDeck(int x, int y){
     else return false;
 }
 
+bool Field::shot(int x, int y){
+
+    if (fieldCells[x][y].getStatus()==whole){
+        fieldCells[x][y].setStatus(stricken);
+        return true;
+    }
+    else return false;
+
+
+}
 
 

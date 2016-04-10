@@ -4,9 +4,6 @@
 #include "cell.h"
 #include "ship.h"
 
-
-
-
 class Field{
 
 public:
@@ -14,16 +11,13 @@ public:
     void placeShip(int x, int y, int lenght, shipLine line);
     bool allShipsDestroyed();
     bool isDeck(int x, int y);
+    bool shot(int x, int y);
 
 
 
 private:
     static const int FIELD_SIZE = 10;
     static const int NUMBER_OF_SHIPS = 10;
-    static const int NUMBER_OF_SINGLEDECK_SHIPS = 4;
-    static const int NUMBER_OF_DOUBLEDECK_SHIPS = 3;
-    static const int NUMBER_OF_THREEDECK_SHIPS = 2;
-    static const int NUMBER_OF_FOURDECK_SHIPS = 1;
     Cell** fieldCells;
     Ship* fieldShips;
     int numberSetShips;

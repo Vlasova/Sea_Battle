@@ -1,38 +1,36 @@
 #ifndef SEA_BATTLE_API_H
 #define SEA_BATTLE_API_H
+#include "field.h"
 
-class Sea_Battle_API{
+class SeaBattleAPI{
 
 public:
 
     /**
      * @brief Начать новую игру
      */
-    virtual void start_new_game()=0;
+    virtual void startNewGame()=0;
     /**
      * @brief Продолжить сохраненную игру
      */
-    virtual void continue_saved_game()=0;
+    virtual void continueSavedGame()=0;
     /**
      * @brief Сохранить игру
      */
-    virtual void save_game()=0;
+    virtual void saveGame()=0;
     /**
      * @brief Разместить корабли
      */
-    virtual void locate_ships()=0;
+    virtual void locateShips()=0;
     /**
      * @brief Сделать ход на указанные игроком координаты
      */
-    virtual void make_move()=0;
+    virtual void makeMove()=0;
     /**
-     * @brief Пометить клетку крестиком, если игрок попал в корабль противника
+     * @brief Получить указатель на игровое поле
      */
-    virtual void place_cross()=0;
-    /**
-     * @brief Пометить клетку точкой, если игрок не попал
-     */
-    virtual void place_point()=0;
+    virtual Field &getField()=0;
+
 
 };
 
