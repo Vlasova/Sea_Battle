@@ -1,39 +1,17 @@
 #include "ship.h"
 
-
-
 Ship::Ship():lenght(0),status(safe),firstX(0),firstY(0){}
 
-Ship::Ship(int x, int y, int lenght, shipLine line){
 
-    status=safe;
-    this->lenght=lenght;
-    shipCells=new Cell[lenght];
-    if (line==vertical)
-        for(int i=0;i<lenght;i++){
-            shipCells[i].setX(x+1);
-            shipCells[i].setY(y);
-            shipCells[i].setStatus(blank);
-
-        }
-
-    else
-        for(int i=0;i<lenght;i++){
-            shipCells[i].setX(x);
-            shipCells[i].setY(y+i);
-            shipCells[i].setStatus(blank);
-        }
-
-}
-
-
-shipStatus Ship::getShipStatus() const{
+shipStatus Ship::getShipStatus() const
+{
 
     return status;
 
 }
 
-void Ship::setShipStatus(){
+void Ship::setShipStatus()
+{
 
     int count=0;
     for (int i=0; i<lenght; i++)
@@ -46,21 +24,33 @@ void Ship::setShipStatus(){
 
 }
 
-void Ship::setShipCells(int x, int y, int lenght, shipLine line){
-
+void Ship::setShipCells(int firstX, int firstY, int lenght, shipLine line)
+{
     shipCells=new Cell[lenght];
+    this->firstX=firstX;
+    this->firstY=firstY;
+    this->lenght=lenght;
+    this->line=line;
     if (line==horizontal)
     for (int i=0;i<lenght;i++){
-         shipCells[i].setX(x+i);
-         shipCells[i].setY(y);
+         shipCells[i].setX(firstX+i);
+         shipCells[i].setY(firstY);
+         shipCells[i].setStatus(whole);
     }
     else for (int i=0;i<lenght;i++){
-        shipCells[i].setY(y+i);
-        shipCells[i].setX(x);
+        shipCells[i].setY(firstY+i);
+        shipCells[i].setX(firstX);
+        shipCells[i].setStatus(whole);
     }
-    firstX=x;
-    firstY=y;
-
 }
 
+Cell* Ship::getShipCells() const
+{
+    return shipCells;
+}
+
+Ship::~Ship()
+{
+    delete shipCells;
+}
 

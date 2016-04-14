@@ -12,6 +12,8 @@ public:
     bool allShipsDestroyed();
     bool isDeck(int x, int y);
     bool shot(int x, int y);
+    Cell** getFieldCells() const;
+    Ship* getFieldShips() const;
 
 
 

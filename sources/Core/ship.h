@@ -7,11 +7,11 @@
 class Ship{
 public:
     Ship();
-    Ship(int x, int y, int lenght, shipLine line);
     void setShipStatus();
     shipStatus getShipStatus() const;
-    void setShipCells(int x, int y, int lenght, shipLine line);
-
+    void setShipCells(int firstX, int firstY, int lenght, shipLine line);
+    Cell* getShipCells() const;
+    ~Ship();
 
 
 private:
@@ -20,6 +20,7 @@ private:
     int firstX;
     int firstY;
     Cell* shipCells;
+    shipLine line;
 
 
 

@@ -25,8 +25,6 @@ void Field::placeShip(int x, int y, int lenght, shipLine line){
     fieldShips[numberSetShips].setShipCells(x,y,lenght,line);
     numberSetShips++;
 
-
-
 }
 
 bool Field::allShipsDestroyed(){
@@ -56,7 +54,16 @@ bool Field::shot(int x, int y){
     }
     else return false;
 
+}
 
+Cell** Field::getFieldCells() const
+{
+    return fieldCells;
+}
+
+Ship* Field::getFieldShips() const
+{
+    return fieldShips;
 }
 
 
