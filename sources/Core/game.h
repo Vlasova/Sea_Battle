@@ -11,7 +11,7 @@ public:
     void locateShips();
     void locateShipsRandomly();
     void makeMove();
-    Field &getField();
+    Field* getField() const;
 
 
 private:

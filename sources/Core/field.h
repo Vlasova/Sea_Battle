@@ -7,6 +7,9 @@
 class Field{
 
 public:
+    static const int FIELD_SIZE = 10;
+    static const int NUMBER_OF_SHIPS = 10;
+
     Field();
     void placeShip(int x, int y, int lenght, shipLine line);
     bool allShipsDestroyed();
@@ -15,11 +18,7 @@ public:
     Cell** getFieldCells() const;
     Ship* getFieldShips() const;
 
-
-
 private:
-    static const int FIELD_SIZE = 10;
-    static const int NUMBER_OF_SHIPS = 10;
     Cell** fieldCells;
     Ship* fieldShips;
     int numberSetShips;
