@@ -11,11 +11,13 @@ public:
     void locateShips();
     void locateShipsRandomly();
     void makeMove();
-    Field* getField() const;
+    Field* getPlayerField() const;
+    Field* getComputerField() const;
 
 
 private:
-    Field* field;
+    Field* playerField;
+    Field* computerField;
 
 
 };

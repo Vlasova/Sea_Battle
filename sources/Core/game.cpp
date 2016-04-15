@@ -1,10 +1,16 @@
 #include "game.h"
 
 Game::Game(){
-    field = new Field();
+    playerField=new Field();
+    computerField=new Field();
 }
 
-Field* Game::getField() const
+Field* Game::getPlayerField() const
 {
-    return field;
+    return playerField;
+}
+
+Field* Game::getComputerField() const
+{
+    return computerField;
 }
