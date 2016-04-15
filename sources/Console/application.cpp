@@ -9,10 +9,11 @@ Application::Application()
 
 void Application::startGame()
 {
-    printField();
+    game->printField();
+    game->locateShips();
 }
 
-void Application::printField()
+void Game::printField()
 {
     int number=1;
     std::cout<<"   "<<"A"<<" "<<"B"<<" "<<"C"<<" "<<"D"<<" "<<"E"<<" "<<"F"<<" "<<"G"<<" "<<"H"<<" "<<"I"<<" "<<"J"
@@ -24,11 +25,11 @@ void Application::printField()
      else std::cout<<number<<"  ";
      for (int j=0;j<Field::FIELD_SIZE;j++)
      {
-         if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==0)
+         if (getPlayerField()->getFieldCells()[i][j].getStatus()==0)
              std::cout<<"x"<<" ";
-         if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==1)
+         if (getPlayerField()->getFieldCells()[i][j].getStatus()==1)
              std::cout<<"X"<<" ";
-         if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==2)
+         if (getPlayerField()->getFieldCells()[i][j].getStatus()==2)
              std::cout<<"*"<<" ";
      }
      std::cout<<"     ";
@@ -37,17 +38,36 @@ void Application::printField()
      else std::cout<<number<<"  ";
      for (int j=0;j<Field::FIELD_SIZE;j++)
      {
-         if (game->getComputerField()->getFieldCells()[i][j].getStatus()==0)
+         if (getComputerField()->getFieldCells()[i][j].getStatus()==0)
              std::cout<<"x"<<" ";
-         if (game->getComputerField()->getFieldCells()[i][j].getStatus()==1)
+         if (getComputerField()->getFieldCells()[i][j].getStatus()==1)
              std::cout<<"X"<<" ";
-         if (game->getComputerField()->getFieldCells()[i][j].getStatus()==2)
+         if (getComputerField()->getFieldCells()[i][j].getStatus()==2)
              std::cout<<"*"<<" ";
      }
      std::cout<<std::endl;
      number++;
     }
 
+}
+
+void Game::locateShips()
+{
+    std::cout<<"Locate ships"<<std::endl;
+    int x, y, lenght, line;
+    for (int i=0;i<Field::NUMBER_OF_SHIPS;i++)
+    {
+        std::cout<<"Alphabetic coordinate of the first deck: "<< std::endl;
+        std::cin>>x;
+        std::cout<<"Numerical coordinate of the first deck: "<<std::endl;
+        std::cin>>y;
+        std::cout<<"Lenght of the ship: "<<std::endl;
+        std::cin>>lenght;
+        std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
+        std::cin>>line;
+        playerField->placeShip(x,y,lenght,shipLine(line));
+        printField();
+    }
 }
 
 

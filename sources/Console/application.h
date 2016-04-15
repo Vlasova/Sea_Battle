@@ -8,7 +8,6 @@ public:
     Application();
     void mainMenu();
     void startGame();
-    void printField();
     void loadGame();
 private:
     Game* game;
