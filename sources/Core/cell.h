@@ -16,7 +16,8 @@ public:
     int getY() const;
 
 private:
-    int x, y;
+    int x;
+    int y;
     cellStatus status;
 
 };

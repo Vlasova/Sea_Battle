@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "application.h"
 
 
@@ -55,16 +56,16 @@ void Game::locateShips()
 {
     std::cout<<"Locate ships"<<std::endl;
     int x, y, lenght, line;
+    char charX;
     for (int i=0;i<Field::NUMBER_OF_SHIPS;i++)
     {
-        std::cout<<"Alphabetic coordinate of the first deck: "<< std::endl;
-        std::cin>>x;
-        std::cout<<"Numerical coordinate of the first deck: "<<std::endl;
-        std::cin>>y;
+        std::cout<<"Coordinates of the first deck(separated by a space): "<<std::endl;
+        std::cin>>charX>>y;
         std::cout<<"Lenght of the ship: "<<std::endl;
         std::cin>>lenght;
         std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
         std::cin>>line;
+        x=charX-64;
         playerField->placeShip(x,y,lenght,shipLine(line));
         printField();
     }

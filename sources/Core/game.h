@@ -13,6 +13,7 @@ public:
     void makeMove();
     Field* getPlayerField() const;
     Field* getComputerField() const;
+    void printField();
 
 
 private:

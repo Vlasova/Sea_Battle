@@ -14,3 +14,5 @@ Field* Game::getComputerField() const
 {
     return computerField;
 }
+
+

@@ -3,7 +3,6 @@
 #include "enums.h"
 #include "cell.h"
 
-
 class Ship{
 public:
     Ship();
@@ -21,8 +20,6 @@ private:
     int firstY;
     Cell* shipCells;
     shipLine line;
-
-
 
 };
 
