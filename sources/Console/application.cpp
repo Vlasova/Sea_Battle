@@ -10,10 +10,10 @@ Application::Application()
 
 void Application::startGame()
 {
-    game->getComputerField()->locateComputerShips();
 
     game->printField();
     game->locateShips();
+
 }
 
 void Game::printField()
@@ -68,16 +68,49 @@ void Game::locateShips()
         std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
         std::cin>>line;
         x=charX-64;
-        if (playerField->canPlaceShip(x,y,lenght,shipLine(line)))
-            playerField->placeShip(x-1,y-1,lenght,shipLine(line));
-        else std::cout<<"Error";
-        printField();
+        try
+        {
+            if (playerField->canPlaceShip(x-1,y-1,lenght,shipLine(line)))
+            {
+                playerField->placeShip(x-1,y-1,lenght,shipLine(line));
+                printField();
+            }
+            else throw 0;
+
+        }
+
+        catch(int Deck)
+        {
+            switch(Deck){
+            case 0:
+                std::cout<<"Error! Ships must not touch"<<std::endl;
+                break;
+            case 1:
+                std::cout<<"Error! You can place only four 1-deck ship"<<std::endl;
+                break;
+            case 2:
+                std::cout<<"Error! You can place only three 2-deck ship"<<std::endl;
+                break;
+            case 3:
+                std::cout<<"Error! You can place only two 3-deck ship"<<std::endl;
+                break;
+            case 4:
+                std::cout<<"Error! You can place only one 4-deck ship"<<std::endl;
+                break;
+            case 5:
+                std::cout<<"Error! It is impossible to place the ship"<<std::endl;
+                break;
+            }
+
+        }
+
     }
 }
-
-
 
 void Application::loadGame()
 {
 
 }
+
+
+

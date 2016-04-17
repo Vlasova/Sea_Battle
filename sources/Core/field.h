@@ -22,10 +22,12 @@ public:
     void locateShipsRandomly(int lenght);
     void locateComputerShips();
 
+
 private:
     Cell** fieldCells;
     Ship* fieldShips;
     int numberSetShips;
+
 
 
 

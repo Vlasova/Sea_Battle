@@ -70,20 +70,61 @@ Ship* Field::getFieldShips() const
 
 bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
 {
+
+    if (x+lenght>FIELD_SIZE || y+lenght>FIELD_SIZE)
+        throw 5;
+
+    static int count1Deck=0;
+    static int count2Deck=0;
+    static int count3Deck=0;
+    static int count4Deck=0;
+
+    if (lenght==1){
+        count1Deck++;
+        if (count1Deck>4){
+            count1Deck--;
+            throw 1;
+        }
+    }
+    if (lenght==2){
+        count2Deck++;
+        if (count2Deck>3){
+            count2Deck--;
+            throw 2;
+        }
+    }
+    if (lenght==3){
+        count3Deck++;
+        if (count3Deck>2){
+            count3Deck--;
+            throw 3;
+        }
+    }
+    if (lenght==4){
+        count4Deck++;
+        if (count4Deck>1){
+            count4Deck--;
+            throw 4;
+        }
+    }
+
     if (line==horizontal)
     {
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+1);i++)
             for (int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+lenght);j++)
-                if(fieldCells[i][j].getStatus()!=blank)
+                if(fieldCells[i][j].getStatus()!=blank){
                     return false;
+
+                }
         return true;
     }
     else
     {
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+lenght);i++)
             for(int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+1);j++)
-                if(fieldCells[i][j].getStatus()!=blank)
+                if(fieldCells[i][j].getStatus()!=blank){
                     return false;
+                }
         return true;
     }
 
@@ -128,6 +169,8 @@ void Field::locateComputerShips()
         locateShipsRandomly(1);
     }
 }
+
+
 
 
 
