@@ -68,10 +68,9 @@ Ship* Field::getFieldShips() const
     return fieldShips;
 }
 
-bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
+void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
 {
-
-    if (x+lenght>FIELD_SIZE || y+lenght>FIELD_SIZE)
+    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
         throw 5;
 
     static int count1Deck=0;
@@ -108,6 +107,11 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
         }
     }
 
+    canPlaceShip(x,y,lenght,line);
+}
+
+bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
+{   
     if (line==horizontal)
     {
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+1);i++)
@@ -169,6 +173,7 @@ void Field::locateComputerShips()
         locateShipsRandomly(1);
     }
 }
+
 
 
 

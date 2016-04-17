@@ -17,10 +17,12 @@ public:
     bool isDeck(int x, int y);
     bool shot(int x, int y);
     bool canPlaceShip(int x, int y, int lenght, shipLine line);
+    void canPlacePlayerShip(int x, int y, int lenght, shipLine line);
     Cell** getFieldCells() const;
     Ship* getFieldShips() const;
     void locateShipsRandomly(int lenght);
     void locateComputerShips();
+
 
 
 private:

@@ -10,10 +10,15 @@ Application::Application()
 
 void Application::startGame()
 {
-
+    game->getComputerField()->locateComputerShips();
     game->printField();
     game->locateShips();
-    game->makeMove();
+    while(!game->getPlayerField()->allShipsDestroyed() || !game->getComputerField()->allShipsDestroyed())
+    {
+        game->makeMove();
+        game->makeComputerMove();
+
+    }
 
 }
 
@@ -43,7 +48,7 @@ void Game::printField()
         for (int j=0;j<FIELD_SIZE;j++)
         {
             if (getComputerField()->getFieldCells()[i][j].getStatus()==0)
-                std::cout<<"x"<<" ";
+                std::cout<<"*"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==1)
                 std::cout<<"X"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==2)
@@ -62,7 +67,7 @@ void Game::locateShips()
     char charX;
     for (int i=0;i<NUMBER_OF_SHIPS;i++)
     {
-        std::cout<<"Coordinates of the first deck(separated by a space): "<<std::endl;
+        std::cout<<"Coordinates of the first deck: "<<std::endl;
         std::cin>>charX>>y;
         std::cout<<"Lenght of the ship: "<<std::endl;
         std::cin>>lenght;
@@ -71,6 +76,7 @@ void Game::locateShips()
         x=charX-64;
         try
         {
+            playerField->canPlacePlayerShip(x-1,y-1,lenght,shipLine(line));
             if (playerField->canPlaceShip(x-1,y-1,lenght,shipLine(line)))
             {
                 playerField->placeShip(x-1,y-1,lenght,shipLine(line));
@@ -110,18 +116,16 @@ void Game::locateShips()
 
 void Game::makeMove()
 {
-    while(!playerField->allShipsDestroyed())
-    {
-        std::cout<<"Make move: ";
-        int x,y;
-        char charX;
-        std::cin>>charX>>y;
-        x=charX-64;
-        if (playerField->shot(x,y))
-            std::cout<<"Hit!"<<std::endl;
-        else
-            std::cout<<"Miss!"<<std::endl;
-    }
+
+    std::cout<<"Make move: ";
+    int x,y;
+    char charX;
+    std::cin>>charX>>y;
+    x=charX-64;
+    if (computerField->shot(x-1,y-1))
+        std::cout<<"Hit!"<<std::endl;
+    else
+        std::cout<<"Miss!"<<std::endl;
     printField();
 
 

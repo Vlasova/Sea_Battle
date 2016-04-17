@@ -10,6 +10,7 @@ public:
     void startNewGame();
     void locateShips();
     void makeMove();
+    void makeComputerMove();
     Field* getPlayerField() const;
     Field* getComputerField() const;
     void printField();
