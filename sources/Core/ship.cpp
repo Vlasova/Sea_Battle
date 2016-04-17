@@ -44,6 +44,7 @@ void Ship::setShipCells(int firstX, int firstY, int lenght, shipLine line)
     }
 }
 
+
 Cell* Ship::getShipCells() const
 {
     return shipCells;

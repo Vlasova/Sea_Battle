@@ -9,7 +9,6 @@ public:
     Game();
     void startNewGame();
     void locateShips();
-    void locateShipsRandomly();
     void makeMove();
     Field* getPlayerField() const;
     Field* getComputerField() const;
