@@ -13,6 +13,7 @@ void Application::startGame()
 
     game->printField();
     game->locateShips();
+    game->makeMove();
 
 }
 
@@ -105,6 +106,25 @@ void Game::locateShips()
         }
 
     }
+}
+
+void Game::makeMove()
+{
+    while(!playerField->allShipsDestroyed())
+    {
+        std::cout<<"Make move: ";
+        int x,y;
+        char charX;
+        std::cin>>charX>>y;
+        x=charX-64;
+        if (playerField->shot(x,y))
+            std::cout<<"Hit!"<<std::endl;
+        else
+            std::cout<<"Miss!"<<std::endl;
+    }
+    printField();
+
+
 }
 
 void Application::loadGame()
