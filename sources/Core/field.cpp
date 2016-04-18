@@ -54,7 +54,10 @@ bool Field::shot(int x, int y){
         fieldCells[y][x].setStatus(stricken);
         return true;
     }
-    else return false;
+    else {
+        fieldCells[y][x].setStatus(tried);
+        return false;
+    }
 
 }
 

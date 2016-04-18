@@ -40,6 +40,8 @@ void Game::printField()
                 std::cout<<"X"<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==2)
                 std::cout<<"*"<<" ";
+            if (getPlayerField()->getFieldCells()[i][j].getStatus()==3)
+                std::cout<<"."<<" ";
         }
         std::cout<<"     ";
         if (number==10)
@@ -53,6 +55,8 @@ void Game::printField()
                 std::cout<<"X"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==2)
                 std::cout<<"*"<<" ";
+            if (getComputerField()->getFieldCells()[i][j].getStatus()==3)
+                std::cout<<"."<<" ";
         }
         std::cout<<std::endl;
         number++;
@@ -122,10 +126,28 @@ void Game::makeMove()
     char charX;
     std::cin>>charX>>y;
     x=charX-64;
-    if (computerField->shot(x-1,y-1))
-        std::cout<<"Hit!"<<std::endl;
+    if (computerField->shot(x-1,y-1)){
+        std::cout<<"You hit!"<<std::endl;
+        makeMove();
+    }
     else
-        std::cout<<"Miss!"<<std::endl;
+        std::cout<<"You miss!"<<std::endl;
+    printField();
+
+
+}
+
+void Game::makeComputerMove()
+{
+    int x,y;
+    x=std::rand()%(FIELD_SIZE-1);
+    y=std::rand()%(FIELD_SIZE-1);
+    if (playerField->shot(x,y)){
+        std::cout<<"Computer hit!"<<std::endl;
+        makeComputerMove();
+    }
+    else
+        std::cout<<"Computer miss!"<<std::endl;
     printField();
 
 

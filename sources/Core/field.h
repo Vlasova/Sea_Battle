@@ -24,7 +24,6 @@ public:
     void locateComputerShips();
 
 
-
 private:
     Cell** fieldCells;
     Ship* fieldShips;
