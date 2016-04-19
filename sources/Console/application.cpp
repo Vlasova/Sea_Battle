@@ -10,7 +10,7 @@ Application::Application()
 
 void Application::startGame()
 {
-    game->getComputerField()->locateComputerShips();
+
     game->printField();
     game->locateShips();
     while(!game->getPlayerField()->allShipsDestroyed() || !game->getComputerField()->allShipsDestroyed())
@@ -69,7 +69,7 @@ void Game::locateShips()
     std::cout<<"Locate ships"<<std::endl;
     int x, y, lenght, line;
     char charX;
-    for (int i=0;i<NUMBER_OF_SHIPS;i++)
+    while (!playerField->allShipsLocate())
     {
         std::cout<<"Coordinates of the first deck: "<<std::endl;
         std::cin>>charX>>y;
@@ -116,6 +116,7 @@ void Game::locateShips()
         }
 
     }
+    std::cout<<"All ships are placed!"<<std::endl;
 }
 
 void Game::makeMove()

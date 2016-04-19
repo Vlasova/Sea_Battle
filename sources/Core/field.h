@@ -14,6 +14,7 @@ public:
     Field();
     void placeShip(int x, int y, int lenght, shipLine line);
     bool allShipsDestroyed();
+    bool allShipsLocate();
     bool isDeck(int x, int y);
     bool shot(int x, int y);
     bool canPlaceShip(int x, int y, int lenght, shipLine line);

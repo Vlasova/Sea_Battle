@@ -17,7 +17,8 @@ Field::Field(){
 
 }
 
-void Field::placeShip(int x,int y, int lenght, shipLine line){
+void Field::placeShip(int x, int y, int lenght, shipLine line)
+{
 
     if (line==horizontal)
         for(int i=0;i<lenght;++i)
@@ -26,13 +27,13 @@ void Field::placeShip(int x,int y, int lenght, shipLine line){
         fieldCells[y+i][x].setStatus(whole);
     fieldShips[numberSetShips].setShipCells(x,y,lenght,line);
     numberSetShips++;
-
 }
 
-bool Field::allShipsDestroyed(){
+bool Field::allShipsDestroyed()
+{
 
     int count=0;
-    for(int i=0; i<NUMBER_OF_SHIPS;i++)
+    for(int i=0; i<NUMBER_OF_SHIPS; i++)
         if (fieldShips[i].getShipStatus()==destroyed)
             count++;
     if(count==NUMBER_OF_SHIPS)
@@ -41,14 +42,24 @@ bool Field::allShipsDestroyed(){
 
 }
 
-bool Field::isDeck(int x, int y){
+bool Field::allShipsLocate()
+{
+    if (numberSetShips==NUMBER_OF_SHIPS)
+        return true;
+    else return false;
+
+}
+
+bool Field::isDeck(int x, int y)
+{
 
     if (fieldCells[y][x].getStatus()==whole || fieldCells[y][x].getStatus()==stricken)
         return true;
     else return false;
 }
 
-bool Field::shot(int x, int y){
+bool Field::shot(int x, int y)
+{
 
     if (fieldCells[y][x].getStatus()==whole){
         fieldCells[y][x].setStatus(stricken);
