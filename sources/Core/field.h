@@ -1,11 +1,14 @@
 #ifndef FIELD_H
 #define FIELD_H
+#include "ship.h"
 #include "enums.h"
 #include "cell.h"
-#include "ship.h"
+
 
 static const int FIELD_SIZE = 10;
 static const int NUMBER_OF_SHIPS = 10;
+
+class Ship;
 
 class Field{
 

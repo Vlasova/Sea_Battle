@@ -2,24 +2,28 @@
 #define SHIP_H
 #include "enums.h"
 #include "cell.h"
+#include "game.h"
 
-class Ship{
+class Field;
+
+class Ship
+{
 public:
     Ship();
+    void createShip(Field& field,int x, int y, int lenght, shipLine line);
     void setShipStatus();
+    bool shot(Field& field, int x, int y);
     shipStatus getShipStatus() const;
-    void setShipCells(int firstX, int firstY, int lenght, shipLine line);
     Cell* getShipCells() const;
     ~Ship();
 
 
 private:
-    int lenght;
+    int firstX, firstY, lenght;
     shipStatus status;
-    int firstX;
-    int firstY;
     Cell* shipCells;
     shipLine line;
+
 
 };
 

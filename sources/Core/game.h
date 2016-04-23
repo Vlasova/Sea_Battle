@@ -3,6 +3,7 @@
 
 #include "field.h"
 
+class Field;
 
 class Game{
 public:

@@ -10,15 +10,19 @@ Application::Application()
 
 void Application::startGame()
 {
-
+    game->getComputerField()->locateComputerShips();
     game->printField();
     game->locateShips();
-    while(!game->getPlayerField()->allShipsDestroyed() || !game->getComputerField()->allShipsDestroyed())
+    while(!game->getPlayerField()->allShipsDestroyed() | !game->getComputerField()->allShipsDestroyed())
     {
         game->makeMove();
         game->makeComputerMove();
 
     }
+    if (game->getPlayerField()->allShipsDestroyed())
+        std::cout<<"Computer win!"<<std::endl;
+    if (game->getPlayerField()->allShipsDestroyed())
+        std::cout<<"You win!"<<std::endl;
 
 }
 
@@ -35,13 +39,13 @@ void Game::printField()
         for (int j=0;j<FIELD_SIZE;j++)
         {
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==0)
-                std::cout<<"x"<<" ";
+                std::cout<<"."<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==1)
                 std::cout<<"X"<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==2)
                 std::cout<<"*"<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==3)
-                std::cout<<"."<<" ";
+                std::cout<<"-"<<" ";
         }
         std::cout<<"     ";
         if (number==10)
@@ -50,13 +54,13 @@ void Game::printField()
         for (int j=0;j<FIELD_SIZE;j++)
         {
             if (getComputerField()->getFieldCells()[i][j].getStatus()==0)
-                std::cout<<"*"<<" ";
+                std::cout<<"."<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==1)
                 std::cout<<"X"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==2)
                 std::cout<<"*"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==3)
-                std::cout<<"."<<" ";
+                std::cout<<"-"<<" ";
         }
         std::cout<<std::endl;
         number++;
@@ -81,12 +85,8 @@ void Game::locateShips()
         try
         {
             playerField->canPlacePlayerShip(x-1,y-1,lenght,shipLine(line));
-            if (playerField->canPlaceShip(x-1,y-1,lenght,shipLine(line)))
-            {
-                playerField->placeShip(x-1,y-1,lenght,shipLine(line));
-                printField();
-            }
-            else throw 0;
+            playerField->placeShip(x-1,y-1,lenght,shipLine(line));
+            printField();
 
         }
 
@@ -109,11 +109,19 @@ void Game::locateShips()
                 std::cout<<"Error! You can place only one 4-deck ship"<<std::endl;
                 break;
             case 5:
+                std::cout<<"Error! Wrong coordinates! Use letters A..J"<<std::endl;
+                break;
+            case 6:
+                std::cout<<"Error! Wrong coordinates! Use numbers 1..10"<<std::endl;
+                break;
+            case 7:
                 std::cout<<"Error! It is impossible to place the ship"<<std::endl;
                 break;
+
             }
 
         }
+
 
     }
     std::cout<<"All ships are placed!"<<std::endl;
@@ -128,12 +136,18 @@ void Game::makeMove()
     std::cin>>charX>>y;
     x=charX-64;
     if (computerField->shot(x-1,y-1)){
+        printField();
         std::cout<<"You hit!"<<std::endl;
+        for (int i=0; i<NUMBER_OF_SHIPS;i++){
+            if (playerField->getFieldShips()[i].getShipStatus()==destroyed)
+                std::cout<<"Ship destroyed!"<<std::endl;
+        }
         makeMove();
     }
-    else
+    else{
+        printField();
         std::cout<<"You miss!"<<std::endl;
-    printField();
+    }
 
 
 }
@@ -144,12 +158,14 @@ void Game::makeComputerMove()
     x=std::rand()%(FIELD_SIZE-1);
     y=std::rand()%(FIELD_SIZE-1);
     if (playerField->shot(x,y)){
+        printField();
         std::cout<<"Computer hit!"<<std::endl;
         makeComputerMove();
     }
-    else
+    else{
+        printField();
         std::cout<<"Computer miss!"<<std::endl;
-    printField();
+    }
 
 
 }

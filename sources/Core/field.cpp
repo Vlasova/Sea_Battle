@@ -19,13 +19,12 @@ Field::Field(){
 
 void Field::placeShip(int x, int y, int lenght, shipLine line)
 {
-
     if (line==horizontal)
         for(int i=0;i<lenght;++i)
             fieldCells[y][x+i].setStatus(whole);
     else for(int i=0;i<lenght;++i)
         fieldCells[y+i][x].setStatus(whole);
-    fieldShips[numberSetShips].setShipCells(x,y,lenght,line);
+    fieldShips[numberSetShips].createShip(*this,x,y,lenght,line);
     numberSetShips++;
 }
 
@@ -36,7 +35,7 @@ bool Field::allShipsDestroyed()
     for(int i=0; i<NUMBER_OF_SHIPS; i++)
         if (fieldShips[i].getShipStatus()==destroyed)
             count++;
-    if(count==NUMBER_OF_SHIPS)
+    if(count==NUMBER_OF_SHIPS-1)
         return true;
     else return false;
 
@@ -58,17 +57,20 @@ bool Field::isDeck(int x, int y)
     else return false;
 }
 
+
 bool Field::shot(int x, int y)
 {
 
-    if (fieldCells[y][x].getStatus()==whole){
-        fieldCells[y][x].setStatus(stricken);
-        return true;
+    for (int i=0; i<NUMBER_OF_SHIPS; i++)
+    {
+       if (getFieldShips()[i].shot(*this, x, y)){
+           getFieldShips()[i].setShipStatus();
+           return true;
+       }
     }
-    else {
-        fieldCells[y][x].setStatus(tried);
-        return false;
-    }
+
+    return false;
+
 
 }
 
@@ -84,14 +86,19 @@ Ship* Field::getFieldShips() const
 
 void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
 {
-    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
-        throw 5;
-
     static int count1Deck=0;
     static int count2Deck=0;
     static int count3Deck=0;
     static int count4Deck=0;
 
+    if(x>FIELD_SIZE || x<0)
+        throw 5;
+    if(y>FIELD_SIZE || y<0)
+        throw 6;
+    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
+        throw 7;
+    if(!canPlaceShip(x,y,lenght,line))
+        throw 0;
     if (lenght==1){
         count1Deck++;
         if (count1Deck>4){
@@ -120,8 +127,6 @@ void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
             throw 4;
         }
     }
-
-    canPlaceShip(x,y,lenght,line);
 }
 
 bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)

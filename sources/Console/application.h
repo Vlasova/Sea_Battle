@@ -3,7 +3,8 @@
 #include "../Core/game.h"
 
 
-class Application{
+class Application
+{
 public:
     Application();
     void mainMenu();
