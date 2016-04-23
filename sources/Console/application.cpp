@@ -12,7 +12,7 @@ void Application::startGame()
 {
     game->getComputerField()->locateComputerShips();
     game->printField();
-    game->locateShips();
+
     while(!game->getPlayerField()->allShipsDestroyed() | !game->getComputerField()->allShipsDestroyed())
     {
         game->makeMove();
@@ -135,21 +135,34 @@ void Game::makeMove()
     char charX;
     std::cin>>charX>>y;
     x=charX-64;
-    if (computerField->shot(x-1,y-1)){
-        printField();
-        std::cout<<"You hit!"<<std::endl;
-        for (int i=0; i<NUMBER_OF_SHIPS;i++){
-            if (playerField->getFieldShips()[i].getShipStatus()==destroyed)
-                std::cout<<"Ship destroyed!"<<std::endl;
+    try{
+        if (computerField->shot(x-1,y-1)){
+            printField();
+            std::cout<<"You hit!"<<std::endl;
+            for (int i=0; i<NUMBER_OF_SHIPS;i++){
+                if (playerField->getFieldShips()[i].getShipStatus()==destroyed)
+                    std::cout<<"Ship destroyed!"<<std::endl;
+            }
+            makeMove();
         }
-        makeMove();
+        else{
+            printField();
+            std::cout<<"You miss!"<<std::endl;
+        }
     }
-    else{
-        printField();
-        std::cout<<"You miss!"<<std::endl;
+    catch(int Deck)
+    {
+        switch(Deck){
+        case 0:
+            std::cout<<"Error! Wrong coordinates! Use letters A..J"<<std::endl;
+            makeMove();
+            break;
+        case 1:
+            std::cout<<"Error! Wrong coordinates! Use numbers 1..10"<<std::endl;
+            makeMove();
+            break;
+        }
     }
-
-
 }
 
 void Game::makeComputerMove()

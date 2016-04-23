@@ -16,6 +16,4 @@ void Application::mainMenu(){
         break;
 
     }
-
-
 }

@@ -60,7 +60,10 @@ bool Field::isDeck(int x, int y)
 
 bool Field::shot(int x, int y)
 {
-
+    if(x>FIELD_SIZE || x<0)
+        throw 0;
+    if(y>FIELD_SIZE || y<0)
+        throw 1;
     for (int i=0; i<NUMBER_OF_SHIPS; i++)
     {
        if (getFieldShips()[i].shot(*this, x, y)){
