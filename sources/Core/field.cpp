@@ -98,8 +98,10 @@ void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
         throw 5;
     if(y>FIELD_SIZE || y<0)
         throw 6;
-    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
+    if(lenght<1 || lenght>4)
         throw 7;
+    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
+        throw 8;
     if(!canPlaceShip(x,y,lenght,line))
         throw 0;
     if (lenght==1){

@@ -12,7 +12,7 @@ void Application::startGame()
 {
     game->getComputerField()->locateComputerShips();
     game->printField();
-
+    game->locateShips();
     while(!game->getPlayerField()->allShipsDestroyed() | !game->getComputerField()->allShipsDestroyed())
     {
         game->makeMove();
@@ -115,6 +115,9 @@ void Game::locateShips()
                 std::cout<<"Error! Wrong coordinates! Use numbers 1..10"<<std::endl;
                 break;
             case 7:
+                std::cout<<"Error! Wrong lenght!"<<std::endl;
+                break;
+            case 8:
                 std::cout<<"Error! It is impossible to place the ship"<<std::endl;
                 break;
 

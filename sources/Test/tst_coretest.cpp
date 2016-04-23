@@ -42,7 +42,8 @@ void CoreTest::testCell()
 void CoreTest::testShip()
 {
     Ship* ship=new Ship();
-    ship->setShipCells(2,4,3,horizontal);
+    Field* field=new Field();
+    ship->createShip(*field,2,4,3,horizontal);
     QVERIFY(ship->getShipCells()[1].getX()==3);
     QVERIFY(ship->getShipCells()[1].getY()==4);
     QVERIFY(ship->getShipCells()[1].getStatus()==0);
