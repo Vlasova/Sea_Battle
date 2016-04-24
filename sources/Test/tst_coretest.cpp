@@ -15,6 +15,7 @@ private Q_SLOTS:
     void testCell();
     void testShip();
     void testField();
+    void testGame();
 
 };
 
@@ -50,7 +51,7 @@ void CoreTest::testShip()
     ship->getShipCells()[0].setStatus(whole);
     ship->getShipCells()[1].setStatus(stricken);
     ship->getShipCells()[2].setStatus(whole);
-    ship->setShipStatus();
+    ship->setShipStatus(2,4);
     QVERIFY(ship->getShipStatus()==1);
     delete ship;
 
@@ -60,8 +61,9 @@ void CoreTest::testField()
 {
     Field* field=new Field();
     field->placeShip(2,4,3,horizontal);
+    QVERIFY(field->getFieldCells()[1][5].getX()==5);
     QVERIFY(field->getFieldCells()[1][5].getStatus()==2);
-    QVERIFY(field->getFieldCells()[3][4].getStatus()==0);
+    QVERIFY(field->getFieldCells()[4][3].getStatus()==0);
     QVERIFY(field->getFieldShips()[0].getShipStatus()==0);
     QVERIFY(field->getFieldShips()[0].getShipCells()[1].getX()==3);
     QVERIFY(field->isDeck(3,4)==true);
@@ -69,6 +71,25 @@ void CoreTest::testField()
     QVERIFY(field->allShipsDestroyed()==false);
     delete field;
 }
+
+void CoreTest::testGame()
+{
+    Game* game=new Game();
+    game->getPlayerField()->placeShip(1,2,3,vertical);
+    game->getComputerField()->placeShip(2,2,2,horizontal);
+    QVERIFY(game->getComputerField()->shot(2,2)==true);
+    QVERIFY(game->getComputerField()->getFieldCells()[2][2].getStatus()==1);
+    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==1);
+    QVERIFY(game->getComputerField()->shot(3,2)==true);
+    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==2);
+    QVERIFY(game->getComputerField()->getnumberSetShips()==1);
+    QVERIFY(game->getComputerField()->getFieldShips()[0].shipDestroyed()==true);
+    QVERIFY(game->getComputerField()->allShipsDestroyed()==true);
+    QVERIFY(game->getComputerField()->allShipsLocate()==false);
+    delete game;
+}
+
+
 
 
 

@@ -13,11 +13,10 @@ void Application::startGame()
     game->getComputerField()->locateComputerShips();
     game->printField();
     game->locateShips();
-    while(!game->getPlayerField()->allShipsDestroyed() | !game->getComputerField()->allShipsDestroyed())
+    while(!game->getPlayerField()->allShipsDestroyed() || !game->getComputerField()->allShipsDestroyed())
     {
         game->makeMove();
         game->makeComputerMove();
-
     }
     if (game->getPlayerField()->allShipsDestroyed())
         std::cout<<"Computer win!"<<std::endl;
@@ -142,10 +141,16 @@ void Game::makeMove()
         if (computerField->shot(x-1,y-1)){
             printField();
             std::cout<<"You hit!"<<std::endl;
-            for (int i=0; i<NUMBER_OF_SHIPS;i++){
-                if (playerField->getFieldShips()[i].getShipStatus()==destroyed)
-                    std::cout<<"Ship destroyed!"<<std::endl;
-            }
+            for (int i=0; i<NUMBER_OF_SHIPS;i++)
+                for (int j=0; j<computerField->getFieldShips()[i].getLenght(); j++)
+                {
+                    if (computerField->getFieldShips()[i].getShipCells()[j].getX()==x-1 && computerField->getFieldShips()[i].getShipCells()[j].getY()==y-1)
+                    {
+                        if (computerField->getFieldShips()[i].getShipStatus()==2)
+                            std::cout<<"Ship destroyed!"<<std::endl;
+
+                    }
+                }
             makeMove();
         }
         else{

@@ -16,12 +16,14 @@ void Ship::createShip(Field& field,int x, int y, int lenght, shipLine line)
         {
             shipCells[i].setX(x+i);
             shipCells[i].setY(y);
+            shipCells[i].setStatus(whole);
             field.getFieldCells()[y][x+i].setStatus(whole);
 
         }
         else {
             shipCells[i].setX(x);
             shipCells[i].setY(y+i);
+            shipCells[i].setStatus(whole);
             field.getFieldCells()[y+i][x].setStatus(whole);
 
         }
@@ -36,8 +38,12 @@ shipStatus Ship::getShipStatus() const
 
 }
 
-void Ship::setShipStatus()
+void Ship::setShipStatus(int x, int y)
 {
+    for (int i=0; i<lenght; i++)
+        if (shipCells[i].getX()==x && shipCells[i].getY()==y)
+            shipCells[i].setStatus(stricken);
+
 
     int count=0;
     for (int i=0; i<lenght; i++)
@@ -56,18 +62,32 @@ Cell* Ship::getShipCells() const
     return shipCells;
 }
 
-bool Ship::shot(Field &field, int x, int y)
+bool Ship::shot(Field& field, int x, int y)
 {
-    if (field.getFieldCells()[y][x].getStatus()==whole)
-    {
-        field.getFieldCells()[y][x].setStatus(stricken);
+    for (int i=0; i<lenght; i++)
+        if (shipCells[i].getX()==x && shipCells[i].getY()==y)
+        {
+            if (shipCells[i].getStatus()==whole)
+            {
+                shipCells[i].setStatus(stricken);
+                field.getFieldCells()[y][x].setStatus(stricken);
+                return true;
+            }
+        }
+
+    return false;
+}
+
+bool Ship::shipDestroyed()
+{
+    if (status==destroyed)
         return true;
-    }
-    else
-    {
-        field.getFieldCells()[y][x].setStatus(tried);
-        return false;
-    }
+    else return false;
+}
+
+int Ship::getLenght() const
+{
+    return this->lenght;
 }
 
 

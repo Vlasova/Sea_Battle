@@ -32,10 +32,10 @@ bool Field::allShipsDestroyed()
 {
 
     int count=0;
-    for(int i=0; i<NUMBER_OF_SHIPS; i++)
+    for(int i=0; i<numberSetShips; i++)
         if (fieldShips[i].getShipStatus()==destroyed)
             count++;
-    if(count==NUMBER_OF_SHIPS-1)
+    if (count==numberSetShips)
         return true;
     else return false;
 
@@ -64,22 +64,23 @@ bool Field::shot(int x, int y)
         throw 0;
     if(y>FIELD_SIZE || y<0)
         throw 1;
-    for (int i=0; i<NUMBER_OF_SHIPS; i++)
+    if (isDeck(x,y))
     {
-       if (getFieldShips()[i].shot(*this, x, y)){
-           getFieldShips()[i].setShipStatus();
-           return true;
-       }
+        for (int i=0; i<NUMBER_OF_SHIPS; i++)
+        {
+            if (getFieldShips()[i].shot(*this, x, y)){
+                getFieldShips()[i].setShipStatus(x, y);
+                return true;
+            }
+        }
     }
-
+    else getFieldCells()[y][x].setStatus(tried);
     return false;
-
-
 }
 
 Cell** Field::getFieldCells() const
 {
-    return fieldCells;
+    return this->fieldCells;
 }
 
 Ship* Field::getFieldShips() const
@@ -135,7 +136,7 @@ void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
 }
 
 bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
-{   
+{
     if (line==horizontal)
     {
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+1);i++)
@@ -196,6 +197,11 @@ void Field::locateComputerShips()
     {
         locateShipsRandomly(1);
     }
+}
+
+int Field::getnumberSetShips() const
+{
+    return this->numberSetShips;
 }
 
 

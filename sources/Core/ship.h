@@ -11,10 +11,12 @@ class Ship
 public:
     Ship();
     void createShip(Field& field,int x, int y, int lenght, shipLine line);
-    void setShipStatus();
+    void setShipStatus(int x, int y);
     bool shot(Field& field, int x, int y);
     shipStatus getShipStatus() const;
     Cell* getShipCells() const;
+    bool shipDestroyed();
+    int getLenght() const;
     ~Ship();
 
 
