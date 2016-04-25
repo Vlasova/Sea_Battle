@@ -56,7 +56,7 @@ void Game::printField()
             if (getComputerField()->getFieldCells()[i][j].getStatus()==2)
                 std::cout<<"*"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==3)
-                std::cout<<"-"<<" ";
+                std::cout<<"."<<" ";
         }
         std::cout<<std::endl;
         number++;
@@ -71,22 +71,25 @@ void Game::locateShips()
     char charX;
     while (!playerField->allShipsLocate())
     {
-        std::cout<<"Coordinates of the first deck: "<<std::endl;
-        std::cin>>charX>>y;
-        std::cout<<"Lenght of the ship: "<<std::endl;
-        std::cin>>lenght;
-        std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
-        std::cin>>line;
-        if (charX>64 && charX<75)
-            x=charX-64;
-        if (charX>96 && charX<107)
-            x=charX-96;
         try
         {
+            std::cout<<"Coordinates of the first deck: "<<std::endl;
+            std::string str;
+            std::cin>>charX>>y;
+            if (charX<96)
+                x=charX-64;
+            else
+                x=charX-96;
+            std::cout<<"Lenght of the ship: "<<std::endl;
+            std::cin>>lenght;
+            std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
+            std::cin>>line;
+            std::cin.clear();
+            getline(std::cin,str);
+
             playerField->canPlacePlayerShip(x-1,y-1,lenght,shipLine(line));
             playerField->placeShip(x-1,y-1,lenght,shipLine(line));
             printField();
-
         }
 
         catch(int Deck)
@@ -108,15 +111,12 @@ void Game::locateShips()
                 std::cout<<"Error! You can place only one 4-deck ship"<<std::endl;
                 break;
             case 5:
-                std::cout<<"Error! Wrong coordinates! Use letters A..J"<<std::endl;
+                std::cout<<"Error! Wrong coordinates! Use letter a..j and number 1..10"<<std::endl;
                 break;
             case 6:
-                std::cout<<"Error! Wrong coordinates! Use numbers 1..10"<<std::endl;
-                break;
-            case 7:
                 std::cout<<"Error! Wrong lenght!"<<std::endl;
                 break;
-            case 8:
+            case 7:
                 std::cout<<"Error! It is impossible to place the ship"<<std::endl;
                 break;
 

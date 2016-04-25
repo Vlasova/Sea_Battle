@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+
 #include "field.h"
 
 class Field;
@@ -15,6 +16,7 @@ public:
     Field* getPlayerField() const;
     Field* getComputerField() const;
     void printField();
+    void decideWinner();
 
 
 private:

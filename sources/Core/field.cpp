@@ -1,4 +1,5 @@
 #include <algorithm>
+
 #include "field.h"
 
 
@@ -33,7 +34,7 @@ bool Field::allShipsDestroyed()
 
     int count=0;
     for(int i=0; i<numberSetShips; i++)
-        if (fieldShips[i].getShipStatus()==destroyed)
+        if (fieldShips[i].getShipStatus()==2)
             count++;
     if (count==numberSetShips)
         return true;
@@ -95,14 +96,12 @@ void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
     static int count3Deck=0;
     static int count4Deck=0;
 
-    if(x>FIELD_SIZE || x<0)
+    if(x>FIELD_SIZE-1 || x<0 || y>FIELD_SIZE-1 || y<0)
         throw 5;
-    if(y>FIELD_SIZE || y<0)
-        throw 6;
     if(lenght<1 || lenght>4)
+        throw 6;
+    if((line==horizontal && x+lenght>FIELD_SIZE-1) || (line==vertical && y+lenght>FIELD_SIZE-1))
         throw 7;
-    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
-        throw 8;
     if(!canPlaceShip(x,y,lenght,line))
         throw 0;
     if (lenght==1){
