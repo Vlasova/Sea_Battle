@@ -13,15 +13,12 @@ void Application::startGame()
     game->getComputerField()->locateComputerShips();
     game->printField();
     game->locateShips();
-    while(!game->getPlayerField()->allShipsDestroyed() || !game->getComputerField()->allShipsDestroyed())
+    while(!game->getPlayerField()->allShipsDestroyed() && !game->getComputerField()->allShipsDestroyed())
     {
         game->makeMove();
         game->makeComputerMove();
     }
-    if (game->getPlayerField()->allShipsDestroyed())
-        std::cout<<"Computer win!"<<std::endl;
-    if (game->getPlayerField()->allShipsDestroyed())
-        std::cout<<"You win!"<<std::endl;
+    game->decideWinner();
 
 }
 
@@ -38,11 +35,11 @@ void Game::printField()
         for (int j=0;j<FIELD_SIZE;j++)
         {
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==0)
-                std::cout<<"."<<" ";
+                std::cout<<"O"<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==1)
                 std::cout<<"X"<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==2)
-                std::cout<<"*"<<" ";
+                std::cout<<"."<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==3)
                 std::cout<<"-"<<" ";
         }
@@ -53,7 +50,7 @@ void Game::printField()
         for (int j=0;j<FIELD_SIZE;j++)
         {
             if (getComputerField()->getFieldCells()[i][j].getStatus()==0)
-                std::cout<<"."<<" ";
+                std::cout<<"O"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==1)
                 std::cout<<"X"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==2)
@@ -151,7 +148,8 @@ void Game::makeMove()
 
                     }
                 }
-            makeMove();
+
+
         }
         else{
             printField();
@@ -188,6 +186,15 @@ void Game::makeComputerMove()
         std::cout<<"Computer miss!"<<std::endl;
     }
 
+
+}
+
+void Game::decideWinner()
+{
+    if (computerField->allShipsDestroyed())
+        std::cout<<"You won!"<<std::endl;
+    if (playerField->allShipsDestroyed())
+        std::cout<<"You lost!"<<std::endl;
 
 }
 
