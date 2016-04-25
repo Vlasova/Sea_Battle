@@ -77,7 +77,10 @@ void Game::locateShips()
         std::cin>>lenght;
         std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
         std::cin>>line;
-        x=charX-64;
+        if (charX>64 && charX<75)
+            x=charX-64;
+        if (charX>96 && charX<107)
+            x=charX-96;
         try
         {
             playerField->canPlacePlayerShip(x-1,y-1,lenght,shipLine(line));
@@ -133,7 +136,10 @@ void Game::makeMove()
     int x,y;
     char charX;
     std::cin>>charX>>y;
-    x=charX-64;
+    if (charX>64 && charX<75)
+        x=charX-64;
+    if (charX>96 && charX<107)
+        x=charX-96;
     try{
         if (computerField->shot(x-1,y-1)){
             printField();
