@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "application.h"
+#include "unistd.h"
 
 #include "../Core/game.h"
 
@@ -37,7 +38,7 @@ void Game::printField()
         for (int j=0;j<FIELD_SIZE;j++)
         {
             if (getComputerField()->getFieldCells()[i][j].getStatus()==0)
-                std::cout<<"O"<<" ";
+                std::cout<<"*"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==1)
                 std::cout<<"X"<<" ";
             if (getComputerField()->getFieldCells()[i][j].getStatus()==2)
@@ -164,6 +165,7 @@ void Game::makeMove()
 void Game::makeComputerMove()
 {
     int x,y;
+    sleep(2);
     x=std::rand()%(FIELD_SIZE-1);
     y=std::rand()%(FIELD_SIZE-1);
     if (playerField->shot(x,y)){
