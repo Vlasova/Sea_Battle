@@ -2,6 +2,7 @@
 #include <string>
 #include "application.h"
 
+#include "../Core/game.h"
 
 Application::Application()
 {
@@ -10,9 +11,6 @@ Application::Application()
 
 void Application::startGame()
 {
-    game->getComputerField()->locateComputerShips();
-    game->printField();
-    game->locateShips();
     while(!game->getPlayerField()->allShipsDestroyed() && !game->getComputerField()->allShipsDestroyed())
     {
         game->makeMove();
@@ -25,8 +23,8 @@ void Application::startGame()
 void Game::printField()
 {
     int number=1;
-    std::cout<<"   "<<"A"<<" "<<"B"<<" "<<"C"<<" "<<"D"<<" "<<"E"<<" "<<"F"<<" "<<"G"<<" "<<"H"<<" "<<"I"<<" "<<"J"
-            <<"         "<<"A"<<" "<<"B"<<" "<<"C"<<" "<<"D"<<" "<<"E"<<" "<<"F"<<" "<<"G"<<" "<<"H"<<" "<<"I"<<" "<<"J"<<std::endl;
+    std::cout<<"   "<<"A "<<"B "<<"C "<<"D "<<"E "<<"F "<<"G "<<"H "<<"I "<<"J"
+            <<"         "<<"A "<<"B "<<"C "<<"D "<<"E "<<"F "<<"G "<<"H "<<"I "<<"J"<<std::endl;
     for (int i=0;i<FIELD_SIZE;i++)
     {
         if (number==10)
@@ -71,23 +69,22 @@ void Game::locateShips()
     char charX;
     while (!playerField->allShipsLocate())
     {
-        try
-        {
-            std::cout<<"Coordinates of the first deck: "<<std::endl;
-            std::string str;
-            std::cin>>charX>>y;
-            if (charX<96)
-                x=charX-64;
-            else
-                x=charX-96;
-            std::cout<<"Lenght of the ship: "<<std::endl;
-            std::cin>>lenght;
-            std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
-            std::cin>>line;
-            std::cin.clear();
-            getline(std::cin,str);
 
-            playerField->canPlacePlayerShip(x-1,y-1,lenght,shipLine(line));
+        std::cout<<"Coordinates of the first deck: "<<std::endl;
+        std::string str;
+        std::cin>>charX>>y;
+        if (charX<96)
+            x=charX-64;
+        else
+            x=charX-96;
+        std::cout<<"Lenght of the ship: "<<std::endl;
+        std::cin>>lenght;
+        std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
+        std::cin>>line;
+        std::cin.clear();
+        getline(std::cin,str);
+        try{
+            playerField->isInputCorrect(x-1,y-1,lenght,shipLine(line));
             playerField->placeShip(x-1,y-1,lenght,shipLine(line));
             printField();
         }
@@ -141,6 +138,7 @@ void Game::makeMove()
     if (charX>96 && charX<107)
         x=charX-96;
     try{
+        computerField->isCoordinatesCorrect(x-1,y-1);
         if (computerField->shot(x-1,y-1)){
             printField();
             std::cout<<"You hit!"<<std::endl;
@@ -207,6 +205,11 @@ void Game::decideWinner()
 void Application::loadGame()
 {
 
+}
+
+Application::~Application()
+{
+    delete game;
 }
 
 

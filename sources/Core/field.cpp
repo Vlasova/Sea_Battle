@@ -3,7 +3,8 @@
 #include "field.h"
 
 
-Field::Field(){
+Field::Field()
+{
     fieldCells=new Cell*[FIELD_SIZE];
     for (int i=0; i<FIELD_SIZE;i++)
         fieldCells[i]=new Cell[FIELD_SIZE];
@@ -61,10 +62,6 @@ bool Field::isDeck(int x, int y)
 
 bool Field::shot(int x, int y)
 {
-    if(x>FIELD_SIZE || x<0)
-        throw 0;
-    if(y>FIELD_SIZE || y<0)
-        throw 1;
     if (isDeck(x,y))
     {
         for (int i=0; i<NUMBER_OF_SHIPS; i++)
@@ -86,10 +83,10 @@ Cell** Field::getFieldCells() const
 
 Ship* Field::getFieldShips() const
 {
-    return fieldShips;
+    return this->fieldShips;
 }
 
-void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
+void Field::isInputCorrect(int x, int y, int lenght, shipLine line)
 {
     static int count1Deck=0;
     static int count2Deck=0;
@@ -100,7 +97,7 @@ void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
         throw 5;
     if(lenght<1 || lenght>4)
         throw 6;
-    if((line==horizontal && x+lenght>FIELD_SIZE-1) || (line==vertical && y+lenght>FIELD_SIZE-1))
+    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
         throw 7;
     if(!canPlaceShip(x,y,lenght,line))
         throw 0;
@@ -134,6 +131,14 @@ void Field::canPlacePlayerShip(int x, int y, int lenght, shipLine line)
     }
 }
 
+void Field::isCoordinatesCorrect(int x, int y)
+{
+    if(x>FIELD_SIZE || x<0)
+        throw 0;
+    if(y>FIELD_SIZE || y<0)
+        throw 1;
+}
+
 bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
 {
     if (line==horizontal)
@@ -158,7 +163,7 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
 
 }
 
-void Field::locateShipsRandomly(int lenght)
+void Field::locateShipRandomly(int lenght)
 {
     int x,y;
     shipLine line=shipLine(std::rand()%2);
@@ -178,23 +183,23 @@ void Field::locateShipsRandomly(int lenght)
 
 }
 
-void Field::locateComputerShips()
+void Field::locateAutomatically()
 {
     for (int i=0;i<1;i++)
     {
-        locateShipsRandomly(4);
+        locateShipRandomly(4);
     }
     for (int i=0;i<2;i++)
     {
-        locateShipsRandomly(3);
+        locateShipRandomly(3);
     }
     for (int i=0;i<3;i++)
     {
-        locateShipsRandomly(2);
+        locateShipRandomly(2);
     }
     for (int i=0;i<4;i++)
     {
-        locateShipsRandomly(1);
+        locateShipRandomly(1);
     }
 }
 
@@ -203,6 +208,11 @@ int Field::getnumberSetShips() const
     return this->numberSetShips;
 }
 
+Field::~Field()
+{
+    delete fieldCells;
+    delete fieldShips;
+}
 
 
 

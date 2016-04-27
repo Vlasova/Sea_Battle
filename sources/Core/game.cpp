@@ -18,5 +18,11 @@ Field* Game::getComputerField() const
     return computerField;
 }
 
+Game::~Game()
+{
+    delete playerField;
+    delete computerField;
+}
+
 
 

@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-
 #include "field.h"
 
 class Field;
@@ -9,6 +8,7 @@ class Field;
 class Game{
 public:
     Game();
+    ~Game();
     void startNewGame();
     void locateShips();
     void makeMove();
