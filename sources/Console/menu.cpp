@@ -76,7 +76,8 @@ void Application::startGameMenu()
     std::cout<<std::endl;
     switch(number){
     case 1:
-        startGame();
+        game->makeMove();
+        mainMenu();
         break;
     case 2:
         game=new Game();

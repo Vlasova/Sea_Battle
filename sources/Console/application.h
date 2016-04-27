@@ -12,8 +12,7 @@ public:
     void mainMenu();
     void locateShipsMenu();
     void startGameMenu();
-    void startGame();
-    void loadGame();
+
 private:
     Game* game;
 

@@ -9,17 +9,6 @@ Application::Application()
     game = new Game();
 }
 
-void Application::startGame()
-{
-    while(!game->getPlayerField()->allShipsDestroyed() && !game->getComputerField()->allShipsDestroyed())
-    {
-        game->makeMove();
-        game->makeComputerMove();
-    }
-    game->decideWinner();
-
-}
-
 void Game::printField()
 {
     int number=1;
@@ -132,13 +121,17 @@ void Game::makeMove()
     std::cout<<"Make move: ";
     int x,y;
     char charX;
+    std::string str;
     std::cin>>charX>>y;
     if (charX>64 && charX<75)
         x=charX-64;
     if (charX>96 && charX<107)
         x=charX-96;
-    try{
-        computerField->isCoordinatesCorrect(x-1,y-1);
+    std::cin.clear();
+    getline(std::cin,str);
+
+    if(computerField->isCoordinatesCorrect(x-1,y-1))
+    {
         if (computerField->shot(x-1,y-1)){
             printField();
             std::cout<<"You hit!"<<std::endl;
@@ -152,27 +145,20 @@ void Game::makeMove()
 
                     }
                 }
-
-
+            if(!computerField->allShipsDestroyed())
+                makeMove();
+            else
+                decideWinner();
         }
+
         else{
             printField();
             std::cout<<"You miss!"<<std::endl;
+            makeComputerMove();
         }
     }
-    catch(int Deck)
-    {
-        switch(Deck){
-        case 0:
-            std::cout<<"Error! Wrong coordinates! Use letters A..J"<<std::endl;
-            makeMove();
-            break;
-        case 1:
-            std::cout<<"Error! Wrong coordinates! Use numbers 1..10"<<std::endl;
-            makeMove();
-            break;
-        }
-    }
+    else
+        std::cout<<"Error! Wrong coordinates! Use letter a..j and number 1..10"<<std::endl;
 }
 
 void Game::makeComputerMove()
@@ -183,28 +169,24 @@ void Game::makeComputerMove()
     if (playerField->shot(x,y)){
         printField();
         std::cout<<"Computer hit!"<<std::endl;
-        makeComputerMove();
+        if (playerField->allShipsDestroyed())
+            decideWinner();
+        else
+            makeComputerMove();
     }
     else{
         printField();
         std::cout<<"Computer miss!"<<std::endl;
+        makeMove();
     }
-
-
 }
 
 void Game::decideWinner()
 {
     if (computerField->allShipsDestroyed())
-        std::cout<<"You won!"<<std::endl;
+        std::cout<<"You won!"<<std::endl<<std::endl;
     if (playerField->allShipsDestroyed())
-        std::cout<<"You lost!"<<std::endl;
-
-}
-
-void Application::loadGame()
-{
-
+        std::cout<<"You lost!"<<std::endl<<std::endl;
 }
 
 Application::~Application()

@@ -23,7 +23,7 @@ public:
     bool shot(int x, int y);
     bool canPlaceShip(int x, int y, int lenght, shipLine line);
     void isInputCorrect(int x, int y, int lenght, shipLine line);
-    void isCoordinatesCorrect(int x, int y);
+    bool isCoordinatesCorrect(int x, int y);
     Cell** getFieldCells() const;
     Ship* getFieldShips() const;
     int getnumberSetShips() const;

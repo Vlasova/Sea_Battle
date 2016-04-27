@@ -131,12 +131,12 @@ void Field::isInputCorrect(int x, int y, int lenght, shipLine line)
     }
 }
 
-void Field::isCoordinatesCorrect(int x, int y)
+bool Field::isCoordinatesCorrect(int x, int y)
 {
-    if(x>FIELD_SIZE || x<0)
-        throw 0;
-    if(y>FIELD_SIZE || y<0)
-        throw 1;
+    if(x>FIELD_SIZE || x<0 || y>FIELD_SIZE || y<0)
+        return false;
+    else return true;
+
 }
 
 bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
