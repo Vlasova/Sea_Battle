@@ -78,13 +78,6 @@ bool Ship::shot(Field& field, int x, int y)
     return false;
 }
 
-bool Ship::shipDestroyed()
-{
-    if (status==destroyed)
-        return true;
-    else return false;
-}
-
 int Ship::getLenght() const
 {
     return this->lenght;

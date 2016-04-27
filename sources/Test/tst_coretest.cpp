@@ -83,7 +83,7 @@ void CoreTest::testGame()
     QVERIFY(game->getComputerField()->shot(3,2)==true);
     QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==2);
     QVERIFY(game->getComputerField()->getnumberSetShips()==1);
-    QVERIFY(game->getComputerField()->getFieldShips()[0].shipDestroyed()==true);
+    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==2);
     QVERIFY(game->getComputerField()->allShipsDestroyed()==true);
     QVERIFY(game->getComputerField()->allShipsLocate()==false);
     delete game;

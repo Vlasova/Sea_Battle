@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "enums.h"
 #include "field.h"
 
 class Field;
