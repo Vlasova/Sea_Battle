@@ -83,6 +83,11 @@ int Ship::getLenght() const
     return this->lenght;
 }
 
+shipLine Ship::getShipLine() const
+{
+    return this->line;
+}
+
 
 Ship::~Ship()
 {

@@ -134,16 +134,22 @@ void Game::makeMove()
     if(computerField->isCoordinatesCorrect(x-1,y-1))
     {
         if (computerField->shot(x-1,y-1)){
-            printField();
-            std::cout<<"You hit!"<<std::endl;
             for (int i=0; i<NUMBER_OF_SHIPS;i++)
                 for (int j=0; j<computerField->getFieldShips()[i].getLenght(); j++)
                 {
                     if (computerField->getFieldShips()[i].getShipCells()[j].getX()==x-1 && computerField->getFieldShips()[i].getShipCells()[j].getY()==y-1)
                     {
-                        if (computerField->getFieldShips()[i].getShipStatus()==2)
+                        if (computerField->getFieldShips()[i].getShipStatus()==2){
+                            computerField->drawAroundShip(computerField->getFieldShips()[i]);
+                            printField();
+                            std::cout<<"You hit!"<<std::endl;
                             std::cout<<"Ship destroyed!"<<std::endl;
-
+                        }
+                        else
+                        {
+                            printField();
+                            std::cout<<"You hit!"<<std::endl;
+                        }
                     }
                 }
             if(!computerField->allShipsDestroyed())

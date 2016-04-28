@@ -208,6 +208,25 @@ int Field::getnumberSetShips() const
     return this->numberSetShips;
 }
 
+void Field::drawAroundShip(Ship ship)
+{
+    if (ship.getShipLine()==horizontal)
+    {
+        for (int i=std::max(0, ship.getShipCells()[0].getY()-1); i<=std::min(ship.getShipCells()[0].getY()+1, FIELD_SIZE-1); i++)
+            for (int j=std::max(0, ship.getShipCells()[0].getX()-1); j<=std::min(ship.getShipCells()[ship.getLenght()-1].getX()+1, FIELD_SIZE-1); j++)
+                if (getFieldCells()[i][j].getStatus()!=stricken)
+                    getFieldCells()[i][j].setStatus(tried);
+
+    }
+    else
+    {
+        for (int i=std::max(0, ship.getShipCells()[0].getY()-1); i<=std::min(ship.getShipCells()[ship.getLenght()-1].getY()+1, FIELD_SIZE-1); i++)
+            for (int j=std::max(0, ship.getShipCells()[0].getX()-1); j<=std::min(ship.getShipCells()[0].getX()+1, FIELD_SIZE-1); j++)
+                if (getFieldCells()[i][j].getStatus()!=stricken)
+                    getFieldCells()[i][j].setStatus(tried);
+    }
+}
+
 Field::~Field()
 {
     delete fieldCells;

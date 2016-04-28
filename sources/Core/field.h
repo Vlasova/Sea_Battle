@@ -27,6 +27,7 @@ public:
     int getnumberSetShips() const;
     void locateShipRandomly(int lenght);
     void locateAutomatically();
+    void drawAroundShip(Ship ship);
 
 
 private:

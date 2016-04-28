@@ -52,6 +52,11 @@ public:
      * @return длина
      */
     int getLenght() const;
+    /**
+     * @brief Получить расположение корабля
+     * @return расположение
+     */
+    shipLine getShipLine() const;
     ~Ship();
 
 
