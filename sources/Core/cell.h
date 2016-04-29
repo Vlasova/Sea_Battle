@@ -4,7 +4,7 @@
 #include "enums.h"
 
 /**
- * @brief Класс клетка игрового поля
+ * @brief Клетка игрового поля
  */
 class Cell
 {

@@ -68,7 +68,8 @@ void Application::locateShipsMenu()
 void Application::startGameMenu()
 {
     std::cout<<"1. Start game"<<std::endl
-            <<"2. Exit"<<std::endl
+            <<"2. Locate ships again"<<std::endl
+            <<"3. Exit"<<std::endl
            <<"Select item: ";
     int number;
     std::string str;
@@ -76,10 +77,13 @@ void Application::startGameMenu()
     std::cout<<std::endl;
     switch(number){
     case 1:
-        game->makeMove();
+        game->gameProcess();
         mainMenu();
         break;
     case 2:
+        game=new Game();
+        locateShipsMenu();
+    case 3:
         game=new Game();
         mainMenu();
         break;

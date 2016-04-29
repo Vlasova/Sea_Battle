@@ -3,7 +3,8 @@
 #include "game.h"
 
 
-Game::Game(){
+Game::Game()
+{
     playerField=new Field();
     computerField=new Field();
 }

@@ -29,7 +29,7 @@ void Game::printField()
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==2)
                 std::cout<<"."<<" ";
             if (getPlayerField()->getFieldCells()[i][j].getStatus()==3)
-                std::cout<<"-"<<" ";
+                std::cout<<"_"<<" ";
         }
         std::cout<<"     ";
         if (number==10)
@@ -116,7 +116,7 @@ void Game::locateShips()
     std::cout<<"All ships are placed!"<<std::endl;
 }
 
-void Game::makeMove()
+void Game::gameProcess()
 {
 
     std::cout<<"Make move: ";
@@ -153,7 +153,7 @@ void Game::makeMove()
                     }
                 }
             if(!computerField->allShipsDestroyed())
-                makeMove();
+                gameProcess();
             else
                 decideWinner();
         }
@@ -185,7 +185,7 @@ void Game::makeComputerMove()
     else{
         printField();
         std::cout<<"Computer miss!"<<std::endl;
-        makeMove();
+        gameProcess();
     }
 }
 

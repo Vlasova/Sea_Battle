@@ -2,7 +2,6 @@
 
 #include "field.h"
 
-
 Field::Field()
 {
     fieldCells=new Cell*[FIELD_SIZE];

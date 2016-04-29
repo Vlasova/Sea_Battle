@@ -7,7 +7,7 @@
 
 class Field;
 /**
- * @brief Класс корабль
+ * @brief Корабль
  */
 class Ship
 {
@@ -33,8 +33,7 @@ public:
      * @param field игровое поле
      * @param x буквенная координата
      * @param y цифровая координата
-     * @return true если игрок попал в клетку корабля
-     * @return false если промахнулся
+     * @return true/false
      */
     bool shot(Field& field, int x, int y);
     /**

@@ -3,13 +3,21 @@
 
 #include "../Core/game.h"
 
-
+/**
+ * @brief Консольное приложение
+ */
 class Application
 {
 public:
     Application();
     ~Application();
+    /**
+     * @brief Вывести главное меню
+     */
     void mainMenu();
+    /**
+     * @brief Выбрать способ расстановки кораблей
+     */
     void locateShipsMenu();
     void startGameMenu();
 
