@@ -19,7 +19,11 @@ public:
      * @brief Выбрать способ расстановки кораблей
      */
     void locateShipsMenu();
+    /**
+     * @brief Начать игру
+     */
     void startGameMenu();
+
 
 private:
     Game* game;

@@ -9,7 +9,15 @@ void Application::mainMenu()
            <<"Select item: ";
     int number;
     std::string str;
-    std::cin>>number;
+    std::cin>>str;
+    try
+    {
+        number=std::stoi(str);
+    }
+    catch(std::exception &error)
+    {
+        number=0;
+    }
     std::cout<<std::endl;
     switch(number){
     case 1:
@@ -35,24 +43,36 @@ void Application::locateShipsMenu()
           <<"Select item: ";
     int number;
     std::string str;
-    std::cin>>number;
+    std::cin>>str;
+    try
+    {
+        number=std::stoi(str);
+    }
+    catch(std::exception &error)
+    {
+        number=0;
+    }
     std::cout<<std::endl;
     switch(number){
     case 1:
         game->getComputerField()->locateAutomatically();
         game->getPlayerField()->locateAutomatically();
         game->printField();
+        std::cout<<std::endl;
         startGameMenu();
         break;
     case 2:
         game->getComputerField()->locateAutomatically();
         game->printField();
-        game->locateShips();
-        startGameMenu();
+        if (game->locateShips())
+            startGameMenu();
+        else {
+            game=new Game();
+            locateShipsMenu();
+        }
         break;
     case 3:
         game=new Game();
-        mainMenu();
         break;
     default:
         std::cout<<"Invalid number! Try again"<<std::endl;
@@ -61,8 +81,6 @@ void Application::locateShipsMenu()
         locateShipsMenu();
         break;
     }
-
-
 }
 
 void Application::startGameMenu()
@@ -73,11 +91,20 @@ void Application::startGameMenu()
            <<"Select item: ";
     int number;
     std::string str;
-    std::cin>>number;
+    std::cin>>str;
+    try
+    {
+        number=std::stoi(str);
+    }
+    catch(std::exception &error)
+    {
+        number=0;
+    }
     std::cout<<std::endl;
     switch(number){
     case 1:
         game->gameProcess();
+        game=new Game();
         mainMenu();
         break;
     case 2:

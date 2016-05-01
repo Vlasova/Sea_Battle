@@ -33,9 +33,7 @@ void Ship::createShip(Field& field,int x, int y, int lenght, shipLine line)
 
 shipStatus Ship::getShipStatus() const
 {
-
     return status;
-
 }
 
 void Ship::setShipStatus(int x, int y)

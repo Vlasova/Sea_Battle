@@ -96,8 +96,10 @@ void Field::isInputCorrect(int x, int y, int lenght, shipLine line)
         throw 5;
     if(lenght<1 || lenght>4)
         throw 6;
-    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
+    if(line<0 || line>1)
         throw 7;
+    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
+        throw 8;
     if(!canPlaceShip(x,y,lenght,line))
         throw 0;
     if (lenght==1){
@@ -130,11 +132,10 @@ void Field::isInputCorrect(int x, int y, int lenght, shipLine line)
     }
 }
 
-bool Field::isCoordinatesCorrect(int x, int y)
+void Field::isCoordinatesCorrect(int x, int y)
 {
     if(x>FIELD_SIZE || x<0 || y>FIELD_SIZE || y<0)
-        return false;
-    else return true;
+        throw 5;
 
 }
 

@@ -1,8 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <string>
 #include "field.h"
 #include "enums.h"
+
+class Appication;
 
 /**
  * @brief Игровой интерфейс
@@ -12,13 +15,10 @@ class Game
 public:
     Game();
     /**
-     * @brief Начать новую игру
-     */
-    void startNewGame();
-    /**
      * @brief Разместить корабли
+     * @return true/false
      */
-    void locateShips();
+    bool locateShips();
     /**
      * @brief Играть, пока все корабли одного из полей не будут разрушены
      */
@@ -45,6 +45,12 @@ public:
      * @brief Определить победителя
      */
     void decideWinner();
+    /**
+     * @brief Команды пользователя
+     * @param str строка с командой
+     */
+    void commands(std::string str);
+
     ~Game() ;
 
 

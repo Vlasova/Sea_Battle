@@ -10,6 +10,7 @@ Application::Application()
     game = new Game();
 }
 
+
 void Game::printField()
 {
     int number=1;
@@ -52,33 +53,55 @@ void Game::printField()
 
 }
 
-void Game::locateShips()
+bool Game::locateShips()
 {
     std::cout<<"Locate ships"<<std::endl;
     int x, y, lenght, line;
     char charX;
+
     while (!playerField->allShipsLocate())
     {
+        try
+        {
+            std::string str;
+            std::cout<<"Coordinates of the first deck: "<<std::endl;
+            std::cin>>str;
+            commands(str);
+            charX=str[0];
+            y=str[1]-'0';
+            if (charX<96)
+                x=charX-64;
+            else
+                x=charX-96;
+            std::cout<<"Lenght of the ship: "<<std::endl;
+            std::cin>>str;
+            commands(str);
+            try
+            {
+                lenght=std::stoi(str);
+            }
+            catch(std::exception &error)
+            {
+                throw 6;
+            }
+            std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
+            std::cin>>str;
+            commands(str);
+            try
+            {
+                line=std::stoi(str);
+            }
+            catch(std::exception &error)
+            {
+                throw 7;
+            }
 
-        std::cout<<"Coordinates of the first deck: "<<std::endl;
-        std::string str;
-        std::cin>>charX>>y;
-        if (charX<96)
-            x=charX-64;
-        else
-            x=charX-96;
-        std::cout<<"Lenght of the ship: "<<std::endl;
-        std::cin>>lenght;
-        std::cout<<"Ship location(vertical-0,horizontal-1): "<<std::endl;
-        std::cin>>line;
-        std::cin.clear();
-        getline(std::cin,str);
-        try{
+            std::cin.clear();
+            getline(std::cin,str);
             playerField->isInputCorrect(x-1,y-1,lenght,shipLine(line));
             playerField->placeShip(x-1,y-1,lenght,shipLine(line));
             printField();
         }
-
         catch(int Deck)
         {
             switch(Deck){
@@ -104,69 +127,90 @@ void Game::locateShips()
                 std::cout<<"Error! Wrong lenght!"<<std::endl;
                 break;
             case 7:
+                std::cout<<"Error! Wrong input! Use 0 or 1"<<std::endl;
+                break;
+            case 8:
                 std::cout<<"Error! It is impossible to place the ship"<<std::endl;
                 break;
+            case 9:
+                return false;
 
             }
-
         }
-
-
     }
     std::cout<<"All ships are placed!"<<std::endl;
+    return true;
 }
+
+
+
 
 void Game::gameProcess()
 {
-
-    std::cout<<"Make move: ";
-    int x,y;
-    char charX;
-    std::string str;
-    std::cin>>charX>>y;
-    if (charX>64 && charX<75)
-        x=charX-64;
-    if (charX>96 && charX<107)
-        x=charX-96;
-    std::cin.clear();
-    getline(std::cin,str);
-
-    if(computerField->isCoordinatesCorrect(x-1,y-1))
+    try
     {
-        if (computerField->shot(x-1,y-1)){
-            for (int i=0; i<NUMBER_OF_SHIPS;i++)
-                for (int j=0; j<computerField->getFieldShips()[i].getLenght(); j++)
-                {
-                    if (computerField->getFieldShips()[i].getShipCells()[j].getX()==x-1 && computerField->getFieldShips()[i].getShipCells()[j].getY()==y-1)
+        std::cout<<"Make move: ";
+        int x,y;
+        char charX;
+        std::string str;
+        std::cin>>str;
+        commands(str);
+        charX=str[0];
+        y=str[1]-'0';
+        if (charX<96)
+            x=charX-64;
+        else
+            x=charX-96;
+        std::cin.clear();
+        getline(std::cin,str);
+        computerField->isCoordinatesCorrect(x-1,y-1);
+        {
+            if (computerField->shot(x-1,y-1)){
+                for (int i=0; i<NUMBER_OF_SHIPS;i++)
+                    for (int j=0; j<computerField->getFieldShips()[i].getLenght(); j++)
                     {
-                        if (computerField->getFieldShips()[i].getShipStatus()==2){
-                            computerField->drawAroundShip(computerField->getFieldShips()[i]);
-                            printField();
-                            std::cout<<"You hit!"<<std::endl;
-                            std::cout<<"Ship destroyed!"<<std::endl;
-                        }
-                        else
+                        if (computerField->getFieldShips()[i].getShipCells()[j].getX()==x-1 && computerField->getFieldShips()[i].getShipCells()[j].getY()==y-1)
                         {
-                            printField();
-                            std::cout<<"You hit!"<<std::endl;
+                            if (computerField->getFieldShips()[i].getShipStatus()==2){
+                                computerField->drawAroundShip(computerField->getFieldShips()[i]);
+                                printField();
+                                std::cout<<"You hit!"<<std::endl;
+                                std::cout<<"Ship destroyed!"<<std::endl;
+                            }
+                            else
+                            {
+                                printField();
+                                std::cout<<"You hit!"<<std::endl;
+                            }
                         }
                     }
-                }
-            if(!computerField->allShipsDestroyed())
-                gameProcess();
-            else
-                decideWinner();
+                if(!computerField->allShipsDestroyed() && !playerField->allShipsDestroyed())
+                    gameProcess();
+                else
+                    decideWinner();
+            }
+
+            else{
+                printField();
+                std::cout<<"You miss!"<<std::endl;
+                makeComputerMove();
+            }
         }
 
-        else{
-            printField();
-            std::cout<<"You miss!"<<std::endl;
-            makeComputerMove();
+    }
+    catch(int Deck)
+    {switch(Deck)
+        {
+        case 5:
+            std::cout<<"Error! Wrong coordinates! Use letter a..j and number 1..10"<<std::endl;
+            gameProcess();
+            break;
+        case 8:
+            break;
         }
     }
-    else
-        std::cout<<"Error! Wrong coordinates! Use letter a..j and number 1..10"<<std::endl;
 }
+
 
 void Game::makeComputerMove()
 {
@@ -195,6 +239,15 @@ void Game::decideWinner()
         std::cout<<"You won!"<<std::endl<<std::endl;
     if (playerField->allShipsDestroyed())
         std::cout<<"You lost!"<<std::endl<<std::endl;
+}
+
+void Game::commands(std::string str)
+{
+    if (str=="exit")
+    {
+        std::cout<<std::endl;
+        throw 9;
+    }
 }
 
 Application::~Application()

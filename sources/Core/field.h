@@ -70,9 +70,8 @@ public:
      * @brief Проверить корректность ввода при совершении хода
      * @param x буквенная координата
      * @param y цифровая координата
-     * @return return/false
      */
-    bool isCoordinatesCorrect(int x, int y);
+    void isCoordinatesCorrect(int x, int y);
     /**
      * @brief Получить клетки игрового поля
      * @return указатель на клетки поля
