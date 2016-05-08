@@ -3,10 +3,14 @@
 
 #include "ship.h"
 
+//Данные константы тесно связаны с классом Field
+//TODO подумать об внесении этих констант в класс
 static const int FIELD_SIZE = 10;
 static const int NUMBER_OF_SHIPS = 10;
 
+//Данное объявление класса нужно?
 class Ship;
+
 /**
  * @brief Игровое поле
  */
@@ -82,6 +86,9 @@ public:
      * @brief Рандомно разместить все корабли
      */
     void locateAutomatically();
+    
+    //По названию становится ясно, что данный метод не относится к бизнес-логике, 
+    //а относится к приложению - к взаимодействию с пользователем
     /**
      * @brief Обрисовать разрушенный корабль
      * @param ship корабль
@@ -90,6 +97,7 @@ public:
 
 
 private:
+    //TODO документировать данные класса.
     Cell** fieldCells;
     Ship* fieldShips;
     int numberSetShips;
