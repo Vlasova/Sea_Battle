@@ -24,7 +24,7 @@ void Application::mainMenu()
         locateShipsMenu();
         break;
     case 2:
-        break;
+        std::exit(0);
     default:
         std::cout<<"Invalid number! Try again"<<std::endl;
         std::cin.clear();
@@ -57,14 +57,14 @@ void Application::locateShipsMenu()
     case 1:
         game->getComputerField()->locateAutomatically();
         game->getPlayerField()->locateAutomatically();
-        game->printField();
+        printField();
         std::cout<<std::endl;
         startGameMenu();
         break;
     case 2:
         game->getComputerField()->locateAutomatically();
-        game->printField();
-        if (game->locateShips())
+        printField();
+        if (locateShipsInput())
             startGameMenu();
         else {
             game=new Game();
@@ -103,7 +103,7 @@ void Application::startGameMenu()
     std::cout<<std::endl;
     switch(number){
     case 1:
-        game->gameProcess();
+        gameProcess();
         game=new Game();
         mainMenu();
         break;

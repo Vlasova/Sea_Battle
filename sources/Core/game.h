@@ -5,7 +5,7 @@
 #include "field.h"
 #include "enums.h"
 
-class Appication;
+class Application;
 
 /**
  * @brief Игровой интерфейс
@@ -20,13 +20,17 @@ public:
      */
     bool locateShips();
     /**
-     * @brief Играть, пока все корабли одного из полей не будут разрушены
-     */
-    void gameProcess();
-    /**
      * @brief Совершить ход компьютера
+     * @return true/false
      */
-    void makeComputerMove();
+    bool makeComputerMove();
+    /**
+     * @brief Совершить ход игрока
+     * @param x буквенная координата
+     * @param y цифровая координата
+     * @return true/false
+     */
+    bool makeMove(int x, int y);
     /**
      * @brief Получить поле игрока
      * @return указатель на поле игрока
@@ -37,20 +41,6 @@ public:
      * @return указатель на поле компьютера
      */
     Field* getComputerField() const;
-    /**
-     * @brief Вывести поле на экран
-     */
-    void printField();
-    /**
-     * @brief Определить победителя
-     */
-    void decideWinner();
-    /**
-     * @brief Команды пользователя
-     * @param str строка с командой
-     */
-    void commands(std::string str);
-
     ~Game() ;
 
 

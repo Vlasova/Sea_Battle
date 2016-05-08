@@ -59,20 +59,6 @@ public:
      */
     bool canPlaceShip(int x, int y, int lenght, shipLine line);
     /**
-     * @brief Проверить корректность ввода при расстановке кораблей
-     * @param x буквенная координата первой палубы
-     * @param y цифровая координата первой палубы
-     * @param lenght длина
-     * @param line расположение
-     */
-    void isInputCorrect(int x, int y, int lenght, shipLine line);
-    /**
-     * @brief Проверить корректность ввода при совершении хода
-     * @param x буквенная координата
-     * @param y цифровая координата
-     */
-    void isCoordinatesCorrect(int x, int y);
-    /**
      * @brief Получить клетки игрового поля
      * @return указатель на клетки поля
      */

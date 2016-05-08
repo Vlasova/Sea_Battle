@@ -85,59 +85,6 @@ Ship* Field::getFieldShips() const
     return this->fieldShips;
 }
 
-void Field::isInputCorrect(int x, int y, int lenght, shipLine line)
-{
-    static int count1Deck=0;
-    static int count2Deck=0;
-    static int count3Deck=0;
-    static int count4Deck=0;
-
-    if(x>FIELD_SIZE-1 || x<0 || y>FIELD_SIZE-1 || y<0)
-        throw 5;
-    if(lenght<1 || lenght>4)
-        throw 6;
-    if(line<0 || line>1)
-        throw 7;
-    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
-        throw 8;
-    if(!canPlaceShip(x,y,lenght,line))
-        throw 0;
-    if (lenght==1){
-        count1Deck++;
-        if (count1Deck>4){
-            count1Deck--;
-            throw 1;
-        }
-    }
-    if (lenght==2){
-        count2Deck++;
-        if (count2Deck>3){
-            count2Deck--;
-            throw 2;
-        }
-    }
-    if (lenght==3){
-        count3Deck++;
-        if (count3Deck>2){
-            count3Deck--;
-            throw 3;
-        }
-    }
-    if (lenght==4){
-        count4Deck++;
-        if (count4Deck>1){
-            count4Deck--;
-            throw 4;
-        }
-    }
-}
-
-void Field::isCoordinatesCorrect(int x, int y)
-{
-    if(x>FIELD_SIZE || x<0 || y>FIELD_SIZE || y<0)
-        throw 5;
-
-}
 
 bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
 {
