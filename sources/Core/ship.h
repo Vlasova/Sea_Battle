@@ -6,6 +6,8 @@
 #include "field.h"
 
 class Field;
+
+//TODO задокументировать класс. Перед названием. Надо для красивой документации doxy
 /**
  * @brief Корабль
  */
@@ -60,6 +62,7 @@ public:
 
 
 private:
+    //TODO документировать данные
     //TODO разделить объявление переменных на несколько строк. Улучшится читаемость
     int firstX, firstY, lenght;
     shipStatus status;
