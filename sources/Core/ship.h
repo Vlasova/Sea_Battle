@@ -5,6 +5,7 @@
 #include "enums.h"
 #include "field.h"
 
+//Данное объявление класса нужно?
 class Field;
 
 /**
