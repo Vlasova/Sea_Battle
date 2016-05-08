@@ -14,6 +14,8 @@ public:
     
     //TODO задуматься об перегрузке оператора присваивания. &Cell operator=( const Cell& ) noexcept
     //Он был бы отличным дополнением к методам setX(), setY() и setStatus()
+    
+    //TODO задуматься об перегрузке оператора равенства. bool operator==( const Cell& ) const noexcept
     /**
      * @brief Установить буквенную координату клетки
      * @param x буквенная координата
