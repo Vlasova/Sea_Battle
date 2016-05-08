@@ -60,8 +60,10 @@ public:
 
 
 private:
+    //TODO разделить объявление переменных на несколько строк. Улучшится читаемость
     int firstX, firstY, lenght;
     shipStatus status;
+    //TODO подумать о замене массива в стиле си на контейнер из с++ stl. Например, std::valarray или std::vector
     Cell* shipCells;
     shipLine line;
 
