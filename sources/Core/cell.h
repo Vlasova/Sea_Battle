@@ -43,6 +43,9 @@ public:
     int getY() const;
 
 private:
+    //TODO разделить объявление x и y на 2 строки
+    //Это улучшит читаемость. Появится возможность удобно задокументировать данные класса.
+    //TODO задокументировать данные класса http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html
     int x,y;
     cellStatus status;
 
