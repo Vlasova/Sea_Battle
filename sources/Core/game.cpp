@@ -22,13 +22,18 @@ Field* Game::getComputerField() const
     return computerField;
 }
 
+//В методах Game::makeComputerMove() и Game::makeMove(int x, int y) много общего кода, т.е происходит дублирование.
+//Рекомендую в метод makeMove вызывать из метода makeComputerMove. И можно создать для однородности метод makeUserMove() (Player)
+//TODO устранить дублирование путем выделения метода ("Рефакторинг. Улучшение существующего кода" М. Фаулер)
+
 //TODO добавить noexcept, т.к функция не генерирует исключений
-//TODO заменить std::rand на более удачное решение, см. field
+
 bool Game::makeComputerMove()
 {
     int x,y;
     //Это что-то из си?
     sleep(2);
+    //TODO заменить std::rand на более удачное решение, см. field
     x=std::rand()%(FIELD_SIZE-1);
     y=std::rand()%(FIELD_SIZE-1);
     //TODO заменить на return playerField->shot(x,y);
