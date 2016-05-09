@@ -7,6 +7,8 @@
 //TODO попробовать сделать перечисления с областью видимости
 enum cellStatus{whole=0, stricken, blank, tried};
 enum shipStatus{safe=0, smitten, destroyed};
+//line - не лучший вариант для "расположения"
+//TODO поменять название тут, или изменить перевод в документации field.
 enum shipLine{vertical=0, horizontal};
 
 
