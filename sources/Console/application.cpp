@@ -9,6 +9,9 @@ Application::Application()
 }
 
 
+//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
+//Поможет вдобавок устранить дублирование кода
+//TODO добавить noexcept, т.к функция не генерирует исключений
 void Application::printField()
 {
     int number=1;
@@ -51,6 +54,17 @@ void Application::printField()
 
 }
 
+//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
+//Поможет вдобавок устранить дублирование кода
+//Сложно читать такой длинный метод.
+//TODO 
+//Странная реализация и обработка исключений.
+//Более хорошее решение - создать классы исключений, наследованные от std::exception.
+//Перегрузить в них функцию what().
+//Исключения (генерацию) лучше поместить в ядро.
+//В приложении их только ловить
+//Вместо того, чтобы бросать и ловить исключения в приложении, можно обрабатывать ошибки и без исключений.
+//В данной ситуации исключения ради исключений
 bool Application::locateShipsInput()
 {
     std::cout<<"Locate ships"<<std::endl;
@@ -102,8 +116,10 @@ bool Application::locateShipsInput()
             game->getPlayerField()->placeShip(x-1,y-1,lenght,shipLine(line));
             printField();
         }
+        //TODO исключения ловят по ссылке на const. В данной ситуации не критично, т.к тип int. Но в последствии ты же его заменишь на свой класс.
         catch(int Deck)
         {
+            
             switch(Deck){
             case 0:
                 std::cout<<"Error! Ships must not touch"<<std::endl;
@@ -142,6 +158,8 @@ bool Application::locateShipsInput()
     return true;
 }
 
+//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
+//Поможет вдобавок устранить дублирование кода
 void Application::gameProcess()
 {
     try
@@ -163,11 +181,12 @@ void Application::gameProcess()
         std::cin.clear();
         getline(std::cin,str);
         isCoordinatesCorrect(x-1,y-1);
-
+    
         if (game->makeMove(x-1,y-1)){
             for (int i=0; i<NUMBER_OF_SHIPS;i++)
                 for (int j=0; j<game->getComputerField()->getFieldShips()[i].getLenght(); j++)
                 {
+                    //TODO слишком длинные условия
                     if (game->getComputerField()->getFieldShips()[i].getShipCells()[j].getX()==x-1 && game->getComputerField()->getFieldShips()[i].getShipCells()[j].getY()==y-1)
                     {
                         if (game->getComputerField()->getFieldShips()[i].getShipStatus()==2){
@@ -233,6 +252,16 @@ void Application::decideWinner()
         std::cout<<"You won!"<<std::endl<<std::endl;
     if (game->getPlayerField()->allShipsDestroyed())
         std::cout<<"You lost!"<<std::endl<<std::endl;
+    //Не видел до этого нигде delete game.
+    //Может и есть, но нереально найти в таких длинных методах.
+    //если объект в с++ создается с new, то обязательно должно быть delete.
+    //В данной ситуации вроде так:
+    //new в конструкторе
+    //new здесь
+    //delete только в деструкторе.
+    //после одного new и перед следующим обязательно дожен быть delete.
+    //иначе - непредсказуемое поведение
+    //TODO добавить delete, если нужно(!)
     game=new Game();
     mainMenu();
 }
@@ -246,6 +275,8 @@ void Application::commands(std::string str)
     }
 }
 
+//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
+//Поможет вдобавок устранить дублирование кода
 void Application::isInputCorrect(int x, int y, int lenght, shipLine line)
 {
     static int count1Deck=0;
@@ -299,7 +330,7 @@ void Application::isCoordinatesCorrect(int x, int y)
         throw 5;
 
 }
-
+//TODO удобнее читать, когда деструктор идет вслед за конструктором
 Application::~Application()
 {
     delete game;

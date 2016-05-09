@@ -2,6 +2,9 @@
 #include <string>
 #include "application.h"
 
+//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
+//Поможет вдобавок устранить дублирование кода
+//TODO с исключниями разобраться
 void Application::mainMenu()
 {
     std::cout<<"1. New game"<<std::endl
@@ -35,6 +38,9 @@ void Application::mainMenu()
 
 }
 
+//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
+//Поможет вдобавок устранить дублирование кода
+//TODO с исключниями разобраться
 void Application::locateShipsMenu()
 {
     std::cout<<"1. Locate ships automatically"<<std::endl
@@ -83,6 +89,9 @@ void Application::locateShipsMenu()
     }
 }
 
+//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
+//Поможет вдобавок устранить дублирование кода
+//TODO с исключниями разобраться
 void Application::startGameMenu()
 {
     std::cout<<"1. Start game"<<std::endl

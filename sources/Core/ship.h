@@ -5,7 +5,9 @@
 #include "enums.h"
 #include "field.h"
 
+//Данное объявление класса нужно?
 class Field;
+
 /**
  * @brief Корабль
  */
@@ -60,8 +62,11 @@ public:
 
 
 private:
+    //TODO документировать данные
+    //TODO разделить объявление переменных на несколько строк. Улучшится читаемость
     int firstX, firstY, lenght;
     shipStatus status;
+    //TODO подумать о замене массива в стиле си на контейнер из с++ stl. Например, std::valarray или std::vector
     Cell* shipCells;
     shipLine line;
 
