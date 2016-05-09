@@ -62,6 +62,7 @@ public:
 
 
 private:
+    //TODO документировать данные класса
     Game* game;
 
 };
