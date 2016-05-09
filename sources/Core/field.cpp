@@ -40,6 +40,10 @@ bool Field::allShipsDestroyed()
     for(int i=0; i<numberSetShips; i++)
         if (fieldShips[i].getShipStatus()==2)
             count++;
+            
+    //TODO заменить на более читаемый вид.
+    //return count==numberSetShips;
+    //И понятнее и короче.
     if (count==numberSetShips)
         return true;
     else return false;
@@ -49,6 +53,8 @@ bool Field::allShipsDestroyed()
 //TODO добавить noexcept, т.к функция не генерирует исключений
 bool Field::allShipsLocate()
 {
+    //TODO заменить на более читаемый вид.
+    //return numberSetShips==NUMBER_OF_SHIPS;
     if (numberSetShips==NUMBER_OF_SHIPS)
         return true;
     else return false;
@@ -58,7 +64,8 @@ bool Field::allShipsLocate()
 //TODO добавить noexcept, т.к функция не генерирует исключений
 bool Field::isDeck(int x, int y)
 {
-
+    //TODO заменить на более читаемый вид.
+    //см. выше
     if (fieldCells[y][x].getStatus()==whole || fieldCells[y][x].getStatus()==stricken)
         return true;
     else return false;
@@ -97,7 +104,8 @@ Ship* Field::getFieldShips() const
 bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
 {
     if (line==horizontal)
-    {
+    {   
+        //TODO длинное условие!
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+1);i++)
             for (int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+lenght);j++)
                 if(fieldCells[i][j].getStatus()!=blank){
@@ -108,6 +116,7 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
     }
     else
     {
+        //TODO длинное условие!
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+lenght);i++)
             for(int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+1);j++)
                 if(fieldCells[i][j].getStatus()!=blank){
