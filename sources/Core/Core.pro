@@ -8,7 +8,7 @@ QT       -= gui
 
 TARGET = Core
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG += staticlib c++11
 
 SOURCES += ship.cpp \
     cell.cpp \

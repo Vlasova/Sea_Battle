@@ -9,8 +9,8 @@
 class Cell
 {
 public:
-    Cell();
-    Cell(int x, int y);
+    Cell() noexcept;
+    Cell(int x, int y) noexcept;
     
     //TODO задуматься об перегрузке оператора присваивания. &Cell operator=( const Cell& ) noexcept
     //Он был бы отличным дополнением к методам setX(), setY() и setStatus()
@@ -21,38 +21,39 @@ public:
      * @brief Установить буквенную координату клетки
      * @param x буквенная координата
      */
-    void setX(int x);
+    void setX(int x) noexcept;
     /**
      * @brief Установить цифровую координату клетки
      * @param y цифровая координата
      */
-    void setY(int y);
+    void setY(int y) noexcept;
     /**
      * @brief Установить статус клетки
      * @param status статус
      */
-    void setStatus(cellStatus status);
+    void setStatus(cellStatus status) noexcept;
     /**
      * @brief Получить статус клетки
      * @return статус
      */
-    cellStatus getStatus() const;
+    cellStatus getStatus() const noexcept;
     /**
      * @brief Получить буквенную координату
      * @return буквенная координата
      */
-    int getX() const;
+    int getX() const noexcept;
     /**
      * @brief Получить цифровую координату
      * @return цифровая координата
      */
-    int getY() const;
+    int getY() const noexcept;
 
 private:
     //TODO разделить объявление x и y на 2 строки
     //Это улучшит читаемость. Появится возможность удобно задокументировать данные класса.
     //TODO задокументировать данные класса http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html
-    int x,y;
+    int x;
+    int y;
     cellStatus status;
 
 };

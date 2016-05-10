@@ -6,6 +6,8 @@
 
 QT       += testlib
 
+QMAKE_CXXFLAGS += -std=c++11
+
 QT       -= gui
 
 TARGET = tst_coretest
