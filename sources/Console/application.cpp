@@ -17,35 +17,35 @@ void Application::printField()
     int number=1;
     std::cout<<"   "<<"A "<<"B "<<"C "<<"D "<<"E "<<"F "<<"G "<<"H "<<"I "<<"J"
             <<"         "<<"A "<<"B "<<"C "<<"D "<<"E "<<"F "<<"G "<<"H "<<"I "<<"J"<<std::endl;
-    for (int i=0;i<FIELD_SIZE;i++)
+    for (int i=0;i<Field::FIELD_SIZE;i++)
     {
         if (number==10)
             std::cout<<number<<" ";
         else std::cout<<number<<"  ";
-        for (int j=0;j<FIELD_SIZE;j++)
+        for (int j=0;j<Field::FIELD_SIZE;j++)
         {
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==0)
+            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
                 std::cout<<"O"<<" ";
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==1)
+            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken)
                 std::cout<<"X"<<" ";
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==2)
+            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::blank)
                 std::cout<<"."<<" ";
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==3)
+            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
                 std::cout<<"_"<<" ";
         }
         std::cout<<"     ";
         if (number==10)
             std::cout<<number<<" ";
         else std::cout<<number<<"  ";
-        for (int j=0;j<FIELD_SIZE;j++)
+        for (int j=0;j<Field::FIELD_SIZE;j++)
         {
-            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==0)
+            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
                 std::cout<<"*"<<" ";
-            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==1)
+            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken)
                 std::cout<<"X"<<" ";
-            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==2)
+            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::blank)
                 std::cout<<"*"<<" ";
-            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==3)
+            if (game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
                 std::cout<<"."<<" ";
         }
         std::cout<<std::endl;
@@ -69,6 +69,7 @@ bool Application::locateShipsInput()
 {
     std::cout<<"Locate ships"<<std::endl;
     int x, y, lenght, line;
+    shipLocation location;
     char charX;
 
     while (!game->getPlayerField()->allShipsLocate())
@@ -104,6 +105,10 @@ bool Application::locateShipsInput()
             try
             {
                 line=std::stoi(str);
+                if (line==0)
+                    location=shipLocation::vertical;
+                if (line==1)
+                    location=shipLocation::horizontal;
             }
             catch(std::exception &error)
             {
@@ -112,8 +117,8 @@ bool Application::locateShipsInput()
 
             std::cin.clear();
             getline(std::cin,str);
-            isInputCorrect(x-1,y-1,lenght,shipLine(line));
-            game->getPlayerField()->placeShip(x-1,y-1,lenght,shipLine(line));
+            isInputCorrect(x-1,y-1,lenght,line, location);
+            game->getPlayerField()->placeShip(x-1,y-1,lenght,location);
             printField();
         }
         //TODO исключения ловят по ссылке на const. В данной ситуации не критично, т.к тип int. Но в последствии ты же его заменишь на свой класс.
@@ -183,13 +188,13 @@ void Application::gameProcess()
         isCoordinatesCorrect(x-1,y-1);
     
         if (game->makeMove(x-1,y-1)){
-            for (int i=0; i<NUMBER_OF_SHIPS;i++)
+            for (int i=0; i<Field::NUMBER_OF_SHIPS;i++)
                 for (int j=0; j<game->getComputerField()->getFieldShips()[i].getLenght(); j++)
                 {
                     //TODO слишком длинные условия
                     if (game->getComputerField()->getFieldShips()[i].getShipCells()[j].getX()==x-1 && game->getComputerField()->getFieldShips()[i].getShipCells()[j].getY()==y-1)
                     {
-                        if (game->getComputerField()->getFieldShips()[i].getShipStatus()==2){
+                        if (game->getComputerField()->getFieldShips()[i].getShipStatus()==shipStatus::destroyed){
                             game->getComputerField()->drawAroundShip(game->getComputerField()->getFieldShips()[i]);
                             printField();
                             std::cout<<"You hit!"<<std::endl;
@@ -277,22 +282,22 @@ void Application::commands(std::string str)
 
 //TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
 //Поможет вдобавок устранить дублирование кода
-void Application::isInputCorrect(int x, int y, int lenght, shipLine line)
+void Application::isInputCorrect(int x, int y, int lenght, int line, shipLocation location)
 {
     static int count1Deck=0;
     static int count2Deck=0;
     static int count3Deck=0;
     static int count4Deck=0;
 
-    if(x>FIELD_SIZE-1 || x<0 || y>FIELD_SIZE-1 || y<0)
+    if(x>Field::FIELD_SIZE-1 || x<0 || y>Field::FIELD_SIZE-1 || y<0)
         throw 5;
     if(lenght<1 || lenght>4)
         throw 6;
     if(line<0 || line>1)
         throw 7;
-    if((line==horizontal && x+lenght>FIELD_SIZE) || (line==vertical && y+lenght>FIELD_SIZE))
+    if((location==shipLocation::horizontal && x+lenght>Field::FIELD_SIZE) || (location==shipLocation::vertical && y+lenght>Field::FIELD_SIZE))
         throw 8;
-    if(!game->getPlayerField()->canPlaceShip(x,y,lenght,line))
+    if(!game->getPlayerField()->canPlaceShip(x,y,lenght,location))
         throw 0;
     if (lenght==1){
         count1Deck++;
@@ -326,7 +331,7 @@ void Application::isInputCorrect(int x, int y, int lenght, shipLine line)
 
 void Application::isCoordinatesCorrect(int x, int y)
 {
-    if(x>FIELD_SIZE || x<0 || y>FIELD_SIZE || y<0)
+    if(x>Field::FIELD_SIZE || x<0 || y>Field::FIELD_SIZE || y<0)
         throw 5;
 
 }

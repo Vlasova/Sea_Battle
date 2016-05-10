@@ -2,11 +2,12 @@
 #define SHIP_H
 
 #include "cell.h"
-#include "enums.h"
-#include "field.h"
+
+enum class shipStatus {whole, stricken, destroyed};
+enum class shipLocation {vertical, horizontal};
 
 //Данное объявление класса нужно?
-class Field;
+
 
 /**
  * @brief Корабль
@@ -23,7 +24,7 @@ public:
      * @param lenght длина корабля
      * @param line расположение корабля (горизонтальное/вертикальное)
      */
-    void createShip(Field& field,int x, int y, int lenght, shipLine line);
+    void createShip(int x, int y, int lenght, shipLocation line);
     /**
      * @brief Установить статус корабля
      * @param x первая буквенная координата корабля
@@ -37,7 +38,7 @@ public:
      * @param y цифровая координата
      * @return true/false
      */
-    bool shot(Field& field, int x, int y);
+    bool shot(int x, int y);
     /**
      * @brief Получить статус корабля
      * @return статус
@@ -57,18 +58,20 @@ public:
      * @brief Получить расположение корабля
      * @return расположение
      */
-    shipLine getShipLine() const;
+    shipLocation getShipLine() const;
     ~Ship();
 
 
 private:
     //TODO документировать данные
     //TODO разделить объявление переменных на несколько строк. Улучшится читаемость
-    int firstX, firstY, lenght;
+    int firstX;
+    int firstY;
+    int lenght;
     shipStatus status;
     //TODO подумать о замене массива в стиле си на контейнер из с++ stl. Например, std::valarray или std::vector
     Cell* shipCells;
-    shipLine line;
+    shipLocation line;
 
 
 };

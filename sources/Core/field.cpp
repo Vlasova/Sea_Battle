@@ -21,14 +21,14 @@ Field::Field()
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-void Field::placeShip(int x, int y, int lenght, shipLine line)
+void Field::placeShip(int x, int y, int lenght, shipLocation line)
 {
-    if (line==horizontal)
+    if (line==shipLocation::horizontal)
         for(int i=0;i<lenght;++i)
-            fieldCells[y][x+i].setStatus(whole);
+            fieldCells[y][x+i].setStatus(cellStatus::whole);
     else for(int i=0;i<lenght;++i)
-        fieldCells[y+i][x].setStatus(whole);
-    fieldShips[numberSetShips].createShip(*this,x,y,lenght,line);
+        fieldCells[y+i][x].setStatus(cellStatus::whole);
+    fieldShips[numberSetShips].createShip(x,y,lenght,line);
     numberSetShips++;
 }
 
@@ -38,7 +38,7 @@ bool Field::allShipsDestroyed()
 
     int count=0;
     for(int i=0; i<numberSetShips; i++)
-        if (fieldShips[i].getShipStatus()==2)
+        if (fieldShips[i].getShipStatus()==shipStatus::destroyed)
             count++;
             
     //TODO заменить на более читаемый вид.
@@ -66,7 +66,7 @@ bool Field::isDeck(int x, int y)
 {
     //TODO заменить на более читаемый вид.
     //см. выше
-    if (fieldCells[y][x].getStatus()==whole || fieldCells[y][x].getStatus()==stricken)
+    if (fieldCells[y][x].getStatus()==cellStatus::whole || fieldCells[y][x].getStatus()==cellStatus::stricken)
         return true;
     else return false;
 }
@@ -78,13 +78,14 @@ bool Field::shot(int x, int y)
     {
         for (int i=0; i<NUMBER_OF_SHIPS; i++)
         {
-            if (getFieldShips()[i].shot(*this, x, y)){
+            if (getFieldShips()[i].shot(x, y)){
                 getFieldShips()[i].setShipStatus(x, y);
+                getFieldCells()[y][x].setStatus(cellStatus::stricken);
                 return true;
             }
         }
     }
-    else getFieldCells()[y][x].setStatus(tried);
+    else getFieldCells()[y][x].setStatus(cellStatus::tried);
     return false;
 }
 
@@ -101,14 +102,14 @@ Ship* Field::getFieldShips() const
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
+bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line)
 {
-    if (line==horizontal)
+    if (line==shipLocation::horizontal)
     {   
         //TODO длинное условие!
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+1);i++)
             for (int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+lenght);j++)
-                if(fieldCells[i][j].getStatus()!=blank){
+                if(fieldCells[i][j].getStatus()!=cellStatus::blank){
                     return false;
 
                 }
@@ -119,7 +120,7 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
         //TODO длинное условие!
         for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+lenght);i++)
             for(int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+1);j++)
-                if(fieldCells[i][j].getStatus()!=blank){
+                if(fieldCells[i][j].getStatus()!=cellStatus::blank){
                     return false;
                 }
         return true;
@@ -135,17 +136,17 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLine line)
 void Field::locateShipRandomly(int lenght)
 {
     int x,y;
-    shipLine line=shipLine(std::rand()%2);
+    shipLocation line=shipLocation(std::rand()%2);
     do
     {
         do
         {
             y=std::rand()%FIELD_SIZE;
-        }while(line==vertical && y>FIELD_SIZE-lenght);
+        }while(line==shipLocation::vertical && y>FIELD_SIZE-lenght);
         do
         {
             x=std::rand()%FIELD_SIZE;
-        }while(line==horizontal && x>FIELD_SIZE-lenght);
+        }while(line==shipLocation::horizontal && x>FIELD_SIZE-lenght);
 
     }while(!canPlaceShip(x,y,lenght,line));
     placeShip(x,y,lenght,line);
@@ -184,7 +185,7 @@ int Field::getnumberSetShips() const
 //TODO подумать над другим названием метода.
 void Field::drawAroundShip(Ship ship)
 {
-    if (ship.getShipLine()==horizontal)
+    if (ship.getShipLine()==shipLocation::horizontal)
     {
         //Слишком длинные условия в for.
         //TODO вынести за пределы условия цикла min и max, улучшив читаемость. Либо есть вариант аккуратненько разбить на строки.
@@ -194,8 +195,8 @@ void Field::drawAroundShip(Ship ship)
         //Как больше понравится
         for (int i=std::max(0, ship.getShipCells()[0].getY()-1); i<=std::min(ship.getShipCells()[0].getY()+1, FIELD_SIZE-1); i++)
             for (int j=std::max(0, ship.getShipCells()[0].getX()-1); j<=std::min(ship.getShipCells()[ship.getLenght()-1].getX()+1, FIELD_SIZE-1); j++)
-                if (getFieldCells()[i][j].getStatus()!=stricken)
-                    getFieldCells()[i][j].setStatus(tried);
+                if (getFieldCells()[i][j].getStatus()!=cellStatus::stricken)
+                    getFieldCells()[i][j].setStatus(cellStatus::tried);
 
     }
     else
@@ -203,8 +204,8 @@ void Field::drawAroundShip(Ship ship)
         //TODO вынести за пределы условия цикла min и max, улучшив читаемость. Либо есть вариант аккуратненько разбить на строки.
         for (int i=std::max(0, ship.getShipCells()[0].getY()-1); i<=std::min(ship.getShipCells()[ship.getLenght()-1].getY()+1, FIELD_SIZE-1); i++)
             for (int j=std::max(0, ship.getShipCells()[0].getX()-1); j<=std::min(ship.getShipCells()[0].getX()+1, FIELD_SIZE-1); j++)
-                if (getFieldCells()[i][j].getStatus()!=stricken)
-                    getFieldCells()[i][j].setStatus(tried);
+                if (getFieldCells()[i][j].getStatus()!=cellStatus::stricken)
+                    getFieldCells()[i][j].setStatus(cellStatus::tried);
     }
 }
 

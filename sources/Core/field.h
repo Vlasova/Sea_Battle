@@ -8,11 +8,8 @@
 
 //Данные константы тесно связаны с классом Field
 //TODO подумать об внесении этих констант в класс
-static const int FIELD_SIZE = 10;
-static const int NUMBER_OF_SHIPS = 10;
 
 //Данное объявление класса нужно?
-class Ship;
 
 /**
  * @brief Игровое поле
@@ -20,6 +17,8 @@ class Ship;
 class Field
 {
 public:
+    static const int FIELD_SIZE = 10;
+    static const int NUMBER_OF_SHIPS = 10;
 
     Field();
     ~Field();
@@ -32,7 +31,7 @@ public:
        //TODO поменять имя переменной или изменить перевод
      * @param line расположение
      */
-    void placeShip(int x, int y, int lenght, shipLine line);
+    void placeShip(int x, int y, int lenght, shipLocation line);
     /**
      * @brief Узнать, все ли корабли разрушены
      * @return true/false
@@ -71,7 +70,7 @@ public:
      * @param line расположение
      * @return true/false
      */
-    bool canPlaceShip(int x, int y, int lenght, shipLine line);
+    bool canPlaceShip(int x, int y, int lenght, shipLocation line);
     /**
      * @brief Получить клетки игрового поля
      * @return указатель на клетки поля

@@ -34,8 +34,8 @@ bool Game::makeComputerMove()
     //Это что-то из си?
     sleep(2);
     //TODO заменить std::rand на более удачное решение, см. field
-    x=std::rand()%(FIELD_SIZE-1);
-    y=std::rand()%(FIELD_SIZE-1);
+    x=std::rand()%(Field::FIELD_SIZE-1);
+    y=std::rand()%(Field::FIELD_SIZE-1);
     //TODO заменить на return playerField->shot(x,y);
     if (playerField->shot(x,y))
         return true;

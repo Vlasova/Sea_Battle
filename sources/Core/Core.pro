@@ -10,16 +10,15 @@ TARGET = Core
 TEMPLATE = lib
 CONFIG += staticlib c++11
 
-SOURCES += ship.cpp \
-    cell.cpp \
+SOURCES += game.cpp \
     field.cpp \
-    game.cpp
+    ship.cpp \
+    cell.cpp
 
-HEADERS += ship.h \
-    cell.h \
-    enums.h \
+HEADERS += game.h \
     field.h \
-    game.h
+    ship.h \
+    cell.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

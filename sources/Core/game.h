@@ -3,7 +3,6 @@
 
 #include <string>
 #include "field.h"
-#include "enums.h"
 
 //TODO зачем в класса с логиков объявление класса из приложения?
 class Application;

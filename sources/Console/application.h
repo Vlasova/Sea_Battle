@@ -39,7 +39,7 @@ public:
      * @param lenght длина
      * @param line расположение
      */
-    void isInputCorrect(int x, int y, int lenght, shipLine line);
+    void isInputCorrect(int x, int y, int lenght, int line, shipLocation location);
     /**
      * @brief Играть, пока все корабли одного из полей не будут разрушены
      */

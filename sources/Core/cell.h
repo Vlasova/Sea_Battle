@@ -1,7 +1,7 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include "enums.h"
+enum class cellStatus {whole, stricken, blank, tried};
 
 /**
  * @brief Клетка игрового поля

@@ -31,10 +31,10 @@ void CoreTest::testCell()
     Cell* cellSecond=new Cell(5,7);
     cellFirst->setX(3);
     cellFirst->setY(4);
-    cellFirst->setStatus(whole);
+    cellFirst->setStatus(cellStatus::whole);
     QVERIFY(cellFirst->getX()==3);
     QVERIFY(cellFirst->getY()==4);
-    QVERIFY(cellFirst->getStatus()==0);
+    QVERIFY(cellFirst->getStatus()==cellStatus::whole);
     QVERIFY(cellSecond->getX()==5);
     QVERIFY(cellSecond->getY()==7);
     delete cellFirst;
@@ -45,16 +45,15 @@ void CoreTest::testCell()
 void CoreTest::testShip()
 {
     Ship* ship=new Ship();
-    Field* field=new Field();
-    ship->createShip(*field,2,4,3,horizontal);
+    ship->createShip(2,4,3,shipLocation::horizontal);
     QVERIFY(ship->getShipCells()[1].getX()==3);
     QVERIFY(ship->getShipCells()[1].getY()==4);
-    QVERIFY(ship->getShipCells()[1].getStatus()==0);
-    ship->getShipCells()[0].setStatus(whole);
-    ship->getShipCells()[1].setStatus(stricken);
-    ship->getShipCells()[2].setStatus(whole);
+    QVERIFY(ship->getShipCells()[1].getStatus()==cellStatus::whole);
+    ship->getShipCells()[0].setStatus(cellStatus::whole);
+    ship->getShipCells()[1].setStatus(cellStatus::stricken);
+    ship->getShipCells()[2].setStatus(cellStatus::whole);
     ship->setShipStatus(2,4);
-    QVERIFY(ship->getShipStatus()==1);
+    QVERIFY(ship->getShipStatus()==shipStatus::stricken);
     delete ship;
 
 }
@@ -62,11 +61,11 @@ void CoreTest::testShip()
 void CoreTest::testField()
 {
     Field* field=new Field();
-    field->placeShip(2,4,3,horizontal);
+    field->placeShip(2,4,3,shipLocation::horizontal);
     QVERIFY(field->getFieldCells()[1][5].getX()==5);
-    QVERIFY(field->getFieldCells()[1][5].getStatus()==2);
-    QVERIFY(field->getFieldCells()[4][3].getStatus()==0);
-    QVERIFY(field->getFieldShips()[0].getShipStatus()==0);
+    QVERIFY(field->getFieldCells()[1][5].getStatus()==cellStatus::blank);
+    QVERIFY(field->getFieldCells()[4][3].getStatus()==cellStatus::whole);
+    QVERIFY(field->getFieldShips()[0].getShipStatus()==shipStatus::whole);
     QVERIFY(field->getFieldShips()[0].getShipCells()[1].getX()==3);
     QVERIFY(field->isDeck(3,4)==true);
     QVERIFY(field->shot(2,3)==false);
@@ -77,15 +76,15 @@ void CoreTest::testField()
 void CoreTest::testGame()
 {
     Game* game=new Game();
-    game->getPlayerField()->placeShip(1,2,3,vertical);
-    game->getComputerField()->placeShip(2,2,2,horizontal);
+    game->getPlayerField()->placeShip(1,2,3,shipLocation::vertical);
+    game->getComputerField()->placeShip(2,2,2,shipLocation::horizontal);
     QVERIFY(game->getComputerField()->shot(2,2)==true);
-    QVERIFY(game->getComputerField()->getFieldCells()[2][2].getStatus()==1);
-    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==1);
+    QVERIFY(game->getComputerField()->getFieldCells()[2][2].getStatus()==cellStatus::stricken);
+    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==shipStatus::stricken);
     QVERIFY(game->getComputerField()->shot(3,2)==true);
-    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==2);
+    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==shipStatus::destroyed);
     QVERIFY(game->getComputerField()->getnumberSetShips()==1);
-    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==2);
+    QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==shipStatus::destroyed);
     QVERIFY(game->getComputerField()->allShipsDestroyed()==true);
     QVERIFY(game->getComputerField()->allShipsLocate()==false);
     delete game;
