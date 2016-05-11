@@ -1,10 +1,10 @@
 //TODO перенести в хэдер.
-#include <algorithm>
+
 
 #include "field.h"
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-Field::Field()
+Field::Field() noexcept
 {
     fieldCells=new Cell*[FIELD_SIZE];
     for (int i=0; i<FIELD_SIZE;i++)
@@ -20,8 +20,14 @@ Field::Field()
 
 }
 
+Field::~Field() noexcept
+{
+    delete fieldCells;
+    delete fieldShips;
+}
+
 //TODO добавить noexcept, т.к функция не генерирует исключений
-void Field::placeShip(int x, int y, int lenght, shipLocation line)
+void Field::placeShip(int x, int y, int lenght, shipLocation line) noexcept
 {
     if (line==shipLocation::horizontal)
         for(int i=0;i<lenght;++i)
@@ -33,7 +39,7 @@ void Field::placeShip(int x, int y, int lenght, shipLocation line)
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-bool Field::allShipsDestroyed()
+bool Field::allShipsDestroyed() noexcept
 {
 
     int count=0;
@@ -44,71 +50,70 @@ bool Field::allShipsDestroyed()
     //TODO заменить на более читаемый вид.
     //return count==numberSetShips;
     //И понятнее и короче.
-    if (count==numberSetShips)
-        return true;
-    else return false;
+    return count==numberSetShips;
 
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-bool Field::allShipsLocate()
+bool Field::allShipsLocate() noexcept
 {
     //TODO заменить на более читаемый вид.
     //return numberSetShips==NUMBER_OF_SHIPS;
-    if (numberSetShips==NUMBER_OF_SHIPS)
-        return true;
-    else return false;
+    return numberSetShips==NUMBER_OF_SHIPS;
 
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-bool Field::isDeck(int x, int y)
+bool Field::isDeck(int x, int y) noexcept
 {
     //TODO заменить на более читаемый вид.
     //см. выше
-    if (fieldCells[y][x].getStatus()==cellStatus::whole || fieldCells[y][x].getStatus()==cellStatus::stricken)
-        return true;
-    else return false;
+    return (fieldCells[y][x].getStatus()==cellStatus::whole || fieldCells[y][x].getStatus()==cellStatus::stricken);
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-bool Field::shot(int x, int y)
+bool Field::shot(int x, int y) noexcept
 {
     if (isDeck(x,y))
     {
         for (int i=0; i<NUMBER_OF_SHIPS; i++)
         {
-            if (getFieldShips()[i].shot(x, y)){
-                getFieldShips()[i].setShipStatus(x, y);
-                getFieldCells()[y][x].setStatus(cellStatus::stricken);
+            if (fieldShips[i].shot(x, y))
+            {
+                fieldShips[i].setShipStatus(x, y);
+                fieldCells[y][x].setStatus(cellStatus::stricken);
                 return true;
             }
         }
     }
-    else getFieldCells()[y][x].setStatus(cellStatus::tried);
+    else fieldCells[y][x].setStatus(cellStatus::tried);
     return false;
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-Cell** Field::getFieldCells() const
+Cell** Field::getFieldCells() const noexcept
 {
     return this->fieldCells;
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-Ship* Field::getFieldShips() const
+Ship* Field::getFieldShips() const noexcept
 {
     return this->fieldShips;
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line)
+bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line) noexcept
 {
     if (line==shipLocation::horizontal)
     {   
         //TODO длинное условие!
-        for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+1);i++)
-            for (int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+lenght);j++)
+        for (int i=std::max(0,y-1);
+             i<=std::min(FIELD_SIZE-1,y+1);
+             i++)
+            for (int j=std::max(0,x-1);
+                 j<=std::min(FIELD_SIZE-1,x+lenght);
+                 j++)
                 if(fieldCells[i][j].getStatus()!=cellStatus::blank){
                     return false;
 
@@ -118,8 +123,12 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line)
     else
     {
         //TODO длинное условие!
-        for (int i=std::max(0,y-1);i<=std::min(FIELD_SIZE-1,y+lenght);i++)
-            for(int j=std::max(0,x-1);j<=std::min(FIELD_SIZE-1,x+1);j++)
+        for (int i=std::max(0,y-1);
+             i<=std::min(FIELD_SIZE-1,y+lenght);
+             i++)
+            for(int j=std::max(0,x-1);
+                j<=std::min(FIELD_SIZE-1,x+1);
+                j++)
                 if(fieldCells[i][j].getStatus()!=cellStatus::blank){
                     return false;
                 }
@@ -133,7 +142,7 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line)
 //https://www.securecoding.cert.org/confluence/display/cplusplus/MSC51-CPP.+Ensure+your+random+number+generator+is+properly+seeded
 //TODO заменить rand() на более удачное решение.
 //TODO добавить noexcept, т.к функция не генерирует исключений
-void Field::locateShipRandomly(int lenght)
+void Field::locateShipRandomly(int lenght) noexcept
 {
     int x,y;
     shipLocation line=shipLocation(std::rand()%2);
@@ -154,7 +163,7 @@ void Field::locateShipRandomly(int lenght)
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-void Field::locateAutomatically()
+void Field::locateAutomatically() noexcept
 {
     for (int i=0;i<1;i++)
     {
@@ -175,7 +184,7 @@ void Field::locateAutomatically()
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-int Field::getnumberSetShips() const
+int Field::getnumberSetShips() const noexcept
 {
     return this->numberSetShips;
 }
@@ -183,7 +192,7 @@ int Field::getnumberSetShips() const
 //TODO добавить noexcept, т.к функция не генерирует исключений
 //Название метода некорректно. Сбивает с толку. Возникает мысль, что он - часть приложения, а не логики.
 //TODO подумать над другим названием метода.
-void Field::drawAroundShip(Ship ship)
+void Field::drawAroundShip(Ship ship) noexcept
 {
     if (ship.getShipLine()==shipLocation::horizontal)
     {
@@ -193,8 +202,12 @@ void Field::drawAroundShip(Ship ship)
         //     i<=std::min(ship.getShipCells()[0].getY()+1, FIELD_SIZE-1); 
         //     i++)
         //Как больше понравится
-        for (int i=std::max(0, ship.getShipCells()[0].getY()-1); i<=std::min(ship.getShipCells()[0].getY()+1, FIELD_SIZE-1); i++)
-            for (int j=std::max(0, ship.getShipCells()[0].getX()-1); j<=std::min(ship.getShipCells()[ship.getLenght()-1].getX()+1, FIELD_SIZE-1); j++)
+        for (int i=std::max(0, ship.getShipCells()[0].getY()-1);
+             i<=std::min(ship.getShipCells()[0].getY()+1, FIELD_SIZE-1);
+             i++)
+            for (int j=std::max(0, ship.getShipCells()[0].getX()-1);
+                 j<=std::min(ship.getShipCells()[ship.getLenght()-1].getX()+1, FIELD_SIZE-1);
+                 j++)
                 if (getFieldCells()[i][j].getStatus()!=cellStatus::stricken)
                     getFieldCells()[i][j].setStatus(cellStatus::tried);
 
@@ -202,19 +215,19 @@ void Field::drawAroundShip(Ship ship)
     else
     {
         //TODO вынести за пределы условия цикла min и max, улучшив читаемость. Либо есть вариант аккуратненько разбить на строки.
-        for (int i=std::max(0, ship.getShipCells()[0].getY()-1); i<=std::min(ship.getShipCells()[ship.getLenght()-1].getY()+1, FIELD_SIZE-1); i++)
-            for (int j=std::max(0, ship.getShipCells()[0].getX()-1); j<=std::min(ship.getShipCells()[0].getX()+1, FIELD_SIZE-1); j++)
+        for (int i=std::max(0, ship.getShipCells()[0].getY()-1);
+             i<=std::min(ship.getShipCells()[ship.getLenght()-1].getY()+1, FIELD_SIZE-1);
+             i++)
+            for (int j=std::max(0, ship.getShipCells()[0].getX()-1);
+                 j<=std::min(ship.getShipCells()[0].getX()+1, FIELD_SIZE-1);
+                 j++)
                 if (getFieldCells()[i][j].getStatus()!=cellStatus::stricken)
                     getFieldCells()[i][j].setStatus(cellStatus::tried);
     }
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
-Field::~Field()
-{
-    delete fieldCells;
-    delete fieldShips;
-}
+
+
 
 
 

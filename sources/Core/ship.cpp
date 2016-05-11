@@ -2,26 +2,29 @@
 
 //TODO добавить пробелы
 //TODO добавить noexcept, т.к функция не генерирует исключений
-Ship::Ship():firstX(0),firstY(0),lenght(0),status(shipStatus::whole){}
+Ship::Ship() noexcept:firstX(0), firstY(0), lenght(0), status(shipStatus::whole){}
+
+Ship::~Ship() noexcept
+{
+    delete shipCells;
+}
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-void Ship::createShip(int x, int y, int lenght, shipLocation line)
+void Ship::createShip(int x, int y, int lenght, shipLocation location) noexcept
 {
     this->lenght=lenght;
     this->firstX=x;
     this->firstY=y;
-    this->line=line;
+    this->location=location;
     this->status=shipStatus::whole;
     shipCells=new Cell[lenght];
     for (int i=0;i<lenght;i++)
     {
-        if (line==shipLocation::horizontal)
+        if (location==shipLocation::horizontal)
         {
             shipCells[i].setX(x+i);
             shipCells[i].setY(y);
             shipCells[i].setStatus(cellStatus::whole);
-
-
         }
         else {
             shipCells[i].setX(x);
@@ -34,13 +37,13 @@ void Ship::createShip(int x, int y, int lenght, shipLocation line)
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-shipStatus Ship::getShipStatus() const
+shipStatus Ship::getShipStatus() const noexcept
 {
     return status;
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-void Ship::setShipStatus(int x, int y)
+void Ship::setShipStatus(int x, int y) noexcept
 {
     //TODO Происходит два прохода цикла. Лучше объединить в один цикл.
     //Примерно так
@@ -57,37 +60,36 @@ void Ship::setShipStatus(int x, int y)
     //  else if (count!=0)
     //      status=smitten;
     //}
-    for (int i=0; i<lenght; i++)
-        if (shipCells[i].getX()==x && shipCells[i].getY()==y)
-            shipCells[i].setStatus(cellStatus::stricken);
-
-
     int count=0;
-    for (int i=0; i<lenght; i++)
+    for (int i=0; i<lenght; i++){
         if (shipCells[i].getStatus()==cellStatus::stricken)
             count++;
-    if (count==lenght)
-        status=shipStatus::destroyed;
-    else if (count!=0)
-        status=shipStatus::stricken;
-
+        else if (shipCells[i].getX()==x && shipCells[i].getY()==y)
+        {
+            shipCells[i].setStatus(cellStatus::stricken);
+            count++;
+        }
+    }
+        if (count==lenght)
+            status=shipStatus::destroyed;
+        else if (count!=0)
+            status=shipStatus::stricken;
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-Cell* Ship::getShipCells() const
+Cell* Ship::getShipCells() const noexcept
 {
     //здесь без this-> ( см. ниже int Ship::getLenght() const )
-    return shipCells;
+    return this->shipCells;
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-bool Ship::shot(int x, int y)
+bool Ship::shot(int x, int y) noexcept
 {
     for (int i=0; i<lenght; i++)
-        if (shipCells[i].getX()==x && shipCells[i].getY()==y)
-        {   
+        if (shipCells[i].getX()==x && shipCells[i].getY()==y && shipCells[i].getStatus()==cellStatus::whole)
+        {
             //TODO объединить 2 if'а, т.к их разделение не обосновано и не имеет смысла.
-            if (shipCells[i].getStatus()==cellStatus::whole)
             {
                 shipCells[i].setStatus(cellStatus::stricken);
                 return true;
@@ -98,7 +100,7 @@ bool Ship::shot(int x, int y)
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-int Ship::getLenght() const
+int Ship::getLenght() const noexcept
 {
     //Здесь с this->
     //TODO подумать и выбрать единый вариант для единства кода.
@@ -106,15 +108,10 @@ int Ship::getLenght() const
 }
 
 //TODO добавить noexcept, т.к функция не генерирует исключений
-shipLocation Ship::getShipLine() const
+shipLocation Ship::getShipLine() const noexcept
 {
     //См. выше
-    return this->line;
+    return this->location;
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
-Ship::~Ship()
-{
-    delete shipCells;
-}
 
