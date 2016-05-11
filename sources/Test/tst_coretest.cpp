@@ -76,7 +76,7 @@ void CoreTest::testField()
 void CoreTest::testGame()
 {
     Game* game=new Game();
-    game->getPlayerField()->placeShip(1,2,3,shipLocation::vertical);
+    game->getUserField()->placeShip(1,2,3,shipLocation::vertical);
     game->getComputerField()->placeShip(2,2,2,shipLocation::horizontal);
     QVERIFY(game->getComputerField()->shot(2,2)==true);
     QVERIFY(game->getComputerField()->getFieldCells()[2][2].getStatus()==cellStatus::stricken);

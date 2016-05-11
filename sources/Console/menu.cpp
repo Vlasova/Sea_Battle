@@ -62,7 +62,7 @@ void Application::locateShipsMenu()
     switch(number){
     case 1:
         game->getComputerField()->locateAutomatically();
-        game->getPlayerField()->locateAutomatically();
+        game->getUserField()->locateAutomatically();
         printField();
         std::cout<<std::endl;
         startGameMenu();

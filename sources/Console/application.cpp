@@ -24,13 +24,13 @@ void Application::printField()
         else std::cout<<number<<"  ";
         for (int j=0;j<Field::FIELD_SIZE;j++)
         {
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
+            if (game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
                 std::cout<<"O"<<" ";
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken)
+            if (game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken)
                 std::cout<<"X"<<" ";
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::blank)
+            if (game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::blank)
                 std::cout<<"."<<" ";
-            if (game->getPlayerField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
+            if (game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
                 std::cout<<"_"<<" ";
         }
         std::cout<<"     ";
@@ -72,7 +72,7 @@ bool Application::locateShipsInput()
     shipLocation location;
     char charX;
 
-    while (!game->getPlayerField()->allShipsLocate())
+    while (!game->getUserField()->allShipsLocate())
     {
         try
         {
@@ -118,7 +118,7 @@ bool Application::locateShipsInput()
             std::cin.clear();
             getline(std::cin,str);
             isInputCorrect(x-1,y-1,lenght,line, location);
-            game->getPlayerField()->placeShip(x-1,y-1,lenght,location);
+            game->getUserField()->placeShip(x-1,y-1,lenght,location);
             printField();
         }
         //TODO исключения ловят по ссылке на const. В данной ситуации не критично, т.к тип int. Но в последствии ты же его заменишь на свой класс.
@@ -187,7 +187,7 @@ void Application::gameProcess()
         getline(std::cin,str);
         isCoordinatesCorrect(x-1,y-1);
     
-        if (game->makeMove(x-1,y-1)){
+        if (game->makeUserMove(x-1,y-1)){
             for (int i=0; i<Field::NUMBER_OF_SHIPS;i++)
                 for (int j=0; j<game->getComputerField()->getFieldShips()[i].getLenght(); j++)
                 {
@@ -219,12 +219,12 @@ void Application::gameProcess()
             printField();
             std::cout<<"You miss!"<<std::endl<<std::endl;
         }
-        while (game->makeComputerMove() && !game->getPlayerField()->allShipsDestroyed())
+        while (game->makeComputerMove() && !game->getUserField()->allShipsDestroyed())
         {
             printField();
             std::cout<<"Computer hit!"<<std::endl<<std::endl;
         }
-        if (game->getPlayerField()->allShipsDestroyed()){
+        if (game->getUserField()->allShipsDestroyed()){
             decideWinner();
         }
         else{
@@ -255,7 +255,7 @@ void Application::decideWinner()
 {
     if (game->getComputerField()->allShipsDestroyed())
         std::cout<<"You won!"<<std::endl<<std::endl;
-    if (game->getPlayerField()->allShipsDestroyed())
+    if (game->getUserField()->allShipsDestroyed())
         std::cout<<"You lost!"<<std::endl<<std::endl;
     //Не видел до этого нигде delete game.
     //Может и есть, но нереально найти в таких длинных методах.
@@ -297,7 +297,7 @@ void Application::isInputCorrect(int x, int y, int lenght, int line, shipLocatio
         throw 7;
     if((location==shipLocation::horizontal && x+lenght>Field::FIELD_SIZE) || (location==shipLocation::vertical && y+lenght>Field::FIELD_SIZE))
         throw 8;
-    if(!game->getPlayerField()->canPlaceShip(x,y,lenght,location))
+    if(!game->getUserField()->canPlaceShip(x,y,lenght,location))
         throw 0;
     if (lenght==1){
         count1Deck++;

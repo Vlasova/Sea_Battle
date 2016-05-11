@@ -2,10 +2,9 @@
 #define GAME_H
 
 #include <string>
+#include <algorithm>
+#include "unistd.h"
 #include "field.h"
-
-//TODO зачем в класса с логиков объявление класса из приложения?
-class Application;
 
 //Game - не лучшее название для игрового интерфейса. Это же вроде API.
 /**
@@ -14,37 +13,38 @@ class Application;
 class Game
 {
 public:
-    Game();
+    Game() noexcept;
+    ~Game() noexcept;
     /**
      * @brief Разместить корабли
      * @return true/false
      */
-    bool locateShips();
+    bool locateShips() noexcept;
     /**
      * @brief Совершить ход компьютера
      * @return true/false
      */
-    bool makeComputerMove();
+    bool makeComputerMove() noexcept;
     /**
      * @brief Совершить ход игрока
      * @param x буквенная координата
      * @param y цифровая координата
      * @return true/false
      */
-    bool makeMove(int x, int y);
+    bool makeUserMove(int x, int y) noexcept;
     /**
      * @brief Получить поле игрока
      * @return указатель на поле игрока
      */
-    Field* getPlayerField() const;
+    Field* getUserField() const noexcept;
     /**
      * @brief Получить поле компьютера
      * @return указатель на поле компьютера
      */
-    Field* getComputerField() const;
+    Field* getComputerField() const noexcept;
     
     //TODO на мой взгляд, удобнее читать код, когда деструктор идет после конструктора сразу.
-    ~Game() ;
+
 
 
 private:
@@ -52,7 +52,7 @@ private:
     //Player - это игрок. Им может быть и пользователь и компьютер.
     //На мой взгляд в данном случае уместнее будет не player, а user.
     //TODO подумать над этим
-    Field* playerField;
+    Field* userField;
     Field* computerField;
 
 
