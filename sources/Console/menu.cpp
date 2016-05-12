@@ -63,22 +63,22 @@ void Application::locateShipsMenu()
     case 1:
         game->getComputerField()->locateAutomatically();
         game->getUserField()->locateAutomatically();
-        printField();
+        printFields();
         std::cout<<std::endl;
         startGameMenu();
         break;
     case 2:
         game->getComputerField()->locateAutomatically();
-        printField();
+        printFields();
         if (locateShipsInput())
             startGameMenu();
         else {
-            game=new Game();
+            game=new GameInterface();
             locateShipsMenu();
         }
         break;
     case 3:
-        game=new Game();
+        game=new GameInterface();
         break;
     default:
         std::cout<<"Invalid number! Try again"<<std::endl;
@@ -113,14 +113,14 @@ void Application::startGameMenu()
     switch(number){
     case 1:
         gameProcess();
-        game=new Game();
+        game=new GameInterface();
         mainMenu();
         break;
     case 2:
-        game=new Game();
+        game=new GameInterface();
         locateShipsMenu();
     case 3:
-        game=new Game();
+        game=new GameInterface();
         mainMenu();
         break;
     default:

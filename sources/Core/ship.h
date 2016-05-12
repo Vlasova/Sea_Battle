@@ -7,9 +7,6 @@
 enum class shipStatus {whole, stricken, destroyed};
 enum class shipLocation {vertical, horizontal};
 
-//Данное объявление класса нужно?
-
-
 /**
  * @brief Корабль
  */
@@ -66,7 +63,6 @@ public:
 
 private:
     //TODO документировать данные
-    //TODO разделить объявление переменных на несколько строк. Улучшится читаемость
     int firstX;
     int firstY;
     int lenght;

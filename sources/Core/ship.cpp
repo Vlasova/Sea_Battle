@@ -1,7 +1,5 @@
 #include "ship.h"
 
-//TODO добавить пробелы
-//TODO добавить noexcept, т.к функция не генерирует исключений
 Ship::Ship() noexcept:firstX(0), firstY(0), lenght(0), status(shipStatus::whole){}
 
 Ship::~Ship() noexcept
@@ -9,7 +7,6 @@ Ship::~Ship() noexcept
     delete shipCells;
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
 void Ship::createShip(int x, int y, int lenght, shipLocation location) noexcept
 {
     this->lenght=lenght;
@@ -36,30 +33,13 @@ void Ship::createShip(int x, int y, int lenght, shipLocation location) noexcept
     }
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
 shipStatus Ship::getShipStatus() const noexcept
 {
     return status;
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
 void Ship::setShipStatus(int x, int y) noexcept
 {
-    //TODO Происходит два прохода цикла. Лучше объединить в один цикл.
-    //Примерно так
-    //int count=0;
-    //for (int i=0, i<length; i++)
-    //{
-    //  if (shipCells[i].getX()==x && shipCells[i].getY()==y)
-    //  {
-    //      shipCells[i].setStatus(stricken);
-    //      count++;
-    //  }
-    //  if (count==lenght)
-    //      status=destroyed;
-    //  else if (count!=0)
-    //      status=smitten;
-    //}
     int count=0;
     for (int i=0; i<lenght; i++){
         if (shipCells[i].getStatus()==cellStatus::stricken)
@@ -76,20 +56,16 @@ void Ship::setShipStatus(int x, int y) noexcept
             status=shipStatus::stricken;
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
 Cell* Ship::getShipCells() const noexcept
 {
-    //здесь без this-> ( см. ниже int Ship::getLenght() const )
-    return this->shipCells;
+      return this->shipCells;
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
 bool Ship::shot(int x, int y) noexcept
 {
     for (int i=0; i<lenght; i++)
         if (shipCells[i].getX()==x && shipCells[i].getY()==y && shipCells[i].getStatus()==cellStatus::whole)
         {
-            //TODO объединить 2 if'а, т.к их разделение не обосновано и не имеет смысла.
             {
                 shipCells[i].setStatus(cellStatus::stricken);
                 return true;
@@ -99,19 +75,14 @@ bool Ship::shot(int x, int y) noexcept
     return false;
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
 int Ship::getLenght() const noexcept
 {
-    //Здесь с this->
-    //TODO подумать и выбрать единый вариант для единства кода.
     return this->lenght;
 }
 
-//TODO добавить noexcept, т.к функция не генерирует исключений
 shipLocation Ship::getShipLine() const noexcept
 {
-    //См. выше
-    return this->location;
+   return this->location;
 }
 
 

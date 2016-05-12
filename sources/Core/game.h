@@ -6,19 +6,18 @@
 #include "unistd.h"
 #include "field.h"
 
-//Game - не лучшее название для игрового интерфейса. Это же вроде API.
 /**
  * @brief Игровой интерфейс
  */
-class Game
+class GameInterface
 {
 public:
-    Game() noexcept;
-    ~Game() noexcept;
+    GameInterface();
     /**
      * @brief Разместить корабли
      * @return true/false
      */
+    ~GameInterface() noexcept;
     bool locateShips() noexcept;
     /**
      * @brief Совершить ход компьютера
@@ -42,16 +41,9 @@ public:
      * @return указатель на поле компьютера
      */
     Field* getComputerField() const noexcept;
-    
-    //TODO на мой взгляд, удобнее читать код, когда деструктор идет после конструктора сразу.
-
-
 
 private:
     //TODO документировать данные класса
-    //Player - это игрок. Им может быть и пользователь и компьютер.
-    //На мой взгляд в данном случае уместнее будет не player, а user.
-    //TODO подумать над этим
     Field* userField;
     Field* computerField;
 

@@ -75,7 +75,7 @@ void CoreTest::testField()
 
 void CoreTest::testGame()
 {
-    Game* game=new Game();
+    GameInterface* game=new GameInterface();
     game->getUserField()->placeShip(1,2,3,shipLocation::vertical);
     game->getComputerField()->placeShip(2,2,2,shipLocation::horizontal);
     QVERIFY(game->getComputerField()->shot(2,2)==true);

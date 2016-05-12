@@ -24,9 +24,17 @@ public:
      */
     void startGameMenu();
     /**
-     * @brief Вывести поле на экран
+     * @brief Вывести оба поля на экран
      */
-    void printField();
+    void printFields() noexcept;
+    /**
+     * @brief Вывести поле пользователя
+     */
+    void  printUserFieldLine(int lineNumber) noexcept;
+    /**
+      * @brief Вывести поле компьютера
+      */
+    void printComputerFieldLine(int lineNumber) noexcept;
     /**
      * @brief Разместить корабли игрока вручную
      * @return  true/false
@@ -39,7 +47,11 @@ public:
      * @param lenght длина
      * @param line расположение
      */
-    void isInputCorrect(int x, int y, int lenght, int line, shipLocation location);
+    bool isInputCorrect(int x, int y, int lenght, int number, shipLocation location);
+    int inputX(std::string str);
+    int inputY(std::string str);
+    int inputLenght(std::string str);
+    int inputLocation(std::string str);
     /**
      * @brief Играть, пока все корабли одного из полей не будут разрушены
      */
@@ -63,7 +75,7 @@ public:
 
 private:
     //TODO документировать данные класса
-    Game* game;
+    GameInterface* game;
 
 };
 
