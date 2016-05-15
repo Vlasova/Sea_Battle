@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <random>
 #include <ctime>
+#include <vector>
 #include "ship.h"
 
 /**
@@ -16,7 +17,7 @@ public:
     static const int NUMBER_OF_SHIPS = 10;
 
     Field() noexcept;
-    ~Field() noexcept;
+
     /**
      * @brief Разместить корабль
      * @param x буквенная координата первой палубы корабля
@@ -65,12 +66,12 @@ public:
      * @brief Получить клетки игрового поля
      * @return указатель на клетки поля
      */
-    Cell** getFieldCells() const noexcept;
+    std::vector<std::vector<Cell>> getFieldCells() const noexcept;
     /**
      * @brief Получить корабли поля
      * @return указатель на массив кораблей
      */
-    Ship* getFieldShips() const noexcept;
+    std::vector<Ship> getFieldShips() const noexcept;
     /**
      * @brief Узнать число размещенных кораблей
      * @return количество размещенных кораблей
@@ -107,12 +108,9 @@ public:
 
 private:
     //TODO документировать данные класса.
-    Cell** fieldCells;
-    Ship* fieldShips;
+    std::vector<std::vector<Cell>> fieldCells;
+    std::vector<Ship> fieldShips;
     int numberSetShips;
-
-
-
 
 };
 

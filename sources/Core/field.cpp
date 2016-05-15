@@ -2,24 +2,18 @@
 
 Field::Field() noexcept
 {
-    fieldCells=new Cell*[FIELD_SIZE];
-    for (int i=0; i<FIELD_SIZE;i++)
-        fieldCells[i]=new Cell[FIELD_SIZE];
-    for(int i=0; i<FIELD_SIZE;i++)
+
+    for(int i=0; i<FIELD_SIZE;i++){
+        std::vector<Cell> mas;
         for(int j=0;j<FIELD_SIZE;j++){
-            fieldCells[i][j].operator =(Cell(j, i));
+            mas.push_back(Cell(j, i));
         }
-    fieldShips=new Ship[NUMBER_OF_SHIPS];
+        fieldCells.push_back(mas);
+    }
     numberSetShips=0;
-
-
 }
 
-Field::~Field() noexcept
-{
-    delete fieldCells;
-    delete fieldShips;
-}
+
 
 void Field::placeShip(int x, int y, int lenght, shipLocation location) noexcept
 {
@@ -28,7 +22,7 @@ void Field::placeShip(int x, int y, int lenght, shipLocation location) noexcept
             fieldCells[y][x+i].setStatus(cellStatus::whole);
     else for(int i=0;i<lenght;++i)
         fieldCells[y+i][x].setStatus(cellStatus::whole);
-    fieldShips[numberSetShips].createShip(x,y,lenght,location);
+    fieldShips.push_back(Ship(x,y,lenght,location));
     numberSetShips++;
 }
 
@@ -72,12 +66,12 @@ bool Field::shot(int x, int y) noexcept
     return false;
 }
 
-Cell** Field::getFieldCells() const noexcept
+std::vector<std::vector<Cell>> Field::getFieldCells() const noexcept
 {
     return this->fieldCells;
 }
 
-Ship* Field::getFieldShips() const noexcept
+std::vector<Ship> Field::getFieldShips() const noexcept
 {
     return this->fieldShips;
 }
@@ -173,8 +167,8 @@ void Field::changeCellsAroundShip(Ship ship) noexcept
             for (int j=std::max(0, ship.getShipCells()[0].getX()-1);
                  j<=std::min(ship.getShipCells()[ship.getLenght()-1].getX()+1, FIELD_SIZE-1);
                  j++)
-                if (getFieldCells()[i][j].getStatus()!=cellStatus::stricken)
-                    getFieldCells()[i][j].setStatus(cellStatus::tried);
+                if (fieldCells[i][j].getStatus()!=cellStatus::stricken)
+                    fieldCells[i][j].setStatus(cellStatus::tried);
 
     }
     else
@@ -185,8 +179,8 @@ void Field::changeCellsAroundShip(Ship ship) noexcept
             for (int j=std::max(0, ship.getShipCells()[0].getX()-1);
                  j<=std::min(ship.getShipCells()[0].getX()+1, FIELD_SIZE-1);
                  j++)
-                if (getFieldCells()[i][j].getStatus()!=cellStatus::stricken)
-                    getFieldCells()[i][j].setStatus(cellStatus::tried);
+                if (fieldCells[i][j].getStatus()!=cellStatus::stricken)
+                    fieldCells[i][j].setStatus(cellStatus::tried);
     }
 }
 

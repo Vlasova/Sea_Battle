@@ -1,12 +1,13 @@
 #include "game.h"
 
-GameInterface::GameInterface() :userField(new Field()), computerField(new Field()){}
+GameInterface::GameInterface() noexcept :userField(new Field()), computerField(new Field()){}
 
 GameInterface::~GameInterface() noexcept
 {
     delete userField;
     delete computerField;
 }
+
 
 Field* GameInterface::getUserField() const noexcept
 {

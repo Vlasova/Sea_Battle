@@ -14,7 +14,8 @@ class Ship
 {
 public:
     Ship() noexcept;
-    ~Ship() noexcept;
+    Ship(int x, int y, int lenght, shipLocation location) noexcept;
+
     /**
      * @brief Создать корабль
      * @param field игровое поле
@@ -48,7 +49,7 @@ public:
      * @brief Получить клетки корабля
      * @return клетки корабля
      */
-    Cell* getShipCells() const noexcept;
+    std::vector<Cell> getShipCells() const noexcept;
     /**
      * @brief Получить длину корабля
      * @return длина
@@ -69,10 +70,8 @@ private:
     int firstY;
     int lenght;
     shipStatus status;
-    //TODO подумать о замене массива в стиле си на контейнер из с++ stl. Например, std::valarray или std::vector
-    Cell* shipCells;
+    std::vector<Cell> shipCells;
     shipLocation location;
-
 
 };
 

@@ -14,7 +14,7 @@
 class GameInterface
 {
 public:
-    GameInterface();
+    GameInterface() noexcept;
     ~GameInterface() noexcept;
     /**
      * @brief Совершить ход компьютера

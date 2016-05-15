@@ -240,7 +240,7 @@ bool Application::canPlaceShip(int x, int y, int lenght, int number, shipLocatio
     int count=0;
 
     for (int i=0; i<Field::NUMBER_OF_SHIPS;i++)
-        if (game->getUserField()->getFieldShips()->getLenght()==lenght)
+        if (game->getUserField()->getFieldShips()[i].getLenght()==lenght)
             count++;
     if (count>4-lenght+1)
     {

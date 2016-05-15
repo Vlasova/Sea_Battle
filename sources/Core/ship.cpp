@@ -2,28 +2,24 @@
 
 Ship::Ship() noexcept:firstX(0), firstY(0), lenght(0), status(shipStatus::whole){}
 
-Ship::~Ship() noexcept
-{
-    delete shipCells;
-}
 
-void Ship::createShip(int x, int y, int lenght, shipLocation location) noexcept
+
+Ship::Ship(int x, int y, int lenght, shipLocation location) noexcept
 {
     this->lenght=lenght;
     this->firstX=x;
     this->firstY=y;
     this->location=location;
     this->status=shipStatus::whole;
-    shipCells=new Cell[lenght];
-    for (int i=0;i<lenght;i++)
+    for (int i=0; i<lenght; i++)
     {
         if (location==shipLocation::horizontal)
         {
-            shipCells[i].operator =(Cell(x+i, y, cellStatus::whole));
+            shipCells.push_back(Cell(x+i, y, cellStatus::whole));
         }
         else
         {
-            shipCells[i].operator =(Cell(x, y+i, cellStatus::whole));
+            shipCells.push_back(Cell(x, y+i, cellStatus::whole));
         }
     }
 }
@@ -36,7 +32,7 @@ shipStatus Ship::getShipStatus() const noexcept
 void Ship::setShipStatus(int x, int y) noexcept
 {
     int count=0;
-    for (int i=0; i<lenght; i++){
+    for (unsigned int i=0; i<shipCells.size(); i++){
         if (shipCells[i].getStatus()==cellStatus::stricken)
             count++;
         else if (shipCells[i].operator ==(Cell(x, y)))
@@ -51,14 +47,14 @@ void Ship::setShipStatus(int x, int y) noexcept
             status=shipStatus::stricken;
 }
 
-Cell* Ship::getShipCells() const noexcept
+std::vector<Cell> Ship::getShipCells() const noexcept
 {
       return this->shipCells;
 }
 
 bool Ship::shot(int x, int y) noexcept
 {
-    for (int i=0; i<lenght; i++)
+    for (unsigned int i=0; i<shipCells.size(); i++)
         if (shipCells[i].operator ==(Cell(x, y, cellStatus::whole)))
         {
             {
