@@ -80,7 +80,7 @@ int Ship::getLenght() const noexcept
     return this->lenght;
 }
 
-shipLocation Ship::getShipLine() const noexcept
+shipLocation Ship::getShipLocation() const noexcept
 {
    return this->location;
 }

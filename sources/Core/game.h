@@ -17,20 +17,17 @@ public:
     GameInterface();
     ~GameInterface() noexcept;
     /**
-     * @brief Разместить корабли
-     * @return true/false
-     */
-    bool locateShips() noexcept;
-    /**
      * @brief Совершить ход компьютера
-     * @return true/false
+     * @return true при попадании
+     * @return false при промахе
      */
     bool makeComputerMove() noexcept;
     /**
      * @brief Совершить ход игрока
      * @param x буквенная координата
      * @param y цифровая координата
-     * @return true/false
+     * @return true при попадании
+     * @return false при промахе
      */
     bool makeUserMove(int x, int y) noexcept;
     /**

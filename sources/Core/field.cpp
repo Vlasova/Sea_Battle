@@ -22,14 +22,14 @@ Field::~Field() noexcept
     delete fieldShips;
 }
 
-void Field::placeShip(int x, int y, int lenght, shipLocation line) noexcept
+void Field::placeShip(int x, int y, int lenght, shipLocation location) noexcept
 {
-    if (line==shipLocation::horizontal)
+    if (location==shipLocation::horizontal)
         for(int i=0;i<lenght;++i)
             fieldCells[y][x+i].setStatus(cellStatus::whole);
     else for(int i=0;i<lenght;++i)
         fieldCells[y+i][x].setStatus(cellStatus::whole);
-    fieldShips[numberSetShips].createShip(x,y,lenght,line);
+    fieldShips[numberSetShips].createShip(x,y,lenght,location);
     numberSetShips++;
 }
 
@@ -122,20 +122,20 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line) noexcept
 void Field::locateShipRandomly(int lenght) noexcept
 {
     int x,y;
-    shipLocation line=shipLocation(std::rand()%2);
-    do
-    {
+        shipLocation line=shipLocation(std::rand()%2);
         do
         {
-            y=std::rand()%FIELD_SIZE;
-        }while(line==shipLocation::vertical && y>FIELD_SIZE-lenght);
-        do
-        {
-            x=std::rand()%FIELD_SIZE;
-        }while(line==shipLocation::horizontal && x>FIELD_SIZE-lenght);
+            do
+            {
+                y=std::rand()%FIELD_SIZE;
+            }while(line==shipLocation::vertical && y>FIELD_SIZE-lenght);
+            do
+            {
+                x=std::rand()%FIELD_SIZE;
+            }while(line==shipLocation::horizontal && x>FIELD_SIZE-lenght);
 
-    }while(!canPlaceShip(x,y,lenght,line));
-    placeShip(x,y,lenght,line);
+        }while(!canPlaceShip(x,y,lenght,line));
+        placeShip(x,y,lenght,line);
 
 }
 
@@ -164,11 +164,9 @@ int Field::getnumberSetShips() const noexcept
     return this->numberSetShips;
 }
 
-//Название метода некорректно. Сбивает с толку. Возникает мысль, что он - часть приложения, а не логики.
-//TODO подумать над другим названием метода.
-void Field::drawAroundShip(Ship ship) noexcept
+void Field::changeCellsAroundShip(Ship ship) noexcept
 {
-    if (ship.getShipLine()==shipLocation::horizontal)
+    if (ship.getShipLocation()==shipLocation::horizontal)
     {
         for (int i=std::max(0, ship.getShipCells()[0].getY()-1);
              i<=std::min(ship.getShipCells()[0].getY()+1, FIELD_SIZE-1);

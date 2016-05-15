@@ -149,16 +149,16 @@ int Application::inputLenght(std::string str) noexcept
 
 int Application::inputLocation(std::string str) noexcept
 {
-    int number;
+    int location;
     try
     {
-        number=std::stoi(str);
+        location=std::stoi(str);
     }
     catch(std::exception &e)
     {
-        number=0;
+        location=0;
     }
-    return number;
+    return location;
 }
 
 void Application::gameProcess() noexcept
@@ -272,9 +272,9 @@ bool Application::isLenghtCorrect(int lenght) noexcept
     return true;
 }
 
-bool Application::isLocationCorrect(int number) noexcept
+bool Application::isLocationCorrect(int location) noexcept
 {
-    if (number<1 || number>2)
+    if (location<1 || location>2)
     {
         std::cout<<"Error! Wrong input! Use 1 or 2"<<std::endl;
         return false;
@@ -288,7 +288,7 @@ void Application::ifUserHit(int x, int y) noexcept
     shipNumber=game->getComputerField()->whoseDeck(x, y);
     if (game->getComputerField()->isShipDestroyed(shipNumber))
     {
-        game->getComputerField()->drawAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
+        game->getComputerField()->changeCellsAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
         printFields();
         std::cout<<"You hit!"<<std::endl;
         std::cout<<"Ship destroyed!"<<std::endl;

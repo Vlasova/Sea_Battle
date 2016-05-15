@@ -32,6 +32,7 @@ public:
     void setShipStatus(int x, int y) noexcept;
     /**
      * @brief Проверить, попал ли игрок в клетку корабля
+     * При попадании изменяет статус клетки
      * @param field игровое поле
      * @param x буквенная координата
      * @param y цифровая координата
@@ -57,7 +58,7 @@ public:
      * @brief Получить расположение корабля
      * @return расположение
      */
-    shipLocation getShipLine() const noexcept;
+    shipLocation getShipLocation() const noexcept;
 
 
 

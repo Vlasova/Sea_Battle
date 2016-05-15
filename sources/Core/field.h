@@ -2,6 +2,8 @@
 #define FIELD_H
 
 #include <algorithm>
+#include <random>
+#include <ctime>
 #include "ship.h"
 
 /**
@@ -20,11 +22,9 @@ public:
      * @param x буквенная координата первой палубы корабля
      * @param y цифровая координата первой палубы корабля
      * @param lenght длина корабля
-       //line - переводится не как расположение.
-       //TODO поменять имя переменной или изменить перевод
-     * @param line расположение
+     * @param location расположение
      */
-    void placeShip(int x, int y, int lenght, shipLocation line) noexcept;
+    void placeShip(int x, int y, int lenght, shipLocation location) noexcept;
     /**
      * @brief Узнать, все ли корабли разрушены
      * @return true/false
@@ -57,12 +57,10 @@ public:
      * @param x буквенная координата первой палубы
      * @param y цифровая координата первой палубы
      * @param lenght длина
-       //line - переводится не как расположение.
-       //TODO поменять имя переменной или изменить перевод
-     * @param line расположение
+     * @param location расположение
      * @return true/false
      */
-    bool canPlaceShip(int x, int y, int lenght, shipLocation line) noexcept;
+    bool canPlaceShip(int x, int y, int lenght, shipLocation location) noexcept;
     /**
      * @brief Получить клетки игрового поля
      * @return указатель на клетки поля
@@ -87,16 +85,23 @@ public:
      * @brief Рандомно разместить все корабли
      */
     void locateAutomatically() noexcept;
-    
-    //По названию становится ясно, что данный метод не относится к бизнес-логике, 
-    //а относится к приложению - к взаимодействию с пользователем
-    //TODO переместить метод в приложение
     /**
-     * @brief Обрисовать разрушенный корабль
+     * @brief Изменить статус клеток вокруг разрушенного корабля
      * @param ship корабль
      */
-    void drawAroundShip(Ship ship) noexcept;
+    void changeCellsAroundShip(Ship ship) noexcept;
+    /**
+     * @brief Узнать, разрушен ли данный корабль
+     * @param shipNumber номер корабля
+     * @return true/false
+     */
     bool isShipDestroyed(int shipNumber) noexcept;
+    /**
+     * @brief Узнать, какому кораблю принадлежит палуба
+     * @param x буквенная координата
+     * @param y цифровая координата
+     * @return номер корабля
+     */
     int whoseDeck(int x, int y) noexcept;
 
 
