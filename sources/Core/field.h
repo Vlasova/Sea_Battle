@@ -96,6 +96,8 @@ public:
      * @param ship корабль
      */
     void drawAroundShip(Ship ship) noexcept;
+    bool isShipDestroyed(int shipNumber) noexcept;
+    int whoseDeck(int x, int y) noexcept;
 
 
 private:

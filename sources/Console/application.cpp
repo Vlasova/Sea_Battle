@@ -3,9 +3,14 @@
 #include "application.h"
 
 
-Application::Application()
+Application::Application() noexcept
 {
     game = new GameInterface();
+}
+
+Application::~Application() noexcept
+{
+    delete game;
 }
 
 void Application::printFields() noexcept
@@ -25,7 +30,7 @@ void Application::printUserFieldLine(int lineNumber) noexcept
 {
     if (lineNumber+1==10)
         std::cout<<lineNumber+1<<" ";
-    else std::cout<<lineNumber<<"  ";
+    else std::cout<<lineNumber+1<<"  ";
     for (int j=0;j<Field::FIELD_SIZE;j++)
     {
         if (game->getUserField()->getFieldCells()[lineNumber][j].getStatus()==cellStatus::whole)
@@ -59,18 +64,7 @@ void Application::printComputerFieldLine(int lineNumber) noexcept
     std::cout<<std::endl;
 }
 
-//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
-//Поможет вдобавок устранить дублирование кода
-//Сложно читать такой длинный метод.
-//TODO 
-//Странная реализация и обработка исключений.
-//Более хорошее решение - создать классы исключений, наследованные от std::exception.
-//Перегрузить в них функцию what().
-//Исключения (генерацию) лучше поместить в ядро.
-//В приложении их только ловить
-//Вместо того, чтобы бросать и ловить исключения в приложении, можно обрабатывать ошибки и без исключений.
-//В данной ситуации исключения ради исключений
-bool Application::locateShipsInput()
+bool Application::locateShipsInput() noexcept
 {
     std::cout<<"Locate ships"<<std::endl;
     int x, y, lenght, number;
@@ -84,10 +78,16 @@ bool Application::locateShipsInput()
         commands(str);
         x=inputX(str);
         y=inputY(str);
+        if (!isCoordinatesCorrect(x,y))
+            continue;
+
         std::cout<<"Lenght of the ship: "<<std::endl;
         std::cin>>str;
         commands(str);
         lenght=inputLenght(str);
+        if (!isLenghtCorrect(lenght))
+            continue;
+
         std::cout<<"Ship location(vertical-1,horizontal-2): "<<std::endl;
         std::cin>>str;
         commands(str);
@@ -96,19 +96,23 @@ bool Application::locateShipsInput()
             location=shipLocation::vertical;
         if (number==2)
             location=shipLocation::horizontal;
+        if (!isLocationCorrect(number))
+            continue;
+
         std::cin.clear();
         getline(std::cin,str);
 
-        if (isInputCorrect(x, y, lenght, number, location)){
-            game->getUserField()->placeShip(x, y, lenght, location);
-            printFields();
-        }
+        if (!canPlaceShip(x, y, lenght, number, location))
+            continue;
+        game->getUserField()->placeShip(x, y, lenght, location);
+        printFields();
+
     }
     std::cout<<"All ships are placed!"<<std::endl<<std::endl;
     return true;
 }
 
-int Application::inputX(std::string str)
+int Application::inputX(std::string str) noexcept
 {
     char charX;
     int x;
@@ -120,7 +124,7 @@ int Application::inputX(std::string str)
     return x-1;
 }
 
-int Application::inputY(std::string str)
+int Application::inputY(std::string str) noexcept
 {
     int y;
     if(str.length()==2)
@@ -129,7 +133,7 @@ int Application::inputY(std::string str)
     return y-1;
 }
 
-int Application::inputLenght(std::string str)
+int Application::inputLenght(std::string str) noexcept
 {
     int lenght;
     try
@@ -143,7 +147,7 @@ int Application::inputLenght(std::string str)
     return lenght;
 }
 
-int Application::inputLocation(std::string str)
+int Application::inputLocation(std::string str) noexcept
 {
     int number;
     try
@@ -157,147 +161,71 @@ int Application::inputLocation(std::string str)
     return number;
 }
 
-//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
-//Поможет вдобавок устранить дублирование кода
-void Application::gameProcess()
+void Application::gameProcess() noexcept
 {
-    try
+    while (!game->getComputerField()->allShipsDestroyed() &&
+           !game->getUserField()->allShipsDestroyed())
     {
         std::cout<<"Make move: ";
         int x,y;
-        char charX;
         std::string str;
         std::cin>>str;
         commands(str);
-        charX=str[0];
-        if(str.length()==2)
-            y=str[1]-'0';
-        else y=(str[1]-'0')*10+(str[2]-'0');
-        if (charX<96)
-            x=charX-64;
-        else
-            x=charX-96;
+        x=inputX(str);
+        y=inputY(str);
+        if (!isCoordinatesCorrect(x, y))
+            continue;
         std::cin.clear();
         getline(std::cin,str);
-        isCoordinatesCorrect(x-1,y-1);
 
-        if (game->makeUserMove(x-1,y-1)){
-            for (int i=0; i<Field::NUMBER_OF_SHIPS;i++)
-                for (int j=0; j<game->getComputerField()->getFieldShips()[i].getLenght(); j++)
-                {
-                    //TODO слишком длинные условия
-                    if (game->getComputerField()->getFieldShips()[i].getShipCells()[j].getX()==x-1 && game->getComputerField()->getFieldShips()[i].getShipCells()[j].getY()==y-1)
-                    {
-                        if (game->getComputerField()->getFieldShips()[i].getShipStatus()==shipStatus::destroyed){
-                            game->getComputerField()->drawAroundShip(game->getComputerField()->getFieldShips()[i]);
-                            printFields();
-                            std::cout<<"You hit!"<<std::endl;
-                            std::cout<<"Ship destroyed!"<<std::endl;
-                        }
-                        else{
-                            printFields();
-                            std::cout<<"You hit!"<<std::endl;
-                        }
-                    }
+        if (game->makeUserMove(x ,y))
+        {
+            ifUserHit(x, y);
+            continue;
 
-                }
-            if (game->getComputerField()->allShipsDestroyed())
-                decideWinner();
-            else{
-                gameProcess();
-            }
         }
-
         else
         {
             printFields();
             std::cout<<"You miss!"<<std::endl<<std::endl;
         }
+
         while (game->makeComputerMove() && !game->getUserField()->allShipsDestroyed())
         {
-            printFields();
-            std::cout<<"Computer hit!"<<std::endl<<std::endl;
-        }
-        if (game->getUserField()->allShipsDestroyed()){
-            decideWinner();
-        }
-        else{
-            printFields();
-            std::cout<<"Computer miss!"<<std::endl<<std::endl;
-            gameProcess();
+            ifComputerHit();
         }
 
-    }
+        printFields();
+        std::cout<<"Computer miss!"<<std::endl<<std::endl;
 
-    catch(int Deck)
-    {switch(Deck)
-        {
-        case 5:
-            std::cout<<"Error! Wrong coordinates! Use letter a..j and number 1..10"<<std::endl;
-            gameProcess();
-            break;
-        case 8:
-            break;
-        }
     }
 }
 
-
-
-
-void Application::decideWinner()
+void Application::decideWinner() noexcept
 {
     if (game->getComputerField()->allShipsDestroyed())
         std::cout<<"You won!"<<std::endl<<std::endl;
     if (game->getUserField()->allShipsDestroyed())
         std::cout<<"You lost!"<<std::endl<<std::endl;
-    //Не видел до этого нигде delete game.
-    //Может и есть, но нереально найти в таких длинных методах.
-    //если объект в с++ создается с new, то обязательно должно быть delete.
-    //В данной ситуации вроде так:
-    //new в конструкторе
-    //new здесь
-    //delete только в деструкторе.
-    //после одного new и перед следующим обязательно дожен быть delete.
-    //иначе - непредсказуемое поведение
-    //TODO добавить delete, если нужно(!)
+    delete game;
     game=new GameInterface();
     mainMenu();
 }
 
-void Application::commands(std::string str)
+void Application::commands(std::string str) noexcept
 {
     if (str=="exit")
     {
         std::cout<<std::endl;
-        throw 9;
+        delete game;
+        game=new GameInterface();
+        mainMenu();
     }
 }
 
-//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
-//Поможет вдобавок устранить дублирование кода
-bool Application::isInputCorrect(int x, int y, int lenght, int number, shipLocation location)
+bool Application::canPlaceShip(int x, int y, int lenght, int number, shipLocation location) noexcept
 {
-    static int count1Deck=0;
-    static int count2Deck=0;
-    static int count3Deck=0;
-    static int count4Deck=0;
 
-    if (x>Field::FIELD_SIZE-1 || x<0|| y>Field::FIELD_SIZE-1 || y<0)
-    {
-        std::cout<<"Error! Wrong coordinates! Use letter a..j and number 1..10"<<std::endl;
-        return false;
-    }
-    if (lenght<1 || lenght>4)
-    {
-        std::cout<<"Error! Wrong lenght!"<<std::endl;
-        return false;
-    }
-    if (number<1 || number>2)
-    {
-        std::cout<<"Error! Wrong input! Use 1 or 2"<<std::endl;
-        return false;
-    }
     if ((number==2 && x+lenght>Field::FIELD_SIZE) || (number==1 && y+lenght>Field::FIELD_SIZE))
     {
         std::cout<<"Error! It is impossible to place the ship"<<std::endl;
@@ -309,52 +237,83 @@ bool Application::isInputCorrect(int x, int y, int lenght, int number, shipLocat
         return false;
     }
 
-    if (lenght==1){
-        count1Deck++;
-        if (count1Deck>4){
-            count1Deck--;
-            std::cout<<"Error! You can place only four 1-deck ship"<<std::endl;
-            return false;
-        }
+    int count=0;
+
+    for (int i=0; i<Field::NUMBER_OF_SHIPS;i++)
+        if (game->getUserField()->getFieldShips()->getLenght()==lenght)
+            count++;
+    if (count>4-lenght+1)
+    {
+        std::cout<<"Error! You can place only "<<4-lenght+1<<" "<<lenght<<"-deck ships"<<std::endl;
+        return false;
     }
-    if (lenght==2){
-        count2Deck++;
-        if (count2Deck>3){
-            count2Deck--;
-            std::cout<<"Error! You can place only three 2-deck ship"<<std::endl;
-            return false;
-        }
+
+    return true;
+}
+
+bool Application::isCoordinatesCorrect(int x, int y) noexcept
+{
+    if(x>Field::FIELD_SIZE || x<0 || y>Field::FIELD_SIZE || y<0)
+    {
+        std::cout<<"Error! Wrong coordinates! Use letter a..j and number 1..10"<<std::endl;
+        return false;
     }
-    if (lenght==3){
-        count3Deck++;
-        if (count3Deck>2){
-            count3Deck--;
-            std::cout<<"Error! You can place only two 3-deck ship"<<std::endl;
-            return false;
-        }
-    }
-    if (lenght==4){
-        count4Deck++;
-        if (count4Deck>1){
-            count4Deck--;
-            std::cout<<"Error! You can place only one 4-deck ship"<<std::endl;
-            return false;
-        }
+    return true;
+
+}
+
+bool Application::isLenghtCorrect(int lenght) noexcept
+{
+    if (lenght<1 || lenght>4)
+    {
+        std::cout<<"Error! Wrong lenght!"<<std::endl;
+        return false;
     }
     return true;
 }
 
-void Application::isCoordinatesCorrect(int x, int y)
+bool Application::isLocationCorrect(int number) noexcept
 {
-    if(x>Field::FIELD_SIZE || x<0 || y>Field::FIELD_SIZE || y<0)
-        throw 5;
+    if (number<1 || number>2)
+    {
+        std::cout<<"Error! Wrong input! Use 1 or 2"<<std::endl;
+        return false;
+    }
+    return true;
+}
+
+void Application::ifUserHit(int x, int y) noexcept
+{
+    int shipNumber;
+    shipNumber=game->getComputerField()->whoseDeck(x, y);
+    if (game->getComputerField()->isShipDestroyed(shipNumber))
+    {
+        game->getComputerField()->drawAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
+        printFields();
+        std::cout<<"You hit!"<<std::endl;
+        std::cout<<"Ship destroyed!"<<std::endl;
+
+    }
+    else
+    {
+        printFields();
+        std::cout<<"You hit!"<<std::endl;
+    }
+    if (game->getComputerField()->allShipsDestroyed())
+        decideWinner();
 
 }
-//TODO удобнее читать, когда деструктор идет вслед за конструктором
-Application::~Application()
+
+void Application::ifComputerHit() noexcept
 {
-    delete game;
+    printFields();
+    std::cout<<"Computer hit!"<<std::endl<<std::endl;
+    if (game->getUserField()->allShipsDestroyed())
+        decideWinner();
 }
+
+
+
 
 
 

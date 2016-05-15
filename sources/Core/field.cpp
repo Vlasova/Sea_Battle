@@ -39,7 +39,7 @@ bool Field::allShipsDestroyed() noexcept
     int count=0;
     for(int i=0; i<numberSetShips; i++)
         if (fieldShips[i].getShipStatus()==shipStatus::destroyed)
-            count++;            
+            count++;
     return count==numberSetShips;
 
 }
@@ -86,7 +86,7 @@ Ship* Field::getFieldShips() const noexcept
 bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line) noexcept
 {
     if (line==shipLocation::horizontal)
-    {   
+    {
         for (int i=std::max(0,y-1);
              i<=std::min(FIELD_SIZE-1,y+1);
              i++)
@@ -193,6 +193,28 @@ void Field::drawAroundShip(Ship ship) noexcept
     }
 }
 
+bool Field::isShipDestroyed(int shipNumber) noexcept
+{
+    return fieldShips[shipNumber].getShipStatus()==shipStatus::destroyed;
+
+}
+
+int Field::whoseDeck(int x, int y) noexcept
+{
+    bool flag=false;
+    int i;
+    for (i=0; i<NUMBER_OF_SHIPS; i++){
+        for (int j=0; j<fieldShips[i].getLenght(); j++)
+            if (fieldShips[i].getShipCells()[j].getX()==x &&
+                    fieldShips[i].getShipCells()[j].getY()==y){
+                flag=true;
+                break;
+             }
+        if (flag==true)
+            break;
+    }
+    return i;
+}
 
 
 

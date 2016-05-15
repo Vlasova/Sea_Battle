@@ -6,6 +6,8 @@
 #include "unistd.h"
 #include "field.h"
 
+
+
 /**
  * @brief Игровой интерфейс
  */
@@ -13,11 +15,11 @@ class GameInterface
 {
 public:
     GameInterface();
+    ~GameInterface() noexcept;
     /**
      * @brief Разместить корабли
      * @return true/false
      */
-    ~GameInterface() noexcept;
     bool locateShips() noexcept;
     /**
      * @brief Совершить ход компьютера

@@ -2,10 +2,7 @@
 #include <string>
 #include "application.h"
 
-//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
-//Поможет вдобавок устранить дублирование кода
-//TODO с исключниями разобраться
-void Application::mainMenu()
+void Application::mainMenu() noexcept
 {
     std::cout<<"1. New game"<<std::endl
             <<"2. Exit"<<std::endl
@@ -17,7 +14,7 @@ void Application::mainMenu()
     {
         number=std::stoi(str);
     }
-    catch(std::exception &error)
+    catch(std::exception &e)
     {
         number=0;
     }
@@ -35,13 +32,9 @@ void Application::mainMenu()
         mainMenu();
         break;
     }
-
 }
 
-//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
-//Поможет вдобавок устранить дублирование кода
-//TODO с исключниями разобраться
-void Application::locateShipsMenu()
+void Application::locateShipsMenu() noexcept
 {
     std::cout<<"1. Locate ships automatically"<<std::endl
             <<"2. Locate ships on one's own"<<std::endl
@@ -54,31 +47,20 @@ void Application::locateShipsMenu()
     {
         number=std::stoi(str);
     }
-    catch(std::exception &error)
+    catch(std::exception &e)
     {
         number=0;
     }
     std::cout<<std::endl;
     switch(number){
     case 1:
-        game->getComputerField()->locateAutomatically();
-        game->getUserField()->locateAutomatically();
-        printFields();
-        std::cout<<std::endl;
-        startGameMenu();
+        locateShipsAutomatically();
         break;
     case 2:
-        game->getComputerField()->locateAutomatically();
-        printFields();
-        if (locateShipsInput())
-            startGameMenu();
-        else {
-            game=new GameInterface();
-            locateShipsMenu();
-        }
+        locateShipsOnOnesOwn();
         break;
     case 3:
-        game=new GameInterface();
+        exit();
         break;
     default:
         std::cout<<"Invalid number! Try again"<<std::endl;
@@ -89,10 +71,7 @@ void Application::locateShipsMenu()
     }
 }
 
-//TODO длинный метод. Подумать над тем, как разбить его на более маленькие почти независимые методы.
-//Поможет вдобавок устранить дублирование кода
-//TODO с исключниями разобраться
-void Application::startGameMenu()
+void Application::startGameMenu() noexcept
 {
     std::cout<<"1. Start game"<<std::endl
             <<"2. Locate ships again"<<std::endl
@@ -105,23 +84,20 @@ void Application::startGameMenu()
     {
         number=std::stoi(str);
     }
-    catch(std::exception &error)
+    catch(std::exception &e)
     {
         number=0;
     }
     std::cout<<std::endl;
     switch(number){
     case 1:
-        gameProcess();
-        game=new GameInterface();
-        mainMenu();
+        startGame();
         break;
     case 2:
-        game=new GameInterface();
-        locateShipsMenu();
+        locateShipsAgain();
+        break;
     case 3:
-        game=new GameInterface();
-        mainMenu();
+        exit();
         break;
     default:
         std::cout<<"Invalid number! Try again"<<std::endl;
@@ -131,4 +107,48 @@ void Application::startGameMenu()
         break;
     }
 
+}
+
+void Application::locateShipsAutomatically() noexcept
+{
+    game->getComputerField()->locateAutomatically();
+    game->getUserField()->locateAutomatically();
+    printFields();
+    std::cout<<std::endl;
+    startGameMenu();
+}
+
+void Application::locateShipsOnOnesOwn() noexcept
+{
+    game->getComputerField()->locateAutomatically();
+    printFields();
+    if (locateShipsInput())
+        startGameMenu();
+    else {
+        delete game;
+        game=new GameInterface();
+        locateShipsMenu();
+    }
+}
+
+void Application::exit() noexcept
+{
+    delete game;
+    game=new GameInterface();
+    mainMenu();
+}
+
+void Application::startGame() noexcept
+{
+    gameProcess();
+    delete game;
+    game=new GameInterface();
+    mainMenu();
+}
+
+void Application::locateShipsAgain() noexcept
+{
+    delete game;
+    game=new GameInterface();
+    locateShipsMenu();
 }

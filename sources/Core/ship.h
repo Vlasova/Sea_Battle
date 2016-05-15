@@ -61,6 +61,7 @@ public:
 
 
 
+
 private:
     //TODO документировать данные
     int firstX;
