@@ -19,16 +19,11 @@ void Ship::createShip(int x, int y, int lenght, shipLocation location) noexcept
     {
         if (location==shipLocation::horizontal)
         {
-            shipCells[i].setX(x+i);
-            shipCells[i].setY(y);
-            shipCells[i].setStatus(cellStatus::whole);
+            shipCells[i].operator =(Cell(x+i, y, cellStatus::whole));
         }
-        else {
-            shipCells[i].setX(x);
-            shipCells[i].setY(y+i);
-            shipCells[i].setStatus(cellStatus::whole);
-
-
+        else
+        {
+            shipCells[i].operator =(Cell(x, y+i, cellStatus::whole));
         }
     }
 }
@@ -44,7 +39,7 @@ void Ship::setShipStatus(int x, int y) noexcept
     for (int i=0; i<lenght; i++){
         if (shipCells[i].getStatus()==cellStatus::stricken)
             count++;
-        else if (shipCells[i].getX()==x && shipCells[i].getY()==y)
+        else if (shipCells[i].operator ==(Cell(x, y)))
         {
             shipCells[i].setStatus(cellStatus::stricken);
             count++;
@@ -64,7 +59,7 @@ Cell* Ship::getShipCells() const noexcept
 bool Ship::shot(int x, int y) noexcept
 {
     for (int i=0; i<lenght; i++)
-        if (shipCells[i].getX()==x && shipCells[i].getY()==y && shipCells[i].getStatus()==cellStatus::whole)
+        if (shipCells[i].operator ==(Cell(x, y, cellStatus::whole)))
         {
             {
                 shipCells[i].setStatus(cellStatus::stricken);

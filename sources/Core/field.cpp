@@ -7,8 +7,7 @@ Field::Field() noexcept
         fieldCells[i]=new Cell[FIELD_SIZE];
     for(int i=0; i<FIELD_SIZE;i++)
         for(int j=0;j<FIELD_SIZE;j++){
-            fieldCells[i][j].setX(j);
-            fieldCells[i][j].setY(i);
+            fieldCells[i][j].operator =(Cell(j, i));
         }
     fieldShips=new Ship[NUMBER_OF_SHIPS];
     numberSetShips=0;

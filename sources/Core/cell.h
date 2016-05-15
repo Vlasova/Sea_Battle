@@ -11,6 +11,11 @@ class Cell
 public:
     Cell() noexcept;
     Cell(int x, int y) noexcept;
+    Cell(int x, int y, cellStatus status) noexcept;
+
+    Cell& operator=(const Cell& other) noexcept;
+    bool operator==(const Cell& other) const noexcept;
+
     
     //TODO задуматься об перегрузке оператора присваивания. &Cell operator=( const Cell& ) noexcept
     //Он был бы отличным дополнением к методам setX(), setY() и setStatus()
@@ -55,6 +60,7 @@ private:
     cellStatus status;
 
 };
+
 
 #endif // CELL_H
 
