@@ -53,7 +53,7 @@ void Application::printComputerFieldLine(int lineNumber) noexcept
     for (int j=0;j<Field::FIELD_SIZE;j++)
     {
         if (game->getComputerField()->getFieldCells()[lineNumber][j].getStatus()==cellStatus::whole)
-            std::cout<<"*"<<" ";
+            std::cout<<"="<<" ";
         if (game->getComputerField()->getFieldCells()[lineNumber][j].getStatus()==cellStatus::stricken)
             std::cout<<"X"<<" ";
         if (game->getComputerField()->getFieldCells()[lineNumber][j].getStatus()==cellStatus::blank)
@@ -237,15 +237,45 @@ bool Application::canPlaceShip(int x, int y, int lenght, int number, shipLocatio
         return false;
     }
 
-    int count=0;
+    static int count1Deck=0;
+    static int count2Deck=0;
+    static int count3Deck=0;
+    static int count4Deck=0;
 
-    for (int i=0; i<Field::NUMBER_OF_SHIPS;i++)
-        if (game->getUserField()->getFieldShips()[i].getLenght()==lenght)
-            count++;
-    if (count>4-lenght+1)
+    if (lenght==1)
     {
-        std::cout<<"Error! You can place only "<<4-lenght+1<<" "<<lenght<<"-deck ships"<<std::endl;
-        return false;
+        count1Deck++;
+        if (count1Deck>4){
+            std::cout<<"Error! You can place only four 1-deck ships"<<std::endl;
+            return false;
+        }
+    }
+
+    if (lenght==2)
+    {
+        count2Deck++;
+        if (count2Deck>3){
+            std::cout<<"Error! You can place only three 2-deck ships"<<std::endl;
+            return false;
+        }
+    }
+
+    if (lenght==3)
+    {
+        count3Deck++;
+        if(count3Deck>2){
+            std::cout<<"Error! You can place only two 3-deck ships"<<std::endl;
+            return false;
+        }
+    }
+
+    if (lenght==4)
+    {
+        count4Deck++;
+        if (count4Deck>1){
+            std::cout<<"Error! You can place only one 4-deck ship"<<std::endl;
+            return false;
+        }
     }
 
     return true;

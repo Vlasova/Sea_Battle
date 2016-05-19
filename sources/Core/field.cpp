@@ -115,20 +115,20 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line) noexcept
 void Field::locateShipRandomly(int lenght) noexcept
 {
     int x,y;
-        shipLocation line=shipLocation(std::rand()%2);
-        do
-        {
+            shipLocation line=shipLocation(std::rand()%2);
             do
             {
-                y=std::rand()%FIELD_SIZE;
-            }while(line==shipLocation::vertical && y>FIELD_SIZE-lenght);
-            do
-            {
-                x=std::rand()%FIELD_SIZE;
-            }while(line==shipLocation::horizontal && x>FIELD_SIZE-lenght);
+                do
+                {
+                    y=std::rand()%FIELD_SIZE;
+                }while(line==shipLocation::vertical && y>FIELD_SIZE-lenght);
+                do
+                {
+                    x=std::rand()%FIELD_SIZE;
+                }while(line==shipLocation::horizontal && x>FIELD_SIZE-lenght);
 
-        }while(!canPlaceShip(x,y,lenght,line));
-        placeShip(x,y,lenght,line);
+            }while(!canPlaceShip(x,y,lenght,line));
+            placeShip(x,y,lenght,line);
 
 }
 
@@ -200,7 +200,7 @@ int Field::whoseDeck(int x, int y) noexcept
                     fieldShips[i].getShipCells()[j].getY()==y){
                 flag=true;
                 break;
-             }
+            }
         if (flag==true)
             break;
     }

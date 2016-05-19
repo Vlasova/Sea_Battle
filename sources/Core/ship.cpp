@@ -3,7 +3,6 @@
 Ship::Ship() noexcept:firstX(0), firstY(0), lenght(0), status(shipStatus::whole){}
 
 
-
 Ship::Ship(int x, int y, int lenght, shipLocation location) noexcept
 {
     this->lenght=lenght;
