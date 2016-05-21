@@ -4,7 +4,12 @@ QMAKE_CXXFLAGS += -std=c++11
 SUBDIRS += \
     Core \
     Console \
-    Test
+    Test \
+    GUI \
+    GUI \
+    GUI \
+    GUI \
+    GUI
 
 
 
