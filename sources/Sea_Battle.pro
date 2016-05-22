@@ -5,11 +5,11 @@ SUBDIRS += \
     Core \
     Console \
     Test \
-    GUI \
-    GUI \
-    GUI \
-    GUI \
     GUI
+
+
+
+
 
 
 
