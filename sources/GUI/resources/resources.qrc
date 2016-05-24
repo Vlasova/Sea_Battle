@@ -1,6 +1,7 @@
  <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
      <file>main_window_background.png</file>
+     <file>game_window_background.jpg</file>
  </qresource>
  </RCC>
 

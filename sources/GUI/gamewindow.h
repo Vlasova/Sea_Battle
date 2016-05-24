@@ -1,27 +1,25 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GAMEWINDOW_H
+#define GAMEWINDOW_H
 
 #include <QWidget>
 #include <QPushButton>
 #include <QString>
 #include <QFont>
-#include "gamewindow.h"
+#include "mainwindow.h"
 
-class MainWindow : public QWidget
+class GameWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit GameWindow(QWidget *parent);
+
 
 private:
-
     const QSize WINDOW_SIZE{900,440};
     const QSize BUTTON_SIZE{150,60};
 
     QPushButton* buttonExit;
-    QPushButton* buttonStart;
-
 
     QString buttonStyle=
             "QPushButton"
@@ -30,8 +28,8 @@ private:
                 "border: 1px solid rgb(0, 0, 0);"
                 "border-radius: 10px;"
 
-                "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(128, 128, 128, 120), stop:1 rgba(225, 225, 225, 120));"
-                "color: rgb(25, 25, 25);"                
+                "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(128, 128, 128, 160), stop:1 rgba(225, 225, 225, 160));"
+                "color: rgb(25, 25, 25);"
 
             "}"
             "QPushButton:pressed"
@@ -42,8 +40,10 @@ private:
 private slots:
 
     void exit();
-    void start();
+
+
 
 };
 
-#endif // MAINWINDOW_H
+#endif // GAMEWINDOW_H
+
