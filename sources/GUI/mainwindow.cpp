@@ -1,31 +1,32 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+
 {
-    ui->setupUi(this);
-
+    this->setFixedSize(WINDOW_SIZE);
     QPixmap background(":/main_window_background.png");
     QPalette palette;
     palette.setBrush(backgroundRole(),QBrush(background));
     this->setPalette(palette);
 
     QFont font;
-    font.setFamily("Ipact");
+    font.setFamily("inpact");
     font.setPointSize(25);
     font.setWeight(75);
 
-    ui->buttonStart->setStyleSheet(buttonStyle);
-    ui->buttonStart->setFont(font);
-    ui->buttonExit->setStyleSheet(buttonStyle);
-    ui->buttonExit->setFont(font);
+    buttonExit=new QPushButton("Exit",this);
+    buttonExit->setFont(font);
+    buttonExit->setStyleSheet(buttonStyle);
+    buttonExit->resize(BUTTON_SIZE);
+    buttonExit->move(370,250);
 
+    connect(buttonExit, SIGNAL(clicked()), this, SLOT(exit()));
 
 }
 
-MainWindow::~MainWindow()
+ void MainWindow::exit()
 {
-    delete ui;
+    this->close();
 }
+
+
