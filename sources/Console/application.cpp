@@ -53,7 +53,7 @@ void Application::printComputerFieldLine(int lineNumber) noexcept
     for (int j=0;j<Field::FIELD_SIZE;j++)
     {
         if (game->getComputerField()->getFieldCells()[lineNumber][j].getStatus()==cellStatus::whole)
-            std::cout<<"="<<" ";
+            std::cout<<"*"<<" ";
         if (game->getComputerField()->getFieldCells()[lineNumber][j].getStatus()==cellStatus::stricken)
             std::cout<<"X"<<" ";
         if (game->getComputerField()->getFieldCells()[lineNumber][j].getStatus()==cellStatus::blank)

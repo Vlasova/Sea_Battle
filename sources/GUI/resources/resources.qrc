@@ -2,6 +2,8 @@
  <qresource>
      <file>main_window_background.png</file>
      <file>game_window_background.jpg</file>
+     <file>field.jpg</file>
+     <file>fog.jpg</file>
  </qresource>
  </RCC>
 

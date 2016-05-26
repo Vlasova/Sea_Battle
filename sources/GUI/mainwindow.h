@@ -27,7 +27,7 @@ private:
             "QPushButton"
 
             "{"
-                "border: 1px solid rgb(0, 0, 0);"
+                "border: 1.5px solid rgb(0, 0, 0);"
                 "border-radius: 10px;"
 
                 "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(128, 128, 128, 120), stop:1 rgba(225, 225, 225, 120));"

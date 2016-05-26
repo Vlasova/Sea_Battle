@@ -66,12 +66,12 @@ bool Field::shot(int x, int y) noexcept
     return false;
 }
 
-std::vector<std::vector<Cell>> Field::getFieldCells() const noexcept
+std::vector<std::vector<Cell>> Field::getFieldCells() noexcept
 {
     return this->fieldCells;
 }
 
-std::vector<Ship> Field::getFieldShips() const noexcept
+std::vector<Ship> Field::getFieldShips() noexcept
 {
     return this->fieldShips;
 }

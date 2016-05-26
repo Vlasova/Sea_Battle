@@ -66,12 +66,12 @@ public:
      * @brief Получить клетки игрового поля
      * @return указатель на клетки поля
      */
-    std::vector<std::vector<Cell>> getFieldCells() const noexcept;
+    std::vector<std::vector<Cell>> getFieldCells() noexcept;
     /**
      * @brief Получить корабли поля
      * @return указатель на массив кораблей
      */
-    std::vector<Ship> getFieldShips() const noexcept;
+    std::vector<Ship> getFieldShips() noexcept;
     /**
      * @brief Узнать число размещенных кораблей
      * @return количество размещенных кораблей
