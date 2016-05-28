@@ -23,11 +23,15 @@ bool GameInterface::makeComputerMove() noexcept
 {
     int x,y;
     //Это что-то из си?
-    sleep(2);
+    //sleep(2);
     //TODO заменить std::rand на более удачное решение, см. field
     x=std::rand()%(Field::FIELD_SIZE-1);
     y=std::rand()%(Field::FIELD_SIZE-1);
-    return userField->shot(x,y);
+    if(userField->getFieldCells()[y][x].getStatus()==cellStatus::stricken
+            || userField->getFieldCells()[y][x].getStatus()==cellStatus::tried)
+                makeComputerMove();
+    return userField->shot(x, y);
+
 }
 
 bool GameInterface::makeUserMove(int x, int y) noexcept

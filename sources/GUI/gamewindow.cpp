@@ -6,12 +6,13 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent)
     game->getComputerField()->locateAutomatically();
     game->getUserField()->locateAutomatically();
 
+
     this->setFixedSize(WINDOW_SIZE);
 
     QPixmap background(":/game_window_background.jpg");
     QPalette palette;
     palette.setBrush(backgroundRole(),QBrush(background));
-    this->setPalette(palette);
+    this->setPalette(palette);   
 
     QFont font;
     font.setFamily("inpact");
@@ -26,8 +27,6 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent)
 
     connect(buttonExit, SIGNAL(clicked()), this, SLOT(exit()));
 
-
-
 }
 
 void GameWindow::exit()
@@ -37,33 +36,56 @@ void GameWindow::exit()
     this->close();
 }
 
-void GameWindow::paintEvent(QPaintEvent*)
+void GameWindow::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
-    drawGameFields(painter, USER_FIELD_COORD);
-    drawGameFields(painter, COMPUTER_FIELD_COORD);
 
-
-
-
-}
-
-void GameWindow::drawGameFields(QPainter& painter, const QPoint coord)
-{
-    painter.drawImage(coord, QImage(":/field.jpg"));
-
-    drawFrame(painter, USER_FIELD_COORD);
-    drawFrame(painter, COMPUTER_FIELD_COORD);
+    drawFrame(painter, QPoint(USER_FIELD_COORD.x()-30, USER_FIELD_COORD.y()-30));
+    drawFrame(painter, QPoint(COMPUTER_FIELD_COORD.x()-30, COMPUTER_FIELD_COORD.y()-30));
 
     drawUserField(painter);
-    drawComputerGield(painter);
-
+    drawComputerField(painter);
 }
 
+void GameWindow::drawComputerField(QPainter &painter)
+{
+    painter.drawImage(QPoint(COMPUTER_FIELD_COORD.x()-30,COMPUTER_FIELD_COORD.y()-30), QImage(":/field.jpg"));
 
+    for(int i=0; i<Field::FIELD_SIZE; i++)
+        for(int j=0; j<Field::FIELD_SIZE; j++)
+        {
+            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::blank)
+                drawFog(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*j, COMPUTER_FIELD_COORD.y()+30*i));
+            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
+                drawFog(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*j, COMPUTER_FIELD_COORD.y()+30*i));
+            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken){
+                drawDeck(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*j, COMPUTER_FIELD_COORD.y()+30*i));
+                drawCross(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*j, COMPUTER_FIELD_COORD.y()+30*i));
+            }
+            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
+                drawPoint(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*j, COMPUTER_FIELD_COORD.y()+30*i));
+        }
+}
 
+void GameWindow::drawUserField(QPainter &painter)
+{
+    painter.drawImage(QPoint(USER_FIELD_COORD.x()-30,USER_FIELD_COORD.y()-30), QImage(":/field.jpg"));
 
-void GameWindow::drawFrame(QPainter& painter, const QPoint coord)
+    for (int i=0; i<Field::FIELD_SIZE; i++)
+        for (int j=0; j<Field::FIELD_SIZE; j++)
+        {
+            if(game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
+                drawDeck(painter, QPoint(USER_FIELD_COORD.x()+30*j, USER_FIELD_COORD.y()+30*i));
+            if(game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken){
+                drawDeck(painter, QPoint(USER_FIELD_COORD.x()+30*j, USER_FIELD_COORD.y()+30*i));
+                drawCross(painter, QPoint(USER_FIELD_COORD.x()+30*j, USER_FIELD_COORD.y()+30*i));
+            }
+            if(game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
+               drawPoint(painter, QPoint(USER_FIELD_COORD.x()+30*j, USER_FIELD_COORD.y()+30*i));
+        }
+}
+
+void GameWindow::drawFrame(QPainter &painter, const QPoint coord)
 {
     QPen pen;
     pen.setWidth(3);
@@ -75,58 +97,15 @@ void GameWindow::drawFrame(QPainter& painter, const QPoint coord)
     painter.drawLine(QPoint(coord.x()+360, coord.y()), QPoint(coord.x()+360, coord.y()+360));
 }
 
-
-void GameWindow::drawUserField(QPainter& painter)
+void GameWindow::drawFog(QPainter &painter, QPoint coord)
 {
-    for (int i=0; i<Field::FIELD_SIZE; i++)
-        for (int j=0; j<Field::FIELD_SIZE; j++)
-        {
-            if(game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
-                drawDeck(painter, QPoint(USER_FIELD_COORD.x()+30*(j+1), USER_FIELD_COORD.y()+30*(i+1)));
-            if(game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken)
-                drawCross(painter, QPoint(USER_FIELD_COORD.x()+30*(j+1), USER_FIELD_COORD.y()+30*(i+1)));
-            if(game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
-               drawPoint(painter, QPoint(USER_FIELD_COORD.x()+30*(j+1), USER_FIELD_COORD.y()+30*(i+1)));
-        }
-}
-
-void GameWindow::drawComputerGield(QPainter &painter)
-{
-    for(int i=0; i<Field::FIELD_SIZE; i++)
-        for(int j=0; j<Field::FIELD_SIZE; j++)
-        {
-            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::blank)
-                drawFog(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*(j+1), COMPUTER_FIELD_COORD.y()+30*(i+1)));
-            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::whole)
-                drawFog(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*(j+1), COMPUTER_FIELD_COORD.y()+30*(i+1)));
-            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::stricken){
-                drawDeck(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*(j+1), COMPUTER_FIELD_COORD.y()+30*(i+1)));
-                drawCross(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*(j+1), COMPUTER_FIELD_COORD.y()+30*(i+1)));
-            }
-            if(game->getComputerField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
-                drawPoint(painter, QPoint(COMPUTER_FIELD_COORD.x()+30*(j+1), COMPUTER_FIELD_COORD.y()+30*(i+1)));
-        }
+    painter.drawImage(QPoint(coord.x(), coord.y()), QImage(":/fog.jpg"));
 }
 
 void GameWindow::drawDeck(QPainter &painter, QPoint coord)
 {
     QBrush brush(QColor(49, 58, 91), Qt::SolidPattern);
     painter.fillRect(coord.x(), coord.y(), 29, 29, brush);
-}
-
-void GameWindow::drawPoint(QPainter &painter, QPoint coord)
-{
-    QPen pen;
-    pen.setWidth(8);
-    pen.setCapStyle(Qt::RoundCap);
-    painter.setPen(pen);
-
-    painter.drawPoint(QPoint(coord.x()+15, coord.y()+15));
-}
-
-void GameWindow::drawFog(QPainter &painter, QPoint coord)
-{
-    painter.drawImage(QPoint(coord.x(), coord.y()), QImage(":/fog.jpg"));
 }
 
 void GameWindow::drawCross(QPainter &painter, QPoint coord)
@@ -139,6 +118,40 @@ void GameWindow::drawCross(QPainter &painter, QPoint coord)
     painter.drawLine(QPoint(coord.x()+3, coord.y()+3), QPoint(coord.x()+27, coord.y()+27));
     painter.drawLine(QPoint(coord.x()+27, coord.y()+3), QPoint(coord.x()+3, coord.y()+27));
 }
+
+void GameWindow::drawPoint(QPainter &painter, QPoint coord)
+{
+    QPen pen;
+    pen.setWidth(8);
+    pen.setCapStyle(Qt::RoundCap);
+    painter.setPen(pen);
+
+    painter.drawPoint(QPoint(coord.x()+15, coord.y()+15));
+}
+
+void GameWindow::mousePressEvent(QMouseEvent *event)
+{
+    if(COMPUTER_FIELD.contains(event->pos()))
+    {
+        onComputerFieldClicked(event->pos());
+    }
+}
+
+void GameWindow::onComputerFieldClicked(QPoint coord)
+{
+    if(game->makeUserMove(int((coord.x()-COMPUTER_FIELD_COORD.x())/30), int((coord.y()-COMPUTER_FIELD_COORD.y())/30)))
+        repaint();
+    else{
+        update();
+        while(game->makeComputerMove())
+            update();
+    }
+
+}
+
+
+
+
 
 
 
