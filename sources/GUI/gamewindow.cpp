@@ -12,7 +12,7 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent)
     QPixmap background(":/game_window_background.jpg");
     QPalette palette;
     palette.setBrush(backgroundRole(),QBrush(background));
-    this->setPalette(palette);   
+    this->setPalette(palette);
 
     QFont font;
     font.setFamily("inpact");
@@ -81,7 +81,7 @@ void GameWindow::drawUserField(QPainter &painter)
                 drawCross(painter, QPoint(USER_FIELD_COORD.x()+30*j, USER_FIELD_COORD.y()+30*i));
             }
             if(game->getUserField()->getFieldCells()[i][j].getStatus()==cellStatus::tried)
-               drawPoint(painter, QPoint(USER_FIELD_COORD.x()+30*j, USER_FIELD_COORD.y()+30*i));
+                drawPoint(painter, QPoint(USER_FIELD_COORD.x()+30*j, USER_FIELD_COORD.y()+30*i));
         }
 }
 
@@ -133,23 +133,66 @@ void GameWindow::mousePressEvent(QMouseEvent *event)
 {
     if(COMPUTER_FIELD.contains(event->pos()))
     {
-        onComputerFieldClicked(event->pos());
-    }
-}
-
-void GameWindow::onComputerFieldClicked(QPoint coord)
-{
-    if(game->makeUserMove(int((coord.x()-COMPUTER_FIELD_COORD.x())/30), int((coord.y()-COMPUTER_FIELD_COORD.y())/30)))
-        repaint();
-    else{
-        update();
-        while(game->makeComputerMove())
+        if(onComputerFieldClicked(event->pos()) && !game->getComputerField()->allShipsDestroyed())
             update();
-    }
+        else{
+            if(game->getComputerField()->allShipsDestroyed())
+                decideWinner();
+            else computerMove();
+        }
 
+    }
 }
 
 
+void GameWindow::computerMove()
+{
+    while(game->makeComputerMove() && !game->getUserField()->allShipsDestroyed())
+        update();
+    if (game->getUserField()->allShipsDestroyed())
+        decideWinner();
+    else
+        update();
+
+}
+
+bool GameWindow::onComputerFieldClicked(QPoint coord)
+{
+    return(game->makeUserMove(int((coord.x()-COMPUTER_FIELD_COORD.x())/30), int ((coord.y()-COMPUTER_FIELD_COORD.y())/30)));
+
+}
+
+void GameWindow::ifUserHit(int x, int y)
+{
+    int shipNumber;
+    shipNumber=game->getComputerField()->whoseDeck(x, y);
+    if (game->getComputerField()->isShipDestroyed(shipNumber))
+        game->getComputerField()->changeCellsAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
+    if (game->getComputerField()->allShipsDestroyed())
+        decideWinner();
+}
+
+void GameWindow::ifComputerHit()
+{
+    if (game->getUserField()->allShipsDestroyed())
+        decideWinner();
+}
+
+void GameWindow::decideWinner()
+{
+    if(game->getComputerField()->allShipsDestroyed())
+    {
+            ResultWindow* resultWindow=new ResultWindow(this);
+            resultWindow->show();
+
+    }
+    if(game->getUserField()->allShipsDestroyed())
+    {
+            ResultWindow* resultWindow=new ResultWindow(this);
+            resultWindow->show();
+
+    }
+}
 
 
 
