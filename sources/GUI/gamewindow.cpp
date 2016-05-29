@@ -158,8 +158,15 @@ void GameWindow::computerMove()
 
 bool GameWindow::onComputerFieldClicked(QPoint coord)
 {
-    return(game->makeUserMove(int((coord.x()-COMPUTER_FIELD_COORD.x())/30), int ((coord.y()-COMPUTER_FIELD_COORD.y())/30)));
-
+    int shipNumber;
+    if(game->makeUserMove(int((coord.x()-COMPUTER_FIELD_COORD.x())/30), int ((coord.y()-COMPUTER_FIELD_COORD.y())/30)))
+    {
+        shipNumber=game->getComputerField()->whoseDeck(int((coord.x()-COMPUTER_FIELD_COORD.x())/30), int ((coord.y()-COMPUTER_FIELD_COORD.y())/30));
+        if (game->getComputerField()->isShipDestroyed(shipNumber))
+           game->getComputerField()->changeCellsAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
+        return true;
+    }
+    else return false;
 }
 
 void GameWindow::ifUserHit(int x, int y)
