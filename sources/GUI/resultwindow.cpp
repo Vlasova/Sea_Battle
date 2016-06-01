@@ -1,8 +1,9 @@
 #include "resultwindow.h"
 
-ResultWindow::ResultWindow(QWidget* parent): QDialog(parent), parent(parent)
+ResultWindow::ResultWindow(QWidget* parent, GameAPI* game): QDialog(parent), parent(parent), game(game)
 {
     this->setFixedSize(WINDOW_SIZE);
+    this->setWindowTitle("Sea Battle");
 
     QPixmap background(":/game_window_background.jpg");
     QPalette palette;
@@ -20,16 +21,26 @@ ResultWindow::ResultWindow(QWidget* parent): QDialog(parent), parent(parent)
     font2.setWeight(75);
 
     QLabel* labelWinner=new QLabel(this);
+
+    if(game->allShipsDestroyed(game->getComputerField()))
+    {    
     labelWinner->setFont(font2);
-    labelWinner->setText("You win!");
+    labelWinner->setText("You won!");
     labelWinner->move(120, 50);
-    labelWinner->show();
+    }
+
+    if(game->allShipsDestroyed(game->getUserField()))
+    {    
+    labelWinner->setFont(font2);
+    labelWinner->setText("You lost!");
+    labelWinner->move(120, 50);
+    }
 
     QLabel* labelAgain=new QLabel(this);
     labelAgain->setFont(font1);
     labelAgain->setText("Do you want to play again?");
     labelAgain->move(30, 120);
-    labelWinner->show();
+    labelAgain->show();
 
     buttonYes=new QPushButton("Yes", this);
     buttonYes->setFont(font1);

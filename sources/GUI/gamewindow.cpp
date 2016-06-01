@@ -2,12 +2,13 @@
 
 GameWindow::GameWindow(QWidget *parent) : QWidget(parent)
 {
-    game=new GameInterface();
+    game=new GameAPI();
     game->getComputerField()->locateAutomatically();
     game->getUserField()->locateAutomatically();
 
 
     this->setFixedSize(WINDOW_SIZE);
+    this->setWindowTitle("Sea Battle");
 
     QPixmap background(":/game_window_background.jpg");
     QPalette palette;
@@ -133,10 +134,10 @@ void GameWindow::mousePressEvent(QMouseEvent *event)
 {
     if(COMPUTER_FIELD.contains(event->pos()))
     {
-        if(onComputerFieldClicked(event->pos()) && !game->getComputerField()->allShipsDestroyed())
+        if(onComputerFieldClicked(event->pos()) && !game->allShipsDestroyed(game->getComputerField()))
             update();
         else{
-            if(game->getComputerField()->allShipsDestroyed())
+            if(game->allShipsDestroyed(game->getComputerField()))
                 decideWinner();
             else computerMove();
         }
@@ -147,9 +148,9 @@ void GameWindow::mousePressEvent(QMouseEvent *event)
 
 void GameWindow::computerMove()
 {
-    while(game->makeComputerMove() && !game->getUserField()->allShipsDestroyed())
+    while(game->makeComputerMove() && !game->allShipsDestroyed(game->getUserField()))
         update();
-    if (game->getUserField()->allShipsDestroyed())
+    if (game->allShipsDestroyed(game->getUserField()))
         decideWinner();
     else
         update();
@@ -163,42 +164,20 @@ bool GameWindow::onComputerFieldClicked(QPoint coord)
     {
         shipNumber=game->getComputerField()->whoseDeck(int((coord.x()-COMPUTER_FIELD_COORD.x())/30), int ((coord.y()-COMPUTER_FIELD_COORD.y())/30));
         if (game->getComputerField()->isShipDestroyed(shipNumber))
-           game->getComputerField()->changeCellsAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
+            game->getComputerField()->changeCellsAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
         return true;
     }
     else return false;
 }
 
-void GameWindow::ifUserHit(int x, int y)
-{
-    int shipNumber;
-    shipNumber=game->getComputerField()->whoseDeck(x, y);
-    if (game->getComputerField()->isShipDestroyed(shipNumber))
-        game->getComputerField()->changeCellsAroundShip(game->getComputerField()->getFieldShips()[shipNumber]);
-    if (game->getComputerField()->allShipsDestroyed())
-        decideWinner();
-}
-
-void GameWindow::ifComputerHit()
-{
-    if (game->getUserField()->allShipsDestroyed())
-        decideWinner();
-}
 
 void GameWindow::decideWinner()
 {
-    if(game->getComputerField()->allShipsDestroyed())
-    {
-            ResultWindow* resultWindow=new ResultWindow(this);
-            resultWindow->show();
 
-    }
-    if(game->getUserField()->allShipsDestroyed())
-    {
-            ResultWindow* resultWindow=new ResultWindow(this);
-            resultWindow->show();
+    ResultWindow* resultWindow=new ResultWindow(this, game);
+    resultWindow->show();
 
-    }
+
 }
 
 

@@ -11,11 +11,11 @@
 /**
  * @brief Игровой интерфейс
  */
-class GameInterface
+class GameAPI
 {
 public:
-    GameInterface() noexcept;
-    ~GameInterface() noexcept;
+    GameAPI() noexcept;
+    ~GameAPI() noexcept;
     /**
      * @brief Совершить ход компьютера
      * @return true при попадании
@@ -40,9 +40,29 @@ public:
      * @return указатель на поле компьютера
      */
     Field* getComputerField() const noexcept;
+    /**
+     * @brief Разместить корабль пользователя
+     * @param x буквенная координата
+     * @param y цифровая координата
+     * @param lenght длина
+     * @param location расположение
+     */
+    void placeUserShip(int x, int y, int lenght, shipLocation location) noexcept;
+    /**
+     * @brief Разместить корабли автоматически
+     * @param field указатель на поле
+     */
+    void placeShipsAutomatically(Field* field) noexcept;
+    /**
+     * @brief Узнать, все ли корабли разрушены
+     * @param field указатель на поле
+     * @return true/false
+     */
+    bool allShipsDestroyed(Field* field) noexcept;
+
 
 private:
-    //TODO документировать данные класса
+
     Field* userField;
     Field* computerField;
 

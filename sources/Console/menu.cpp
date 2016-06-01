@@ -111,8 +111,8 @@ void Application::startGameMenu() noexcept
 
 void Application::locateShipsAutomatically() noexcept
 {
-    game->getComputerField()->locateAutomatically();
-    game->getUserField()->locateAutomatically();
+    game->placeShipsAutomatically(game->getComputerField());
+    game->placeShipsAutomatically(game->getUserField());
     printFields();
     std::cout<<std::endl;
     startGameMenu();
@@ -120,13 +120,13 @@ void Application::locateShipsAutomatically() noexcept
 
 void Application::locateShipsOnOnesOwn() noexcept
 {
-    game->getComputerField()->locateAutomatically();
+    game->placeShipsAutomatically(game->getComputerField());
     printFields();
     if (locateShipsInput())
         startGameMenu();
     else {
         delete game;
-        game=new GameInterface();
+        game=new GameAPI();
         locateShipsMenu();
     }
 }
@@ -134,7 +134,7 @@ void Application::locateShipsOnOnesOwn() noexcept
 void Application::exit() noexcept
 {
     delete game;
-    game=new GameInterface();
+    game=new GameAPI();
     mainMenu();
 }
 
@@ -142,13 +142,13 @@ void Application::startGame() noexcept
 {
     gameProcess();
     delete game;
-    game=new GameInterface();
+    game=new GameAPI();
     mainMenu();
 }
 
 void Application::locateShipsAgain() noexcept
 {
     delete game;
-    game=new GameInterface();
+    game=new GameAPI();
     locateShipsMenu();
 }

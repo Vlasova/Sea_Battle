@@ -27,11 +27,6 @@ public:
      */
     void placeShip(int x, int y, int lenght, shipLocation location) noexcept;
     /**
-     * @brief Узнать, все ли корабли разрушены
-     * @return true/false
-     */
-    bool allShipsDestroyed() noexcept;
-    /**
      * @brief Узнать, все ли корабли размещены на поле
      * @return  true/false
      */
@@ -106,8 +101,7 @@ public:
     int whoseDeck(int x, int y) noexcept;
 
 
-private:
-    //TODO документировать данные класса.
+private:    
     std::vector<std::vector<Cell>> fieldCells;
     std::vector<Ship> fieldShips;
     int numberSetShips;

@@ -5,7 +5,7 @@
 
 Application::Application() noexcept
 {
-    game = new GameInterface();
+    game = new GameAPI();
 }
 
 Application::~Application() noexcept
@@ -104,7 +104,7 @@ bool Application::locateShipsInput() noexcept
 
         if (!canPlaceShip(x, y, lenght, number, location))
             continue;
-        game->getUserField()->placeShip(x, y, lenght, location);
+        game->placeUserShip(x, y, lenght, location);
         printFields();
 
     }
@@ -163,8 +163,8 @@ int Application::inputLocation(std::string str) noexcept
 
 void Application::gameProcess() noexcept
 {
-    while (!game->getComputerField()->allShipsDestroyed() &&
-           !game->getUserField()->allShipsDestroyed())
+    while (!game->allShipsDestroyed(game->getComputerField()) &&
+           !game->allShipsDestroyed(game->getUserField()))
     {
         std::cout<<"Make move: ";
         int x,y;
@@ -190,7 +190,7 @@ void Application::gameProcess() noexcept
             std::cout<<"You miss!"<<std::endl<<std::endl;
         }
 
-        while (game->makeComputerMove() && !game->getUserField()->allShipsDestroyed())
+        while (game->makeComputerMove() && !game->allShipsDestroyed(game->getUserField()))
         {
             ifComputerHit();
         }
@@ -203,12 +203,12 @@ void Application::gameProcess() noexcept
 
 void Application::decideWinner() noexcept
 {
-    if (game->getComputerField()->allShipsDestroyed())
+    if (game->allShipsDestroyed(game->getComputerField()))
         std::cout<<"You won!"<<std::endl<<std::endl;
-    if (game->getUserField()->allShipsDestroyed())
+    if (game->allShipsDestroyed(game->getUserField()))
         std::cout<<"You lost!"<<std::endl<<std::endl;
     delete game;
-    game=new GameInterface();
+    game=new GameAPI();
     mainMenu();
 }
 
@@ -218,7 +218,7 @@ void Application::commands(std::string str) noexcept
     {
         std::cout<<std::endl;
         delete game;
-        game=new GameInterface();
+        game=new GameAPI();
         mainMenu();
     }
 }
@@ -329,7 +329,7 @@ void Application::ifUserHit(int x, int y) noexcept
         printFields();
         std::cout<<"You hit!"<<std::endl;
     }
-    if (game->getComputerField()->allShipsDestroyed())
+    if (game->allShipsDestroyed(game->getComputerField()))
         decideWinner();
 
 }
@@ -338,7 +338,7 @@ void Application::ifComputerHit() noexcept
 {
     printFields();
     std::cout<<"Computer hit!"<<std::endl<<std::endl;
-    if (game->getUserField()->allShipsDestroyed())
+    if (game->allShipsDestroyed(game->getUserField()))
         decideWinner();
 }
 

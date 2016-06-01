@@ -64,8 +64,7 @@ public:
 
 
 
-private:
-    //TODO документировать данные
+private:    
     int firstX;
     int firstY;
     int lenght;

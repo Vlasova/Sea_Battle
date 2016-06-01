@@ -4,6 +4,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
 {
     this->setFixedSize(WINDOW_SIZE);
+    this->setWindowTitle("Sea Battle");
+
     QPixmap background(":/main_window_background.png");
     QPalette palette;
     palette.setBrush(backgroundRole(),QBrush(background));

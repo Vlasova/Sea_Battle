@@ -26,17 +26,6 @@ void Field::placeShip(int x, int y, int lenght, shipLocation location) noexcept
     numberSetShips++;
 }
 
-bool Field::allShipsDestroyed() noexcept
-{
-
-    int count=0;
-    for(int i=0; i<numberSetShips; i++)
-        if (fieldShips[i].getShipStatus()==shipStatus::destroyed)
-            count++;
-    return count==numberSetShips;
-
-}
-
 bool Field::allShipsLocate() noexcept
 {
     return numberSetShips==NUMBER_OF_SHIPS;
@@ -108,10 +97,7 @@ bool Field::canPlaceShip(int x, int y, int lenght, shipLocation line) noexcept
 
 }
 
-//В с++ принятно использовать не std::rand()
-//https://www.securecoding.cert.org/confluence/display/cplusplus/MSC50-CPP.+Do+not+use+std%3A%3Arand%28%29+for+generating+pseudorandom+numbers
-//https://www.securecoding.cert.org/confluence/display/cplusplus/MSC51-CPP.+Ensure+your+random+number+generator+is+properly+seeded
-//TODO заменить rand() на более удачное решение.
+
 void Field::locateShipRandomly(int lenght) noexcept
 {
     int x,y;

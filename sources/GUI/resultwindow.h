@@ -4,12 +4,13 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 #include "gamewindow.h"
+#include "game.h"
 
 class ResultWindow : public QDialog
 {
     Q_OBJECT
 public:
-    ResultWindow(QWidget* parent);
+    ResultWindow(QWidget* parent, GameAPI* game);
 
 private:
     const QSize WINDOW_SIZE{500, 300};
@@ -17,8 +18,9 @@ private:
 
     QPushButton* buttonYes;
     QPushButton* buttonNo;
-
     QWidget* parent;
+    GameAPI* game;
+    QLabel* labelWinner;
 
     QString buttonStyle=
             "QPushButton"

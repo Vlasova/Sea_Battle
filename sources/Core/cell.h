@@ -48,7 +48,6 @@ public:
     int getY() const noexcept;
 
 private:
-    //TODO задокументировать данные класса http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html
     int x;
     int y;
     cellStatus status;

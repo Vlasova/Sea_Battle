@@ -1,30 +1,27 @@
 #include "game.h"
 
-GameInterface::GameInterface() noexcept :userField(new Field()), computerField(new Field()){}
+GameAPI::GameAPI() noexcept :userField(new Field()), computerField(new Field()){}
 
-GameInterface::~GameInterface() noexcept
+GameAPI::~GameAPI() noexcept
 {
     delete userField;
     delete computerField;
 }
 
 
-Field* GameInterface::getUserField() const noexcept
+Field* GameAPI::getUserField() const noexcept
 {
     return userField;
 }
 
-Field* GameInterface::getComputerField() const noexcept
+Field* GameAPI::getComputerField() const noexcept
 {
     return computerField;
 }
 
-bool GameInterface::makeComputerMove() noexcept
+bool GameAPI::makeComputerMove() noexcept
 {
     int x,y;
-    //Это что-то из си?
-    //sleep(2);
-    //TODO заменить std::rand на более удачное решение, см. field
     x=std::rand()%(Field::FIELD_SIZE-1);
     y=std::rand()%(Field::FIELD_SIZE-1);
     if(userField->getFieldCells()[y][x].getStatus()==cellStatus::stricken
@@ -34,11 +31,29 @@ bool GameInterface::makeComputerMove() noexcept
 
 }
 
-bool GameInterface::makeUserMove(int x, int y) noexcept
+bool GameAPI::makeUserMove(int x, int y) noexcept
 {
     return computerField->shot(x,y);
 }
 
+void GameAPI::placeUserShip(int x, int y, int lenght, shipLocation location) noexcept
+{
+    userField->placeShip(x, y, lenght, location);
+}
+
+bool GameAPI::allShipsDestroyed(Field* field) noexcept
+{
+    int count=0;
+    for(int i=0; i<field->getnumberSetShips(); i++)
+        if (field->getFieldShips()[i].getShipStatus()==shipStatus::destroyed)
+            count++;
+    return count==field->getnumberSetShips();
+}
+
+void GameAPI::placeShipsAutomatically(Field *field) noexcept
+{
+    field->locateAutomatically();
+}
 
 
 

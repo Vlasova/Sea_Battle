@@ -140,7 +140,7 @@ public:
 
 private:
     //TODO документировать данные класса
-    GameInterface* game;
+    GameAPI* game;
 
 };
 

@@ -69,14 +69,13 @@ void CoreTest::testField()
     QVERIFY(field->getFieldShips()[0].getShipCells()[1].getX()==3);
     QVERIFY(field->isDeck(3,4)==true);
     QVERIFY(field->shot(2,3)==false);
-    QVERIFY(field->allShipsDestroyed()==false);
     delete field;
 }
 
 void CoreTest::testGame()
 {
-    GameInterface* game=new GameInterface();
-    game->getUserField()->placeShip(1,2,3,shipLocation::vertical);
+    GameAPI* game=new GameAPI();
+    game->placeUserShip(1,2,3,shipLocation::vertical);
     game->getComputerField()->placeShip(2,2,2,shipLocation::horizontal);
     QVERIFY(game->getComputerField()->shot(2,2)==true);
     QVERIFY(game->getComputerField()->getFieldCells()[2][2].getStatus()==cellStatus::stricken);
@@ -85,7 +84,7 @@ void CoreTest::testGame()
     QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==shipStatus::destroyed);
     QVERIFY(game->getComputerField()->getnumberSetShips()==1);
     QVERIFY(game->getComputerField()->getFieldShips()[0].getShipStatus()==shipStatus::destroyed);
-    QVERIFY(game->getComputerField()->allShipsDestroyed()==true);
+    QVERIFY(game->allShipsDestroyed(game->getComputerField())==true);
     QVERIFY(game->getComputerField()->allShipsLocate()==false);
     delete game;
 }
